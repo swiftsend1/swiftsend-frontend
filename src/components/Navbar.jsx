@@ -9,10 +9,12 @@ import {
   CircleHelp,
   History,
   Home,
+  LayoutDashboard,
   LogOut,
   MapPin,
   Menu,
   Send,
+  ShieldCheck,
   UserRound,
   WalletCards,
   X,
@@ -40,14 +42,23 @@ const authenticatedItems = [
   { to: '/withdraw', label: 'Withdraw', description: 'Cash out your balance', icon: WalletCards },
 ];
 
+const adminItem = { to: '/admin', label: 'Admin Dashboard', description: 'Monitor users & transactions', icon: LayoutDashboard };
+
 const getDisplayName = (user) => {
   const name = user?.name || user?.full_name || user?.first_name || user?.email?.split('@')[0];
   return name || 'your account';
 };
 
+const isUserAdmin = (user, roles = []) => {
+  if (!user && roles.length === 0) return false;
+  if (user?.is_staff || user?.is_superuser) return true;
+  const allRoles = [...roles, ...(Array.isArray(user?.roles) ? user.roles : [])];
+  return allRoles.some((r) => typeof r === 'string' && ['admin', 'staff', 'superuser', 'administrator'].includes(r.toLowerCase()));
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isAuthenticated, signOut, user } = useAuth();
+  const { isAuthenticated, signOut, user, roles } = useAuth();
   const location = useLocation();
   const menuButtonRef = useRef(null);
   const panelRef = useRef(null);
@@ -89,7 +100,8 @@ const Navbar = () => {
     menuButtonRef.current?.focus();
   };
 
-  const items = isAuthenticated ? authenticatedItems : publicItems;
+  const baseItems = isAuthenticated ? authenticatedItems : publicItems;
+  const items = isAuthenticated && isUserAdmin(user, roles) ? [...baseItems, adminItem] : baseItems;
   const displayName = getDisplayName(user);
 
   return (

@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import Withdraw from './pages/Withdraw';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="track" element={<Track />} />
           <Route path="profile" element={<Profile />} />
           <Route path="withdraw" element={<Withdraw />} />
+          <Route path="admin" element={<AdminDashboard />} />
         </Route>
 
         <Route element={<PublicOnlyRoute />}>

@@ -4,8 +4,21 @@
 
 [build.environment]
   VITE_API_BASE_URL = "https://backend-production-3886.up.railway.app"
+  NODE_VERSION = "20"
+
+[context.production]
+  command = "npm run build"
+
+[context.deploy-preview]
+  command = "npm run build"
+
+[context.branch-deploy]
+  command = "npm run build"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Build notifications are configured in Netlify UI (Site settings > Build & deploy > Deploy notifications)
+# Enable email notifications for failed/succeeded deploys there.

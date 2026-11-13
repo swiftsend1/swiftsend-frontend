@@ -1,8 +1,11 @@
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicOnlyRoute from './components/PublicOnlyRoute';
 import AppShell from './components/AppShell';
+import AdminLayout from './components/AdminLayout';
+import AdminRoute from './components/AdminRoute';
+import AdminPublicOnlyRoute from './components/AdminPublicOnlyRoute';
 
 import Home from './pages/Home';
 import ReceiveMoney from './pages/ReceiveMoney';
@@ -19,6 +22,7 @@ import Withdraw from './pages/Withdraw';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
 
 function App() {
   return (
@@ -39,7 +43,6 @@ function App() {
             <Route path="track" element={<Track />} />
             <Route path="withdraw" element={<Withdraw />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="admin" element={<AdminDashboard />} />
           </Route>
         </Route>
 
@@ -47,6 +50,13 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
+      </Route>
+
+      {/* Separate admin area */}
+      <Route path="/admin/login" element={<AdminPublicOnlyRoute><AdminLogin /></AdminPublicOnlyRoute>} />
+      <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="*" element={<Navigate to="/admin" replace />} />
       </Route>
     </Routes>
   );

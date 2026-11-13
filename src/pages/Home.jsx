@@ -63,26 +63,26 @@ const Home = () => {
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
             <div className="text-center lg:text-left">
               <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-sky-100 shadow-sm backdrop-blur sm:text-xs">
-                <BadgeCheck size={14} className="shrink-0 text-sky-300" /> <span className="truncate sm:whitespace-normal">Trusted B2B & B2C remittance infrastructure</span>
+                <BadgeCheck size={14} className="shrink-0 text-sky-300" /> <span className="truncate sm:whitespace-normal">SwiftSend — Connecting Africa to the World</span>
               </div>
               <h1 className="mt-5 text-[2rem] font-extrabold leading-[1.08] tracking-[-0.03em] text-white sm:mt-6 sm:text-5xl lg:text-6xl">
-                Move money across borders with speed, trust, and clarity.
+                Connecting Africa to the world, one transfer at a time.
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:mt-5 sm:text-lg sm:leading-8 lg:mx-0">
-                SwiftSend helps businesses and consumers send, collect, and pay out funds through mobile money, bank rails, and USSD — with transparent FX and enterprise-grade security.
+                SwiftSend is a global remittance platform built to connect Africa with the world — starting in Kenya, expanding across East Africa, and ultimately reaching the rest of the world. We make sending and receiving money across borders faster, simpler, more affordable, and more transparent through modern payment technologies, Stellar blockchain infrastructure, and accessible channels like web and USSD.
               </p>
               <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row lg:justify-start">
                 <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-900/30 transition hover:-translate-y-0.5 hover:bg-[#0369a1] sm:w-auto">
                   Get Started <ArrowUpRight size={17} />
                 </Link>
                 <Link to="/help" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 sm:w-auto">
-                  Talk to sales <ArrowRight size={17} />
+                  Learn more <ArrowRight size={17} />
                 </Link>
               </div>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-slate-200 lg:justify-start">
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-sky-300" /> Bank-grade encryption</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-sky-300" /> Real-time tracking</span>
-                <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-sky-300" /> Multi-corridor payouts</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-sky-300" /> Fast & transparent transfers</span>
+                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-sky-300" /> Web & USSD access</span>
+                <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-sky-300" /> Kenya to the world</span>
               </div>
             </div>
 
@@ -168,8 +168,8 @@ const Home = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">Core rails</p>
-            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Reach every customer, on every channel</h2>
-            <p className="mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-300">Built for Africa-first corridors and global scale with reliable payout options.</p>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Accessible channels for everyone</h2>
+            <p className="mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-300">Bridging people, families, and businesses with reliable payout options across web, mobile money, bank rails, and USSD.</p>
           </div>
           <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
             <FeatureCard
@@ -209,11 +209,11 @@ const Home = () => {
         <div className="mx-auto max-w-7xl space-y-14 px-4 sm:space-y-20 sm:px-6 lg:space-y-28 lg:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">For consumers & agents</p>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">A remittance experience that feels simple, even when rails are complex</h3>
-              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Give senders clear quotes, fast delivery options, and live tracking — from app to USSD — while your team gets operational visibility.</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">For people, families & businesses</p>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">A world where sending money across borders feels as easy as sending a message.</h3>
+              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Starting in Kenya and expanding across East Africa to the rest of the world, SwiftSend makes cross-border transfers faster, simpler, more affordable, and more transparent — from app to USSD.</p>
               <ul className="mt-6 space-y-3 text-slate-700 dark:text-slate-200">
-                {['Live FX calculator and upfront fees', 'USSD and mobile-first journeys', 'Reference-based tracking and receipts'].map((t) => (
+                {['Live FX quotes and upfront pricing', 'Accessible web and USSD journeys', 'Simple, transparent tracking from start to finish'].map((t) => (
                   <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#0284c7]" /> <span className="text-sm sm:text-base">{t}</span></li>
                 ))}
               </ul>
@@ -244,9 +244,9 @@ const Home = () => {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">For businesses & platforms</p>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">APIs, controls, and compliance-ready operations in one place</h3>
-              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Scale B2B and B2C payment flows with configurable corridors, payout methods, and monitoring designed for regulated environments.</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">Our mission</p>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Making global money transfers accessible to everyone, starting with Africa.</h3>
+              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">By combining modern payment technologies, Stellar blockchain infrastructure, and accessible channels such as web and USSD, SwiftSend bridges the gap between people, families, and businesses regardless of where they are in the world.</p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {[
                   { icon: <Building2 className="h-5 w-5" />, title: 'B2B collections & payouts', desc: 'Support partners, merchants, and enterprise disbursements.' },
@@ -310,8 +310,8 @@ const Home = () => {
       <section className="bg-white py-12 sm:py-16 dark:bg-slate-950">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-indigo-50 px-5 py-8 text-center sm:px-10 sm:py-10 lg:px-16">
-            <h3 className="text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl dark:text-[#0b1f4b]">Ready to launch trusted cross-border payments?</h3>
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">Join SwiftSend to power fast, compliant B2B and B2C remittance experiences.</p>
+            <h3 className="text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl dark:text-[#0b1f4b]">Join us in connecting Africa to the world.</h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">Our vision: a world where sending money across borders feels as easy as sending a message. Start with SwiftSend today.</p>
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
               <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 hover:bg-[#0369a1] sm:w-auto">Get Started <ArrowUpRight size={16} /></Link>
               <Link to="/rates" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] hover:bg-slate-50 sm:w-auto">View pricing <ArrowRight size={16} /></Link>

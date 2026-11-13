@@ -29,7 +29,7 @@ const Footer = () => {
               <span className="text-lg font-bold tracking-[-0.04em] text-[#0b1f4b] dark:text-white">SwiftSend</span>
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-6 text-slate-600 dark:text-slate-400">
-              Modern B2B/B2C remittance infrastructure for fast, compliant, and transparent cross-border payments.
+              SwiftSend — Connecting Africa to the World. A global remittance platform making cross-border money transfers faster, simpler, more affordable, and more transparent, starting in Kenya.
             </p>
             <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-2.5 py-1.5 text-[#0369a1] dark:bg-slate-800 dark:text-sky-300"><ShieldCheck size={13} /> Secure by design</span>

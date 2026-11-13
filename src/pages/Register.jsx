@@ -14,7 +14,7 @@ import {
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage, isDuplicateRegistrationError } from '../auth/api';
 
-const inputClass = 'mt-2 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#4cbfa5] focus:ring-4 focus:ring-[#dff7ef]';
+const inputClass = 'mt-2 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -92,12 +92,13 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-76px)] items-center justify-center bg-[#f7faf9] px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_70px_-28px_rgba(15,35,31,.3)] lg:grid-cols-[.9fr_1.1fr]">
-        <aside className="relative overflow-hidden bg-[#102522] p-7 text-white sm:p-10 lg:p-12">
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#35d3a6]/15 blur-3xl" />
+    <div className="flex min-h-[calc(100vh-76px)] items-center justify-center bg-stellar-offwhite px-4 py-10 sm:px-6 lg:px-8">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_70px_-28px_rgba(15,15,15,.2)] lg:grid-cols-[.9fr_1.1fr]">
+        <aside className="relative overflow-hidden bg-stellar-black p-7 text-white sm:p-10 lg:p-12">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-stellar-yellow/10 blur-3xl" />
+          <div className="absolute -left-16 bottom-0 h-48 w-48 rounded-full bg-stellar-teal/10 blur-3xl" />
           <div className="relative">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#8ee3c7]/25 bg-[#8ee3c7]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-[#9ff4dc]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-stellar-yellow/30 bg-stellar-yellow/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-stellar-yellow">
               <LockKeyhole size={14} />
               Join SwiftSend
             </span>
@@ -111,7 +112,7 @@ const Register = () => {
                 'Access your account on any device',
               ].map((benefit) => (
                 <div key={benefit} className="flex items-start gap-3 text-sm text-slate-200">
-                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#8ee3c7]/15 text-[#9ff4dc]"><Check size={13} strokeWidth={3} /></span>
+                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-stellar-teal/20 text-stellar-teal"><Check size={13} strokeWidth={3} /></span>
                   <span>{benefit}</span>
                 </div>
               ))}
@@ -122,7 +123,7 @@ const Register = () => {
         <section className="p-6 sm:p-10 lg:p-12" aria-labelledby="register-heading">
           <div className="mx-auto max-w-md">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[.16em] text-[#0f8c76]">Get started</p>
+              <p className="text-sm font-bold uppercase tracking-[.16em] text-stellar-teal">Get started</p>
               <h2 id="register-heading" className="mt-2 text-3xl font-bold tracking-[-.045em] text-slate-950">Create your account</h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">It only takes a minute to set up your SwiftSend account.</p>
             </div>
@@ -204,7 +205,7 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword((visible) => !visible)}
-                    className="absolute right-2 top-1/2 mt-1 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#bdeedc]"
+                    className="absolute right-2 top-1/2 mt-1 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-stellar-teal/30"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
@@ -215,7 +216,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0f766e] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-900/15 transition hover:-translate-y-0.5 hover:bg-[#0b645e] focus:outline-none focus:ring-4 focus:ring-[#dff7ef] disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-black px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/20 ring-1 ring-stellar-yellow/30 transition hover:-translate-y-0.5 hover:bg-swift-navy focus:outline-none focus:ring-4 focus:ring-stellar-teal/20 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0"
                 aria-busy={isSubmitting}
               >
                 {isSubmitting ? <><LoaderCircle size={18} className="animate-spin" /> Creating account…</> : <>Create free account <ArrowRight size={17} /></>}
@@ -224,7 +225,7 @@ const Register = () => {
 
             <p className="mt-6 text-center text-sm text-slate-500">
               Already have an account?{' '}
-              <Link to="/login" className="font-bold text-[#087869] underline-offset-4 hover:underline">Log in</Link>
+              <Link to="/login" className="font-bold text-swift-blue underline-offset-4 hover:text-stellar-teal hover:underline">Log in</Link>
             </p>
           </div>
         </section>

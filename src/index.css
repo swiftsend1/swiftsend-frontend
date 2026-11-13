@@ -28,11 +28,11 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    @apply outline-none ring-2 ring-[#0ea5e9] ring-offset-2;
+    @apply outline-none ring-2 ring-stellar-teal ring-offset-2;
   }
 
   ::selection {
-    @apply bg-sky-200 text-slate-900;
+    @apply bg-stellar-yellow/70 text-stellar-black;
   }
 }
 

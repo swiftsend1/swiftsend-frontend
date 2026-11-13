@@ -28,13 +28,13 @@ const Navbar = () => {
     <header className="sticky top-0 z-[70] border-b border-white/40 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70 dark:border-slate-800/70 dark:bg-slate-950/80">
       <nav className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8" aria-label="Primary navigation">
         <Link to={isAuthenticated ? '/dashboard' : '/'} className="group flex min-w-0 shrink-0 items-center gap-2.5" aria-label="SwiftSend home">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#0b1f4b] to-[#0284c7] shadow-lg shadow-sky-900/20 transition group-hover:scale-105">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-stellar-black via-swift-navy to-stellar-teal shadow-lg shadow-slate-900/30 transition group-hover:scale-105">
             <span className="relative block h-4 w-5">
               <i aria-hidden="true" className="absolute left-0 top-1 block h-1.5 w-4 rounded-full bg-white" />
-              <i aria-hidden="true" className="absolute right-0 top-4 block h-1.5 w-5 rounded-full bg-[#7dd3fc]" />
+              <i aria-hidden="true" className="absolute right-0 top-4 block h-1.5 w-5 rounded-full bg-stellar-yellow" />
             </span>
           </span>
-          <span className="truncate text-xl font-bold tracking-[-0.04em] text-[#0b1f4b] dark:text-white">SwiftSend</span>
+          <span className="truncate text-xl font-bold tracking-[-0.04em] text-stellar-black dark:text-white">SwiftSend</span>
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
@@ -42,7 +42,7 @@ const Navbar = () => {
             <>
               <div className="hidden items-center gap-1 sm:flex">
                 {publicLinks.map((l) => (
-                  <Link key={l.to} to={l.to} className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:text-[#0b1f4b] dark:text-slate-200 dark:hover:text-white">{l.label}</Link>
+                  <Link key={l.to} to={l.to} className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:text-stellar-black dark:text-slate-200 dark:hover:text-white">{l.label}</Link>
                 ))}
                 {isAuthenticated && (
                   <Link to="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
@@ -73,10 +73,10 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/login" className="rounded-xl px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 sm:px-3 dark:text-slate-200 dark:hover:bg-slate-800">Log in</Link>
-              <Link to="/register" className="inline-flex items-center gap-1.5 rounded-xl bg-[#0284c7] px-3 py-2.5 text-sm font-semibold text-white shadow-lg shadow-sky-700/20 transition hover:bg-[#0369a1] sm:px-4">
+              <Link to="/register" className="inline-flex items-center gap-1.5 rounded-xl bg-stellar-black px-3 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 ring-1 ring-stellar-yellow/30 transition hover:bg-swift-navy sm:px-4">
                 <span className="hidden xs:inline sm:inline">Get Started</span>
                 <span className="sm:hidden">Start</span>
-                <ArrowUpRight size={15} className="hidden sm:block" />
+                <ArrowUpRight size={15} className="hidden text-stellar-yellow sm:block" />
               </Link>
             </>
           )}

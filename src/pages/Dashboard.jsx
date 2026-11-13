@@ -14,7 +14,7 @@ import {
 import { useAuth } from '../auth/AuthContext';
 
 const features = [
-  { to: '/send', title: 'Send Money', desc: 'Create a new cross-border transfer with transparent quotes.', icon: Send, color: 'bg-sky-100 text-[#0284c7]' },
+  { to: '/send', title: 'Send Money', desc: 'Create a new cross-border transfer with transparent quotes.', icon: Send, color: 'bg-stellar-yellow/20 text-stellar-black' },
   { to: '/receive', title: 'Receive Money', desc: 'View receive options and payout details.', icon: ArrowDownToLine, color: 'bg-emerald-100 text-emerald-700' },
   { to: '/wallet', title: 'Wallet', desc: 'Manage balances and wallet-related actions.', icon: WalletCards, color: 'bg-indigo-100 text-indigo-700' },
   { to: '/history', title: 'Transaction History', desc: 'Review your remittances and past activity.', icon: History, color: 'bg-amber-100 text-amber-700' },
@@ -37,7 +37,7 @@ const Dashboard = () => {
   const name = getDisplayName(user);
   const admin = isUserAdmin(user, roles);
   const allFeatures = admin
-    ? [{ to: '/admin', title: 'Admin Dashboard', desc: 'Monitor users, remittances, and platform activity.', icon: LayoutDashboard, color: 'bg-[#0b1f4b] text-white' }, ...features]
+    ? [{ to: '/admin', title: 'Admin Dashboard', desc: 'Monitor users, remittances, and platform activity.', icon: LayoutDashboard, color: 'bg-stellar-black text-stellar-yellow' }, ...features]
     : features;
 
   return (
@@ -45,13 +45,13 @@ const Dashboard = () => {
       <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="text-sm font-semibold text-[#0284c7]">Central dashboard</p>
-            <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl">Welcome, {name}</h1>
+            <p className="text-sm font-semibold text-stellar-teal">Central dashboard</p>
+            <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl">Welcome, {name}</h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
               Access all SwiftSend features from one place — send and receive money, manage your wallet, track transfers, review history, and get support.
             </p>
           </div>
-          <Link to="/send" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-sky-700/20 hover:bg-[#0369a1] sm:w-auto">
+          <Link to="/send" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-5 py-3 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/10 hover:bg-yellow-300 sm:w-auto">
             <Send size={16} /> New transfer
           </Link>
         </div>
@@ -64,8 +64,8 @@ const Dashboard = () => {
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Navigation</p>
             <p className="mt-1 text-sm font-semibold text-slate-800">Use sidebar (desktop) or app menu (mobile)</p>
           </div>
-          <div className="rounded-2xl bg-sky-50 p-4">
-            <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0369a1]"><ShieldCheck size={13} /> Secure</p>
+          <div className="rounded-2xl bg-stellar-offwhite p-4 ring-1 ring-stellar-yellow/40">
+            <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stellar-black"><ShieldCheck size={13} className="text-stellar-teal" /> Secure</p>
             <p className="mt-1 text-sm font-semibold text-slate-800">Authenticated session active</p>
           </div>
         </div>
@@ -73,18 +73,18 @@ const Dashboard = () => {
 
       <section>
         <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-lg font-extrabold tracking-tight text-[#0b1f4b] sm:text-xl">All features</h2>
+          <h2 className="text-lg font-extrabold tracking-tight text-stellar-black sm:text-xl">All features</h2>
           <p className="text-xs font-medium text-slate-500 sm:text-sm">{allFeatures.length} available</p>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3">
           {allFeatures.map(({ to, title, desc, icon: Icon, color }) => (
-            <Link key={to} to={to} className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md sm:p-5">
+            <Link key={to} to={to} className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-stellar-teal/40 hover:shadow-md sm:p-5">
               <div className="flex items-start gap-4">
                 <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${color}`}><Icon size={20} /></span>
                 <div className="min-w-0">
-                  <h3 className="text-base font-bold text-slate-900 group-hover:text-[#0369a1]">{title}</h3>
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-swift-blue">{title}</h3>
                   <p className="mt-1 text-sm leading-6 text-slate-600">{desc}</p>
-                  <p className="mt-3 text-xs font-bold uppercase tracking-wide text-[#0284c7]">Open →</p>
+                  <p className="mt-3 text-xs font-bold uppercase tracking-wide text-stellar-teal">Open →</p>
                 </div>
               </div>
             </Link>

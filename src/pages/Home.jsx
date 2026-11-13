@@ -56,8 +56,8 @@ const Home = () => {
       <section className="relative overflow-hidden border-b border-slate-200/70">
         <div className="absolute inset-0">
           <img src={heroImage} alt="" className="h-full w-full object-cover" loading="eager" />
-          <div className="absolute inset-0 bg-slate-950/55" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0b1f4b]/90 via-[#0b1f4b]/70 to-slate-900/40" />
+          <div className="absolute inset-0 bg-stellar-black/65" />
+          <div className="absolute inset-0 bg-gradient-to-r from-stellar-black/95 via-swift-navy/80 to-stellar-teal/20" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:px-8 lg:pb-20 lg:pt-20">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
@@ -72,7 +72,7 @@ const Home = () => {
                 SwiftSend is a global remittance platform built to connect Africa with the world — starting in Kenya, expanding across East Africa, and ultimately reaching the rest of the world. We make sending and receiving money across borders faster, simpler, more affordable, and more transparent through modern payment technologies, Stellar blockchain infrastructure, and accessible channels like web and USSD.
               </p>
               <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row lg:justify-start">
-                <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-900/30 transition hover:-translate-y-0.5 hover:bg-[#0369a1] sm:w-auto">
+                <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-6 py-3.5 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/20 transition hover:-translate-y-0.5 hover:bg-yellow-300 sm:w-auto">
                   Get Started <ArrowUpRight size={17} />
                 </Link>
                 <Link to="/help" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 sm:w-auto">
@@ -80,9 +80,9 @@ const Home = () => {
                 </Link>
               </div>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-slate-200 lg:justify-start">
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-sky-300" /> Fast & transparent transfers</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-sky-300" /> Web & USSD access</span>
-                <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-sky-300" /> Kenya to the world</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-stellar-yellow" /> Fast & transparent transfers</span>
+                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-stellar-teal" /> Web & USSD access</span>
+                <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-stellar-yellow" /> Kenya to the world, on Stellar-inspired rails</span>
               </div>
             </div>
 
@@ -92,14 +92,14 @@ const Home = () => {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
                 <div className="flex-1">
                   <label htmlFor="hero-send-amount" className="block text-xs font-bold uppercase tracking-wider text-slate-500">You send</label>
-                  <div className="mt-2 flex items-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-[#0284c7] focus-within:bg-white focus-within:ring-4 focus-within:ring-sky-100">
+                  <div className="mt-2 flex items-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-stellar-teal focus-within:bg-white focus-within:ring-4 focus-within:ring-stellar-teal/20">
                     <span className="mr-2 text-sm font-bold text-slate-500">{corridor.from}</span>
                     <input
                       id="hero-send-amount"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
                       inputMode="decimal"
-                      className="w-full min-w-0 bg-transparent text-xl font-extrabold tracking-tight text-[#0b1f4b] outline-none sm:text-2xl"
+                      className="w-full min-w-0 bg-transparent text-xl font-extrabold tracking-tight text-stellar-black outline-none sm:text-2xl"
                       aria-label="Amount to send"
                     />
                   </div>
@@ -109,10 +109,10 @@ const Home = () => {
                   <div className="mt-2 rounded-2xl border border-sky-200 bg-sky-50/70 px-4 py-3">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="min-w-0">
-                        <p className="break-words text-xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-2xl">{formatMoney(received)} <span className="text-base font-bold text-slate-600">{corridor.to}</span></p>
+                        <p className="break-words text-xl font-extrabold tracking-tight text-stellar-black sm:text-2xl">{formatMoney(received)} <span className="text-base font-bold text-slate-600">{corridor.to}</span></p>
                         <p className="mt-1 text-xs leading-5 text-slate-600">Live rate: 1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p>
                       </div>
-                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-white px-3 py-2.5 text-sm font-semibold text-[#0b1f4b] shadow-sm hover:bg-sky-50 sm:w-auto sm:shrink-0" aria-expanded={open} aria-label="Select corridor">
+                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-white px-3 py-2.5 text-sm font-semibold text-stellar-black shadow-sm hover:bg-sky-50 sm:w-auto sm:shrink-0" aria-expanded={open} aria-label="Select corridor">
                         <span>{corridor.flag}</span> <span className="truncate">{corridor.country}</span> <ChevronDown size={15} className="shrink-0" />
                       </button>
                     </div>
@@ -132,18 +132,18 @@ const Home = () => {
                 <div className="lg:w-56">
                   <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
                     <p className="text-xs font-semibold text-slate-500">Estimated total</p>
-                    <p className="mt-1 text-xl font-extrabold text-[#0b1f4b]">{formatMoney(totalCost)} {corridor.from}</p>
+                    <p className="mt-1 text-xl font-extrabold text-stellar-black">{formatMoney(totalCost)} {corridor.from}</p>
                     <p className="text-xs text-slate-500">Includes fee {formatMoney(corridor.fee)} {corridor.from}</p>
                   </div>
-                  <Link to="/send" className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-sky-700/20 hover:bg-[#0369a1]">
+                  <Link to="/send" className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-black px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-slate-900/20 ring-1 ring-stellar-yellow/30 hover:bg-swift-navy">
                     Send now <ArrowRight size={16} />
                   </Link>
                 </div>
               </div>
               <div className="mt-4 flex flex-col gap-2 text-xs font-medium text-slate-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-[#0284c7]" /> Bank-grade encryption</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-[#0284c7]" /> Real-time status tracking</span>
-                <span className="inline-flex items-center gap-1.5"><BadgeCheck size={14} className="text-[#0284c7]" /> No hidden FX markups shown upfront</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-swift-blue" /> Bank-grade encryption</span>
+                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-swift-blue" /> Real-time status tracking</span>
+                <span className="inline-flex items-center gap-1.5"><BadgeCheck size={14} className="text-swift-blue" /> No hidden FX markups shown upfront</span>
               </div>
             </div>
           </div>
@@ -167,8 +167,8 @@ const Home = () => {
       <section className="bg-slate-50 py-14 sm:py-20 dark:bg-slate-900/40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">Core rails</p>
-            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Accessible channels for everyone</h2>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-swift-blue">Core rails</p>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">Accessible channels for everyone</h2>
             <p className="mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-300">Bridging people, families, and businesses with reliable payout options across web, mobile money, bank rails, and USSD.</p>
           </div>
           <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
@@ -209,22 +209,22 @@ const Home = () => {
         <div className="mx-auto max-w-7xl space-y-14 px-4 sm:space-y-20 sm:px-6 lg:space-y-28 lg:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">For people, families & businesses</p>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">A world where sending money across borders feels as easy as sending a message.</h3>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-swift-blue">For people, families & businesses</p>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">A world where sending money across borders feels as easy as sending a message.</h3>
               <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Starting in Kenya and expanding across East Africa to the rest of the world, SwiftSend makes cross-border transfers faster, simpler, more affordable, and more transparent — from app to USSD.</p>
               <ul className="mt-6 space-y-3 text-slate-700 dark:text-slate-200">
                 {['Live FX quotes and upfront pricing', 'Accessible web and USSD journeys', 'Simple, transparent tracking from start to finish'].map((t) => (
-                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#0284c7]" /> <span className="text-sm sm:text-base">{t}</span></li>
+                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-swift-blue" /> <span className="text-sm sm:text-base">{t}</span></li>
                 ))}
               </ul>
-              <Link to="/send" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#0284c7] hover:text-[#0369a1] sm:mt-8">Explore send flow <ArrowRight size={16} /></Link>
+              <Link to="/send" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-swift-blue hover:text-swift-blueDark sm:mt-8">Explore send flow <ArrowRight size={16} /></Link>
             </div>
             <div className="relative">
               <div className="absolute -inset-2 rounded-[2rem] bg-sky-100/60 blur-2xl sm:-inset-4 dark:bg-sky-900/20" />
               <img src={featureImgA} alt="Customer completing a secure digital payment experience" className="relative aspect-[4/3] w-full rounded-3xl border border-slate-200 object-cover shadow-2xl shadow-slate-900/10" loading="lazy" />
               <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:absolute sm:-bottom-5 sm:-left-4 sm:mt-0 dark:border-slate-700 dark:bg-slate-900">
                 <p className="text-xs font-semibold text-slate-500">Live transfer status</p>
-                <p className="mt-1 text-sm font-bold text-[#0b1f4b] dark:text-white">Payout pending → Completed</p>
+                <p className="mt-1 text-sm font-bold text-stellar-black dark:text-white">Payout pending → Completed</p>
                 <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-green-600"><BadgeCheck size={14} /> Evidence trail recorded</p>
               </div>
             </div>
@@ -236,16 +236,16 @@ const Home = () => {
               <img src={featureImgB} alt="Business user managing cross-border payments securely" className="relative aspect-[4/3] w-full rounded-3xl border border-slate-200 object-cover shadow-2xl shadow-slate-900/10" loading="lazy" />
               <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:absolute sm:-right-3 sm:-top-4 sm:mt-0 dark:border-slate-700 dark:bg-slate-900">
                 <p className="text-xs font-semibold text-slate-500">Business controls</p>
-                <p className="mt-1 text-sm font-bold text-[#0b1f4b] dark:text-white">Corridors, fees & reconciliation</p>
+                <p className="mt-1 text-sm font-bold text-stellar-black dark:text-white">Corridors, fees & reconciliation</p>
                 <div className="mt-2 flex flex-wrap gap-2 text-[11px] font-semibold">
-                  <span className="rounded-full bg-sky-50 px-2 py-1 text-[#0369a1]">FX rules</span>
+                  <span className="rounded-full bg-stellar-offwhite px-2 py-1 text-stellar-black ring-1 ring-stellar-yellow/40">FX rules</span>
                   <span className="rounded-full bg-slate-100 px-2 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-200">Audit logs</span>
                 </div>
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">Our mission</p>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Making global money transfers accessible to everyone, starting with Africa.</h3>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-swift-blue">Our mission</p>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">Making global money transfers accessible to everyone, starting with Africa.</h3>
               <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">By combining modern payment technologies, Stellar blockchain infrastructure, and accessible channels such as web and USSD, SwiftSend bridges the gap between people, families, and businesses regardless of where they are in the world.</p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {[
@@ -255,7 +255,7 @@ const Home = () => {
                   { icon: <ShieldCheck className="h-5 w-5" />, title: 'Operational safeguards', desc: 'Controls, evidence hooks, and status integrity.' },
                 ].map((f) => (
                   <div key={f.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-                    <div className="flex items-center gap-2 text-[#0284c7]">{f.icon}<span className="text-sm font-bold text-[#0b1f4b] dark:text-white">{f.title}</span></div>
+                    <div className="flex items-center gap-2 text-swift-blue">{f.icon}<span className="text-sm font-bold text-stellar-black dark:text-white">{f.title}</span></div>
                     <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{f.desc}</p>
                   </div>
                 ))}
@@ -266,7 +266,7 @@ const Home = () => {
       </section>
 
       {/* (6) Dark-themed security and compliance banner */}
-      <section className="bg-[#0b1f4b] py-12 text-white sm:py-16">
+      <section className="bg-stellar-black py-12 text-white sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-10">
             <div>
@@ -292,13 +292,13 @@ const Home = () => {
               <p className="mt-2 text-sm text-slate-200/85">Operational transparency for partners, auditors, and customers.</p>
               <div className="mt-6 space-y-3">
                 {['End-to-end transaction lifecycle monitoring', 'Role-based access for admin operations', 'Idempotent flows and reconciliation-ready references', 'Configurable webhook and integration safeguards'].map((row) => (
-                  <div key={row} className="flex items-start gap-3 rounded-xl border border-white/10 bg-[#0a1a3d] px-4 py-3">
+                  <div key={row} className="flex items-start gap-3 rounded-xl border border-white/10 bg-swift-navy px-4 py-3">
                     <ShieldCheck className="mt-0.5 h-4 w-4 text-sky-300" />
                     <span className="text-sm text-slate-100">{row}</span>
                   </div>
                 ))}
               </div>
-              <Link to="/register" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#0284c7] px-5 py-3 text-sm font-bold text-white hover:bg-[#0369a1]">
+              <Link to="/register" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-stellar-yellow px-5 py-3 text-sm font-bold text-stellar-black hover:bg-yellow-300">
                 Start building with SwiftSend <ArrowUpRight size={16} />
               </Link>
             </div>
@@ -310,11 +310,11 @@ const Home = () => {
       <section className="bg-white py-12 sm:py-16 dark:bg-slate-950">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-indigo-50 px-5 py-8 text-center sm:px-10 sm:py-10 lg:px-16">
-            <h3 className="text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl dark:text-[#0b1f4b]">Join us in connecting Africa to the world.</h3>
+            <h3 className="text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl dark:text-stellar-black">Join us in connecting Africa to the world.</h3>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">Our vision: a world where sending money across borders feels as easy as sending a message. Start with SwiftSend today.</p>
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
-              <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 hover:bg-[#0369a1] sm:w-auto">Get Started <ArrowUpRight size={16} /></Link>
-              <Link to="/rates" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] hover:bg-slate-50 sm:w-auto">View pricing <ArrowRight size={16} /></Link>
+              <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-6 py-3.5 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/20 hover:bg-yellow-300 sm:w-auto">Get Started <ArrowUpRight size={16} /></Link>
+              <Link to="/rates" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-stellar-black hover:bg-slate-50 sm:w-auto">View pricing <ArrowRight size={16} /></Link>
             </div>
           </div>
         </div>
@@ -325,12 +325,12 @@ const Home = () => {
 
 const FeatureCard = ({ icon, title, text, bullets }) => (
   <article className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900">
-    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-[#0284c7] dark:bg-slate-800 dark:text-sky-300">{icon}</div>
-    <h3 className="mt-5 text-xl font-bold tracking-tight text-[#0b1f4b] dark:text-white">{title}</h3>
+    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-swift-blue dark:bg-slate-800 dark:text-sky-300">{icon}</div>
+    <h3 className="mt-5 text-xl font-bold tracking-tight text-stellar-black dark:text-white">{title}</h3>
     <p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{text}</p>
     <ul className="mt-4 space-y-2">
       {bullets.map((b) => (
-        <li key={b} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"><CheckCircle2 className="mt-0.5 h-4 w-4 text-[#0284c7]" /> {b}</li>
+        <li key={b} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"><CheckCircle2 className="mt-0.5 h-4 w-4 text-swift-blue" /> {b}</li>
       ))}
     </ul>
   </article>
@@ -338,7 +338,7 @@ const FeatureCard = ({ icon, title, text, bullets }) => (
 
 const Stat = ({ value, label, sub, visible, delay }) => (
   <div className={`rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-center sm:p-5 dark:border-slate-800 dark:bg-slate-900/60 ${visible ? 'animate-count' : 'opacity-0'}`} style={{ animationDelay: delay }}>
-    <p className="text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl dark:text-sky-300">{value}</p>
+    <p className="text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl dark:text-sky-300">{value}</p>
     <p className="mt-1 text-xs font-bold leading-5 text-slate-800 sm:text-sm dark:text-slate-100">{label}</p>
     <p className="mt-1 text-[11px] leading-4 text-slate-500 sm:text-xs dark:text-slate-400">{sub}</p>
   </div>

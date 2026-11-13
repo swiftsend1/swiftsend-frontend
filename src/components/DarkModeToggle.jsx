@@ -20,7 +20,7 @@ const DarkModeToggle = () => {
     <button
       type="button"
       onClick={() => setIsDark((dark) => !dark)}
-      className="grid h-10 w-10 place-items-center rounded-xl text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-[#dff7ef] dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+      className="grid h-10 w-10 place-items-center rounded-xl text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-stellar-teal/20 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       aria-pressed={isDark}

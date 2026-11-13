@@ -30,17 +30,17 @@ const History = () => {
   }, [authFetch]);
 
   return (
-    <div className="min-h-full rounded-2xl bg-[#F8F9FA] p-4 sm:p-6">
+    <div className="min-h-full rounded-2xl bg-stellar-offwhite p-4 sm:p-6">
       <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
-        <h2 className="text-3xl font-bold text-[#2C3E50]">Transaction History</h2>
-        <Link to="/send" className="bg-[#0f766e] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#0b645e]">New transfer</Link>
+        <h2 className="text-3xl font-bold text-stellar-black">Transaction History</h2>
+        <Link to="/send" className="bg-stellar-black text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-swift-navy ring-1 ring-stellar-yellow/30">New transfer</Link>
       </div>
 
       {error && <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800 mb-4">{error}</div>}
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-xl shadow-md border">
-          <thead className="bg-[#2C3E50] text-white">
+          <thead className="bg-stellar-black text-white">
             <tr>
               <th className="py-3 px-4 text-left">Reference</th>
               <th className="py-3 px-4 text-left">Recipient</th>
@@ -55,10 +55,10 @@ const History = () => {
             {loading ? (
               <tr><td colSpan="7" className="py-10 text-center text-slate-500"><span className="inline-flex items-center gap-2"><LoaderCircle size={16} className="animate-spin" /> Loading…</span></td></tr>
             ) : items.length === 0 ? (
-              <tr><td colSpan="7" className="py-10 text-center text-slate-500">No remittances yet. <Link to="/send" className="text-[#0f766e] font-semibold">Create one</Link>.</td></tr>
+              <tr><td colSpan="7" className="py-10 text-center text-slate-500">No remittances yet. <Link to="/send" className="text-swift-blue font-semibold hover:text-stellar-teal">Create one</Link>.</td></tr>
             ) : items.map((txn) => (
               <tr key={txn.reference} className="border-b hover:bg-gray-50">
-                <td className="py-3 px-4"><Link to={`/track?ref=${encodeURIComponent(txn.reference)}`} className="font-mono text-[#0f766e] hover:underline">{txn.reference}</Link></td>
+                <td className="py-3 px-4"><Link to={`/track?ref=${encodeURIComponent(txn.reference)}`} className="font-mono text-swift-blue hover:text-stellar-teal hover:underline">{txn.reference}</Link></td>
                 <td className="py-3 px-4">{txn.recipient_name}</td>
                 <td className="py-3 px-4">{txn.sender_country}/{txn.send_currency} → {txn.receive_currency}</td>
                 <td className="py-3 px-4">{txn.send_amount} {txn.send_currency}</td>

@@ -44,11 +44,11 @@ const SidebarContent = ({ onNavigate, showClose = false, onClose }) => {
   const items = isUserAdmin(user, roles) ? [...navItems, adminItem] : navItems;
 
   return (
-    <div className="flex h-full flex-col bg-[#0b1f4b] text-white">
+    <div className="flex h-full flex-col bg-stellar-black text-white">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
         <div>
           <p className="text-sm font-bold tracking-tight">SwiftSend App</p>
-          <p className="mt-0.5 text-xs text-slate-300">Central dashboard & features</p>
+          <p className="mt-0.5 text-xs text-stellar-gray">Powered by Stellar-inspired flows</p>
         </div>
         {showClose && (
           <button type="button" onClick={onClose} className="grid h-9 w-9 place-items-center rounded-lg text-slate-200 hover:bg-white/10" aria-label="Close menu">
@@ -75,7 +75,7 @@ const SidebarContent = ({ onNavigate, showClose = false, onClose }) => {
                 to={to}
                 end={end}
                 onClick={onNavigate}
-                className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${isActive ? 'bg-[#0284c7] text-white shadow-lg shadow-sky-900/20' : 'text-slate-200 hover:bg-white/10 hover:text-white'}`}
+                className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${isActive ? 'bg-stellar-yellow text-stellar-black shadow-lg shadow-yellow-900/20' : 'text-slate-200 hover:bg-white/10 hover:text-white'}`}
               >
                 <Icon size={18} />
                 <span>{label}</span>
@@ -87,7 +87,7 @@ const SidebarContent = ({ onNavigate, showClose = false, onClose }) => {
 
       <div className="border-t border-white/10 p-3">
         <div className="mb-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
-          <p className="inline-flex items-center gap-1.5 font-semibold text-sky-200"><ShieldCheck size={13} /> Secure session</p>
+          <p className="inline-flex items-center gap-1.5 font-semibold text-stellar-yellow"><ShieldCheck size={13} /> Secure session</p>
           <p className="mt-1">Manage transfers, wallet, tracking, and account from one place.</p>
         </div>
         <button type="button" onClick={async () => { await signOut(); onNavigate?.(); }} className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-white">
@@ -106,7 +106,7 @@ SidebarContent.propTypes = {
 
 const AppSidebar = ({ mobileOpen, onMobileClose }) => (
   <>
-    <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-[#0b1f4b] lg:sticky lg:top-[76px] lg:block lg:h-[calc(100vh-76px)]">
+    <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-stellar-black lg:sticky lg:top-[76px] lg:block lg:h-[calc(100vh-76px)]">
       <SidebarContent />
     </aside>
 

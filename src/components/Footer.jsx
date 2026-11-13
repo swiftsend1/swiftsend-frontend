@@ -16,8 +16,8 @@ const Footer = () => {
 
   return (
     <footer className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+        <div className="grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2.5" aria-label="SwiftSend home">
               <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#0b1f4b] to-[#0284c7]">

@@ -7,9 +7,9 @@ const Layout = () => {
   const isLanding = location.pathname === '/';
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <Navbar />
-      <main className={`min-h-0 flex-1 ${isLanding ? '' : 'p-4 sm:p-6'}`}>
+      <main className={`min-h-0 flex-1 ${isLanding ? 'overflow-x-hidden' : 'p-4 sm:p-6'}`}>
         <Outlet />
       </main>
       <Footer />

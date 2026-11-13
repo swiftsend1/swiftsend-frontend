@@ -59,30 +59,30 @@ const Home = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white" />
           <div className="hero-grid absolute inset-0 opacity-60" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-16 sm:px-6 lg:px-8 lg:pb-20 lg:pt-24">
+        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-14 sm:pt-16 lg:px-8 lg:pb-20 lg:pt-24">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-[#0369a1] shadow-sm">
-              <BadgeCheck size={14} /> Trusted B2B & B2C remittance infrastructure
+            <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 text-[11px] font-semibold text-[#0369a1] shadow-sm sm:text-xs">
+              <BadgeCheck size={14} className="shrink-0" /> <span className="truncate sm:whitespace-normal">Trusted B2B & B2C remittance infrastructure</span>
             </div>
-            <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-[#0b1f4b] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-[2rem] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#0b1f4b] sm:mt-6 sm:text-5xl lg:text-6xl">
               Move money across borders with speed, trust, and clarity.
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8">
               SwiftSend helps businesses and consumers send, collect, and pay out funds through mobile money, bank rails, and USSD — with transparent FX and enterprise-grade security.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Link to="/register" className="inline-flex items-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 transition hover:-translate-y-0.5 hover:bg-[#0369a1]">
+            <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:items-center">
+              <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 transition hover:-translate-y-0.5 hover:bg-[#0369a1] sm:w-auto">
                 Get Started <ArrowUpRight size={17} />
               </Link>
-              <Link to="/help" className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] transition hover:border-slate-400 hover:bg-slate-50">
+              <Link to="/help" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] transition hover:border-slate-400 hover:bg-slate-50 sm:w-auto">
                 Talk to sales <ArrowRight size={17} />
               </Link>
             </div>
           </div>
 
           {/* Live remittance exchange rate calculator widget */}
-          <div className="mx-auto mt-12 max-w-4xl">
-            <div className="animate-floaty rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-[0_30px_80px_-30px_rgba(15,23,42,.35)] backdrop-blur sm:p-6">
+          <div className="mx-auto mt-10 max-w-4xl sm:mt-12">
+            <div className="rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-[0_30px_80px_-30px_rgba(15,23,42,.35)] backdrop-blur sm:animate-floaty sm:p-6">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
                 <div className="flex-1">
                   <label htmlFor="hero-send-amount" className="block text-xs font-bold uppercase tracking-wider text-slate-500">You send</label>
@@ -93,27 +93,27 @@ const Home = () => {
                       value={amount}
                       onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
                       inputMode="decimal"
-                      className="w-full bg-transparent text-2xl font-extrabold tracking-tight text-[#0b1f4b] outline-none"
+                      className="w-full min-w-0 bg-transparent text-xl font-extrabold tracking-tight text-[#0b1f4b] outline-none sm:text-2xl"
                       aria-label="Amount to send"
                     />
                   </div>
                 </div>
-                <div className="flex-1 relative">
+                <div className="relative flex-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Recipient gets</label>
                   <div className="mt-2 rounded-2xl border border-sky-200 bg-sky-50/70 px-4 py-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-2xl font-extrabold tracking-tight text-[#0b1f4b]">{formatMoney(received)} <span className="text-base font-bold text-slate-600">{corridor.to}</span></p>
-                        <p className="mt-1 text-xs text-slate-600">Live rate: 1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="min-w-0">
+                        <p className="break-words text-xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-2xl">{formatMoney(received)} <span className="text-base font-bold text-slate-600">{corridor.to}</span></p>
+                        <p className="mt-1 text-xs leading-5 text-slate-600">Live rate: 1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p>
                       </div>
-                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex items-center gap-1.5 rounded-xl border border-sky-200 bg-white px-3 py-2 text-sm font-semibold text-[#0b1f4b] shadow-sm hover:bg-sky-50" aria-expanded={open} aria-label="Select corridor">
-                        <span>{corridor.flag}</span> {corridor.country} <ChevronDown size={15} />
+                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-white px-3 py-2.5 text-sm font-semibold text-[#0b1f4b] shadow-sm hover:bg-sky-50 sm:w-auto sm:shrink-0" aria-expanded={open} aria-label="Select corridor">
+                        <span>{corridor.flag}</span> <span className="truncate">{corridor.country}</span> <ChevronDown size={15} className="shrink-0" />
                       </button>
                     </div>
                     {open && (
-                      <div className="absolute right-0 top-[calc(100%+6px)] z-20 w-full min-w-[220px] rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl">
+                      <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-20 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl sm:left-auto sm:min-w-[240px]">
                         {corridors.map((c, i) => (
-                          <button key={`${c.from}-${c.to}-${i}`} type="button" onClick={() => { setCorridorIndex(i); setOpen(false); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-slate-50">
+                          <button key={`${c.from}-${c.to}-${i}`} type="button" onClick={() => { setCorridorIndex(i); setOpen(false); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-slate-50">
                             <span>{c.flag}</span>
                             <span className="font-semibold text-slate-800">{c.country}</span>
                             <span className="ml-auto text-xs text-slate-500">{c.from}→{c.to}</span>
@@ -129,12 +129,12 @@ const Home = () => {
                     <p className="mt-1 text-xl font-extrabold text-[#0b1f4b]">{formatMoney(totalCost)} {corridor.from}</p>
                     <p className="text-xs text-slate-500">Includes fee {formatMoney(corridor.fee)} {corridor.from}</p>
                   </div>
-                  <Link to="/send" className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-4 py-3 text-sm font-bold text-white shadow-md shadow-sky-700/20 hover:bg-[#0369a1]">
+                  <Link to="/send" className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-sky-700/20 hover:bg-[#0369a1]">
                     Send now <ArrowRight size={16} />
                   </Link>
                 </div>
               </div>
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-slate-500">
+              <div className="mt-4 flex flex-col gap-2 text-xs font-medium text-slate-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
                 <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-[#0284c7]" /> Bank-grade encryption</span>
                 <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-[#0284c7]" /> Real-time status tracking</span>
                 <span className="inline-flex items-center gap-1.5"><BadgeCheck size={14} className="text-[#0284c7]" /> No hidden FX markups shown upfront</span>
@@ -143,11 +143,11 @@ const Home = () => {
           </div>
 
           {/* Monochrome partner logo strip */}
-          <div className="mx-auto mt-12 max-w-5xl">
-            <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Powering payouts with trusted partners</p>
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="mx-auto mt-10 max-w-5xl sm:mt-12">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400 sm:text-xs sm:tracking-[0.2em]">Powering payouts with trusted partners</p>
+            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6">
               {partners.map((p) => (
-                <div key={p} className="flex h-14 items-center justify-center rounded-xl border border-slate-200 bg-slate-50/70 px-3 text-sm font-bold tracking-wide text-slate-400 grayscale transition hover:text-slate-500">
+                <div key={p} className="flex h-12 items-center justify-center rounded-xl border border-slate-200 bg-slate-50/70 px-2 text-center text-xs font-bold tracking-wide text-slate-400 grayscale transition hover:text-slate-500 sm:h-14 sm:px-3 sm:text-sm">
                   {p}
                 </div>
               ))}
@@ -157,14 +157,14 @@ const Home = () => {
       </section>
 
       {/* (3) 3-column card grid for core features */}
-      <section className="bg-slate-50 py-20 dark:bg-slate-900/40">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <section className="bg-slate-50 py-14 sm:py-20 dark:bg-slate-900/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">Core rails</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Reach every customer, on every channel</h2>
-            <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">Built for Africa-first corridors and global scale with reliable payout options.</p>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">Reach every customer, on every channel</h2>
+            <p className="mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-300">Built for Africa-first corridors and global scale with reliable payout options.</p>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
             <FeatureCard
               icon={<PhoneCall className="h-6 w-6" />}
               title="USSD Offline Transfers"
@@ -188,8 +188,8 @@ const Home = () => {
       </section>
 
       {/* (4) Animated statistics strip */}
-      <section className="border-y border-slate-200 bg-white py-12 dark:border-slate-800 dark:bg-slate-950">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-5 sm:px-6 md:grid-cols-4 lg:px-8">
+      <section className="border-y border-slate-200 bg-white py-10 sm:py-12 dark:border-slate-800 dark:bg-slate-950">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 sm:gap-6 sm:px-6 md:grid-cols-4 lg:px-8">
           <Stat value="35+" label="Supported countries" sub="and growing corridors" visible={statsVisible} delay="0ms" />
           <Stat value="< 5 min" label="Typical transaction speed" sub="for wallet payouts" visible={statsVisible} delay="100ms" />
           <Stat value="99.95%" label="Platform reliability" sub="resilient infrastructure" visible={statsVisible} delay="200ms" />
@@ -198,24 +198,24 @@ const Home = () => {
       </section>
 
       {/* (5) Alternating 2-column feature sections with UI illustrations */}
-      <section className="bg-white py-20 dark:bg-slate-950">
-        <div className="mx-auto max-w-7xl space-y-20 px-5 sm:px-6 lg:px-8 lg:space-y-28">
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <section className="overflow-x-clip bg-white py-14 sm:py-20 dark:bg-slate-950">
+        <div className="mx-auto max-w-7xl space-y-14 px-4 sm:space-y-20 sm:px-6 lg:space-y-28 lg:px-8">
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">For consumers & agents</p>
-              <h3 className="mt-3 text-3xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">A remittance experience that feels simple, even when rails are complex</h3>
-              <p className="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">Give senders clear quotes, fast delivery options, and live tracking — from app to USSD — while your team gets operational visibility.</p>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">A remittance experience that feels simple, even when rails are complex</h3>
+              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Give senders clear quotes, fast delivery options, and live tracking — from app to USSD — while your team gets operational visibility.</p>
               <ul className="mt-6 space-y-3 text-slate-700 dark:text-slate-200">
                 {['Live FX calculator and upfront fees', 'USSD and mobile-first journeys', 'Reference-based tracking and receipts'].map((t) => (
-                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 text-[#0284c7]" /> <span>{t}</span></li>
+                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#0284c7]" /> <span className="text-sm sm:text-base">{t}</span></li>
                 ))}
               </ul>
-              <Link to="/send" className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#0284c7] hover:text-[#0369a1]">Explore send flow <ArrowRight size={16} /></Link>
+              <Link to="/send" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#0284c7] hover:text-[#0369a1] sm:mt-8">Explore send flow <ArrowRight size={16} /></Link>
             </div>
             <div className="relative">
-              <div className="absolute -inset-4 rounded-[2rem] bg-sky-100/60 blur-2xl dark:bg-sky-900/20" />
+              <div className="absolute -inset-2 rounded-[2rem] bg-sky-100/60 blur-2xl sm:-inset-4 dark:bg-sky-900/20" />
               <img src={featureImgA} alt="Customer completing a secure digital payment experience" className="relative aspect-[4/3] w-full rounded-3xl border border-slate-200 object-cover shadow-2xl shadow-slate-900/10" loading="lazy" />
-              <div className="absolute -bottom-5 -left-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+              <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:absolute sm:-bottom-5 sm:-left-4 sm:mt-0 dark:border-slate-700 dark:bg-slate-900">
                 <p className="text-xs font-semibold text-slate-500">Live transfer status</p>
                 <p className="mt-1 text-sm font-bold text-[#0b1f4b] dark:text-white">Payout pending → Completed</p>
                 <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-green-600"><BadgeCheck size={14} /> Evidence trail recorded</p>
@@ -223,14 +223,14 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             <div className="order-2 lg:order-1 relative">
-              <div className="absolute -inset-4 rounded-[2rem] bg-indigo-100/60 blur-2xl dark:bg-indigo-900/20" />
+              <div className="absolute -inset-2 rounded-[2rem] bg-indigo-100/60 blur-2xl sm:-inset-4 dark:bg-indigo-900/20" />
               <img src={featureImgB} alt="Business user managing cross-border payments securely" className="relative aspect-[4/3] w-full rounded-3xl border border-slate-200 object-cover shadow-2xl shadow-slate-900/10" loading="lazy" />
-              <div className="absolute -right-3 -top-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+              <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:absolute sm:-right-3 sm:-top-4 sm:mt-0 dark:border-slate-700 dark:bg-slate-900">
                 <p className="text-xs font-semibold text-slate-500">Business controls</p>
                 <p className="mt-1 text-sm font-bold text-[#0b1f4b] dark:text-white">Corridors, fees & reconciliation</p>
-                <div className="mt-2 flex gap-2 text-[11px] font-semibold">
+                <div className="mt-2 flex flex-wrap gap-2 text-[11px] font-semibold">
                   <span className="rounded-full bg-sky-50 px-2 py-1 text-[#0369a1]">FX rules</span>
                   <span className="rounded-full bg-slate-100 px-2 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-200">Audit logs</span>
                 </div>
@@ -238,9 +238,9 @@ const Home = () => {
             </div>
             <div className="order-1 lg:order-2">
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#0284c7]">For businesses & platforms</p>
-              <h3 className="mt-3 text-3xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">APIs, controls, and compliance-ready operations in one place</h3>
-              <p className="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">Scale B2B and B2C payment flows with configurable corridors, payout methods, and monitoring designed for regulated environments.</p>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-4xl dark:text-white">APIs, controls, and compliance-ready operations in one place</h3>
+              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Scale B2B and B2C payment flows with configurable corridors, payout methods, and monitoring designed for regulated environments.</p>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {[
                   { icon: <Building2 className="h-5 w-5" />, title: 'B2B collections & payouts', desc: 'Support partners, merchants, and enterprise disbursements.' },
                   { icon: <Wallet className="h-5 w-5" />, title: 'Multi-rail orchestration', desc: 'Route across wallet and bank channels by corridor.' },
@@ -259,14 +259,14 @@ const Home = () => {
       </section>
 
       {/* (6) Dark-themed security and compliance banner */}
-      <section className="bg-[#0b1f4b] py-16 text-white">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+      <section className="bg-[#0b1f4b] py-12 text-white sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-10">
             <div>
               <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-sky-200"><ShieldCheck size={14} /> Security & compliance</p>
-              <h3 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Built with trust, controls, and auditability at the core</h3>
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-200/90">Protect customer funds and data with layered safeguards, monitored workflows, and compliance-aware processes across every transfer stage.</p>
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <h3 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-4xl">Built with trust, controls, and auditability at the core</h3>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200/90 sm:text-lg sm:leading-8">Protect customer funds and data with layered safeguards, monitored workflows, and compliance-aware processes across every transfer stage.</p>
+              <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4">
                 {[
                   { icon: <LockKeyhole className="h-5 w-5" />, title: 'Encryption & access controls', desc: 'Secure data handling, authenticated APIs, and least-privilege operations.' },
                   { icon: <CheckCircle2 className="h-5 w-5" />, title: 'KYC/AML-ready workflows', desc: 'Designed to integrate verification and screening controls by corridor.' },
@@ -300,14 +300,14 @@ const Home = () => {
       </section>
 
       {/* CTA */}
-      <section className="bg-white py-16 dark:bg-slate-950">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-          <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-indigo-50 px-6 py-10 text-center sm:px-10 lg:px-16">
-            <h3 className="text-3xl font-extrabold tracking-tight text-[#0b1f4b] dark:text-[#0b1f4b]">Ready to launch trusted cross-border payments?</h3>
-            <p className="mx-auto mt-3 max-w-2xl text-slate-600">Join SwiftSend to power fast, compliant B2B and B2C remittance experiences.</p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link to="/register" className="inline-flex items-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 hover:bg-[#0369a1]">Get Started <ArrowUpRight size={16} /></Link>
-              <Link to="/rates" className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] hover:bg-slate-50">View pricing <ArrowRight size={16} /></Link>
+      <section className="bg-white py-12 sm:py-16 dark:bg-slate-950">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-indigo-50 px-5 py-8 text-center sm:px-10 sm:py-10 lg:px-16">
+            <h3 className="text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl dark:text-[#0b1f4b]">Ready to launch trusted cross-border payments?</h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">Join SwiftSend to power fast, compliant B2B and B2C remittance experiences.</p>
+            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
+              <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 hover:bg-[#0369a1] sm:w-auto">Get Started <ArrowUpRight size={16} /></Link>
+              <Link to="/rates" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] hover:bg-slate-50 sm:w-auto">View pricing <ArrowRight size={16} /></Link>
             </div>
           </div>
         </div>
@@ -330,10 +330,10 @@ const FeatureCard = ({ icon, title, text, bullets }) => (
 );
 
 const Stat = ({ value, label, sub, visible, delay }) => (
-  <div className={`rounded-2xl border border-slate-200 bg-slate-50/70 p-5 text-center dark:border-slate-800 dark:bg-slate-900/60 ${visible ? 'animate-count' : 'opacity-0'}`} style={{ animationDelay: delay }}>
-    <p className="text-3xl font-extrabold tracking-tight text-[#0b1f4b] dark:text-sky-300">{value}</p>
-    <p className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-100">{label}</p>
-    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{sub}</p>
+  <div className={`rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-center sm:p-5 dark:border-slate-800 dark:bg-slate-900/60 ${visible ? 'animate-count' : 'opacity-0'}`} style={{ animationDelay: delay }}>
+    <p className="text-2xl font-extrabold tracking-tight text-[#0b1f4b] sm:text-3xl dark:text-sky-300">{value}</p>
+    <p className="mt-1 text-xs font-bold leading-5 text-slate-800 sm:text-sm dark:text-slate-100">{label}</p>
+    <p className="mt-1 text-[11px] leading-4 text-slate-500 sm:text-xs dark:text-slate-400">{sub}</p>
   </div>
 );
 

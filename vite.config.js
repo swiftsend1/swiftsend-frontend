@@ -11,7 +11,7 @@ export default defineConfig({
       },
     },
   },
-  base: "./", // Ensures correct routing on Vercel
+  base: "/", // Use absolute asset URLs so nested SPA routes (e.g. /admin/login) load correctly
   build: {
     outDir: "dist",
   },

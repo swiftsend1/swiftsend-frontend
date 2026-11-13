@@ -73,7 +73,7 @@ const Register = () => {
 
       if (hasSession) {
         signIn(data);
-        navigate('/', { replace: true });
+        navigate('/dashboard', { replace: true });
         return;
       }
 
@@ -92,7 +92,7 @@ const Register = () => {
   };
 
   return (
-    <div className="-m-4 flex min-h-[calc(100vh-76px)] items-center justify-center bg-[#f7faf9] px-4 py-10 sm:px-6 lg:px-8">
+    <div className="flex min-h-[calc(100vh-76px)] items-center justify-center bg-[#f7faf9] px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_70px_-28px_rgba(15,35,31,.3)] lg:grid-cols-[.9fr_1.1fr]">
         <aside className="relative overflow-hidden bg-[#102522] p-7 text-white sm:p-10 lg:p-12">
           <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#35d3a6]/15 blur-3xl" />

@@ -41,7 +41,7 @@ const Withdraw = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/20">
+    <div className="min-h-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-orange-50/20">
       <div className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 mb-4"><ArrowDownToLine size={16} /> Withdraw Funds</div>

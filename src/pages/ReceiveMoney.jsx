@@ -17,7 +17,7 @@ const ReceiveMoney = () => {
   const copy = () => { navigator.clipboard?.writeText(receiveId); setCopied(true); setTimeout(() => setCopied(false), 1600); };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/20">
+    <div className="min-h-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50/20">
       <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#e7faf3] px-4 py-2 text-sm font-semibold text-[#087869] mb-6"><ArrowDownLeft size={16} /> Receive Money</div>

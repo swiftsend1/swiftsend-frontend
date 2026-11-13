@@ -33,7 +33,7 @@ const Wallet = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] p-6">
+    <div className="min-h-full rounded-2xl bg-[#F8F9FA] p-4 sm:p-6">
       <h2 className="text-3xl font-bold text-[#2C3E50] mb-6">My Wallet</h2>
 
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">

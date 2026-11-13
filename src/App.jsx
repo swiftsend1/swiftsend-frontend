@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicOnlyRoute from './components/PublicOnlyRoute';
+import AppShell from './components/AppShell';
 
 import Home from './pages/Home';
 import ReceiveMoney from './pages/ReceiveMoney';
@@ -24,20 +25,22 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="receive" element={<ReceiveMoney />} />
         <Route path="rates" element={<ExchangeRates />} />
-        <Route path="dashboard" element={<Dashboard />} />
         <Route path="help" element={<Help />} />
         <Route path="verify" element={<Verify />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="send" element={<SendMoney />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="history" element={<History />} />
-          <Route path="track" element={<Track />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="withdraw" element={<Withdraw />} />
-          <Route path="admin" element={<AdminDashboard />} />
+          <Route element={<AppShell />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="send" element={<SendMoney />} />
+            <Route path="receive" element={<ReceiveMoney />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="history" element={<History />} />
+            <Route path="track" element={<Track />} />
+            <Route path="withdraw" element={<Withdraw />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="admin" element={<AdminDashboard />} />
+          </Route>
         </Route>
 
         <Route element={<PublicOnlyRoute />}>

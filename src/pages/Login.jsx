@@ -42,7 +42,11 @@ const Login = () => {
       }
 
       signIn(data);
-      navigate(`${from?.pathname || '/'}${from?.search || ''}${from?.hash || ''}`, { replace: true });
+      const fromPath = from?.pathname;
+      const redirectTo = fromPath && !['/', '/login', '/register'].includes(fromPath)
+        ? `${fromPath}${from?.search || ''}${from?.hash || ''}`
+        : '/dashboard';
+      navigate(redirectTo, { replace: true });
     } catch (requestError) {
       setError(requestError.message || 'Unable to sign in. Please try again.');
     } finally {
@@ -51,7 +55,7 @@ const Login = () => {
   };
 
   return (
-    <div className="-m-4 flex min-h-[calc(100vh-76px)] items-center justify-center bg-[#f7faf9] px-4 py-10 sm:px-6 lg:px-8">
+    <div className="flex min-h-[calc(100vh-76px)] items-center justify-center bg-[#f7faf9] px-4 py-10 sm:px-6 lg:px-8">
       <section className="w-full max-w-md rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_28px_70px_-28px_rgba(15,35,31,.3)] sm:p-10" aria-labelledby="login-heading">
         <div className="text-center">
           <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-[#e7faf3] text-[#0f766e]"><ShieldCheck size={24} /></span>

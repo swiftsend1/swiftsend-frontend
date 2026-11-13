@@ -18,7 +18,7 @@ const Profile = () => {
   const joined = user?.date_joined ? new Date(user.date_joined).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Recently joined';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50/20">
+    <div className="min-h-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-violet-50/20">
       <div className="mx-auto max-w-5xl px-4 py-12 lg:px-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold tracking-tight text-slate-900">My Profile</h1>

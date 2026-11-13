@@ -51,7 +51,7 @@ const AdminDashboard = () => {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#F8F9FA] p-6 flex items-center justify-center">
+      <div className="min-h-full rounded-2xl bg-[#F8F9FA] p-4 sm:p-6 flex items-center justify-center">
         <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center space-y-3">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-rose-50 text-rose-600"><ShieldCheck size={22} /></div>
           <h2 className="text-xl font-bold text-slate-900">Admin access required</h2>
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] p-6">
+    <div className="min-h-full rounded-2xl bg-[#F8F9FA] p-4 sm:p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>

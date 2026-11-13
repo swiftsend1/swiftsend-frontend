@@ -30,7 +30,7 @@ const History = () => {
   }, [authFetch]);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] p-6">
+    <div className="min-h-full rounded-2xl bg-[#F8F9FA] p-4 sm:p-6">
       <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
         <h2 className="text-3xl font-bold text-[#2C3E50]">Transaction History</h2>
         <Link to="/send" className="bg-[#0f766e] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#0b645e]">New transfer</Link>

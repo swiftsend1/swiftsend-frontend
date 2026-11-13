@@ -87,7 +87,7 @@ const SendMoney = () => {
 
   if (created) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 py-12 px-4">
+      <div className="min-h-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 py-12 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-100 overflow-hidden">
             <div className="bg-gradient-to-r from-[#0f766e] to-[#22d3ee] p-8 text-white text-center">
@@ -118,7 +118,7 @@ const SendMoney = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50/20">
+    <div className="min-h-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-cyan-50/20">
       <div className="mx-auto max-w-6xl px-4 py-10 lg:px-8 lg:py-16">
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#e7faf3] px-4 py-2 text-sm font-semibold text-[#087869] mb-4"><Zap size={16} /> Fast • Secure • Affordable</div>

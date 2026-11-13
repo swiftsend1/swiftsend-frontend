@@ -53,36 +53,42 @@ const Home = () => {
   return (
     <div className="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* (1) Hero */}
-      <section className="relative overflow-hidden border-b border-slate-200/70 bg-white">
+      <section className="relative overflow-hidden border-b border-slate-200/70">
         <div className="absolute inset-0">
-          <img src={heroImage} alt="" className="h-full w-full object-cover opacity-[0.08]" loading="eager" />
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white" />
-          <div className="hero-grid absolute inset-0 opacity-60" />
+          <img src={heroImage} alt="" className="h-full w-full object-cover" loading="eager" />
+          <div className="absolute inset-0 bg-slate-950/55" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0b1f4b]/90 via-[#0b1f4b]/70 to-slate-900/40" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-14 sm:pt-16 lg:px-8 lg:pb-20 lg:pt-24">
-          <div className="mx-auto max-w-4xl text-center">
-            <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 text-[11px] font-semibold text-[#0369a1] shadow-sm sm:text-xs">
-              <BadgeCheck size={14} className="shrink-0" /> <span className="truncate sm:whitespace-normal">Trusted B2B & B2C remittance infrastructure</span>
+        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:px-8 lg:pb-20 lg:pt-20">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
+            <div className="text-center lg:text-left">
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-sky-100 shadow-sm backdrop-blur sm:text-xs">
+                <BadgeCheck size={14} className="shrink-0 text-sky-300" /> <span className="truncate sm:whitespace-normal">Trusted B2B & B2C remittance infrastructure</span>
+              </div>
+              <h1 className="mt-5 text-[2rem] font-extrabold leading-[1.08] tracking-[-0.03em] text-white sm:mt-6 sm:text-5xl lg:text-6xl">
+                Move money across borders with speed, trust, and clarity.
+              </h1>
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:mt-5 sm:text-lg sm:leading-8 lg:mx-0">
+                SwiftSend helps businesses and consumers send, collect, and pay out funds through mobile money, bank rails, and USSD — with transparent FX and enterprise-grade security.
+              </p>
+              <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row lg:justify-start">
+                <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-900/30 transition hover:-translate-y-0.5 hover:bg-[#0369a1] sm:w-auto">
+                  Get Started <ArrowUpRight size={17} />
+                </Link>
+                <Link to="/help" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 sm:w-auto">
+                  Talk to sales <ArrowRight size={17} />
+                </Link>
+              </div>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-slate-200 lg:justify-start">
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-sky-300" /> Bank-grade encryption</span>
+                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-sky-300" /> Real-time tracking</span>
+                <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-sky-300" /> Multi-corridor payouts</span>
+              </div>
             </div>
-            <h1 className="mt-5 text-[2rem] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#0b1f4b] sm:mt-6 sm:text-5xl lg:text-6xl">
-              Move money across borders with speed, trust, and clarity.
-            </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8">
-              SwiftSend helps businesses and consumers send, collect, and pay out funds through mobile money, bank rails, and USSD — with transparent FX and enterprise-grade security.
-            </p>
-            <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:items-center">
-              <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284c7] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-700/20 transition hover:-translate-y-0.5 hover:bg-[#0369a1] sm:w-auto">
-                Get Started <ArrowUpRight size={17} />
-              </Link>
-              <Link to="/help" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#0b1f4b] transition hover:border-slate-400 hover:bg-slate-50 sm:w-auto">
-                Talk to sales <ArrowRight size={17} />
-              </Link>
-            </div>
-          </div>
 
-          {/* Live remittance exchange rate calculator widget */}
-          <div className="mx-auto mt-10 max-w-4xl sm:mt-12">
-            <div className="rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-[0_30px_80px_-30px_rgba(15,23,42,.35)] backdrop-blur sm:animate-floaty sm:p-6">
+            {/* Live remittance exchange rate calculator widget */}
+            <div className="w-full">
+              <div className="rounded-3xl border border-white/20 bg-white/95 p-4 shadow-[0_30px_80px_-30px_rgba(2,6,23,.6)] backdrop-blur sm:p-6">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
                 <div className="flex-1">
                   <label htmlFor="hero-send-amount" className="block text-xs font-bold uppercase tracking-wider text-slate-500">You send</label>
@@ -141,13 +147,14 @@ const Home = () => {
               </div>
             </div>
           </div>
+        </div>
 
           {/* Monochrome partner logo strip */}
-          <div className="mx-auto mt-10 max-w-5xl sm:mt-12">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400 sm:text-xs sm:tracking-[0.2em]">Powering payouts with trusted partners</p>
+          <div className="mt-10 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur sm:mt-12 sm:p-5">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-slate-200 sm:text-xs sm:tracking-[0.2em]">Powering payouts with trusted partners</p>
             <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6">
               {partners.map((p) => (
-                <div key={p} className="flex h-12 items-center justify-center rounded-xl border border-slate-200 bg-slate-50/70 px-2 text-center text-xs font-bold tracking-wide text-slate-400 grayscale transition hover:text-slate-500 sm:h-14 sm:px-3 sm:text-sm">
+                <div key={p} className="flex h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-2 text-center text-xs font-bold tracking-wide text-slate-200 transition hover:bg-white/20 sm:h-14 sm:px-3 sm:text-sm">
                   {p}
                 </div>
               ))}

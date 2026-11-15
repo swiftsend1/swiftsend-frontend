@@ -23,6 +23,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import AnchorShowcase from './pages/AnchorShowcase';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="track" element={<Track />} />
             <Route path="withdraw" element={<Withdraw />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="anchor-demo" element={<AnchorShowcase />} />
           </Route>
         </Route>
 

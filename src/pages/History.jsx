@@ -1,81 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect,useMemo,useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LoaderCircle } from 'lucide-react';
+import { ArrowDownLeft,ArrowRight,ArrowUpRight,Clock3,LoaderCircle,Search,Send } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { getApiErrorMessage } from '../auth/api';
 
-const statusColor = {
-  completed: 'bg-green-100 text-green-700',
-  failed: 'bg-red-100 text-red-700',
-  initiated: 'bg-slate-100 text-slate-700',
+const statusStyle=(status='')=>['completed','delivered'].includes(status.toLowerCase())?{background:'var(--accent-soft)',color:'var(--accent-strong)'}:['failed','cancelled'].includes(status.toLowerCase())?{background:'rgba(239,68,68,.12)',color:'#dc2626'}:{background:'var(--surface-muted)',color:'var(--muted)'};
+const money=(value,currency)=>value===null||value===undefined?'—':`${value} ${currency||''}`.trim();
+const History=()=>{
+ const {authFetch}=useAuth();const [items,setItems]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState('');const [query,setQuery]=useState('');const [filter,setFilter]=useState('all');
+ useEffect(()=>{let cancelled=false;authFetch('/api/remittances/').then(async r=>{const data=await r.json().catch(()=>[]);if(!r.ok)throw new Error(getApiErrorMessage(data,'Unable to load transfers.'));if(!cancelled)setItems(Array.isArray(data)?data:(data?.results||[]));}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});return()=>{cancelled=true;};},[authFetch]);
+ const filtered=useMemo(()=>items.filter(txn=>{const term=query.toLowerCase();const matches=[txn.reference,txn.recipient_name,txn.sender_country,txn.receive_currency].some(v=>String(v||'').toLowerCase().includes(term));const s=(txn.status||'').toLowerCase();return matches&&(filter==='all'||(filter==='completed'?['completed','delivered'].includes(s):filter==='pending'?!['completed','delivered','failed','cancelled'].includes(s):['failed','cancelled'].includes(s)));}),[items,query,filter]);
+ const counts={all:items.length,completed:items.filter(x=>['completed','delivered'].includes((x.status||'').toLowerCase())).length,pending:items.filter(x=>!['completed','delivered','failed','cancelled'].includes((x.status||'').toLowerCase())).length};
+ return <div className="mx-auto max-w-6xl space-y-5 sm:space-y-7">
+  <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-[10px] font-extrabold uppercase tracking-[.18em]" style={{color:'var(--accent-strong)'}}>Your money activity</p><h2 className="ss-title mt-2 text-2xl font-black sm:text-3xl">Transfer history</h2><p className="ss-copy mt-1 text-sm">See where your transfers are and review their details.</p></div><Link to="/send" className="ss-primary min-h-11"><Send size={16}/> New transfer</Link></header>
+  <div className="grid grid-cols-3 gap-2 sm:gap-3">{[{label:'All transfers',value:counts.all},{label:'Completed',value:counts.completed},{label:'In progress',value:counts.pending}].map(x=><div key={x.label} className="ss-surface rounded-2xl p-3 sm:p-4"><p className="text-xl font-black tabular-nums sm:text-2xl">{loading?'—':x.value}</p><p className="ss-copy mt-1 text-[10px] font-semibold sm:text-xs">{x.label}</p></div>)}</div>
+  <section className="ss-surface overflow-hidden rounded-[22px]">
+   <div className="space-y-3 border-b p-4 sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:p-5" style={{borderColor:'var(--border)'}}><div><h3 className="text-base font-extrabold">Your transfers</h3><p className="ss-copy mt-1 text-xs">{filtered.length} result{filtered.length===1?'':'s'}</p></div><div className="flex flex-col gap-2 sm:flex-row"><label className="relative"><Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{color:'var(--muted)'}}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search reference or recipient" className="ss-input min-h-10 pl-9 text-xs sm:w-64"/></label><select value={filter} onChange={e=>setFilter(e.target.value)} className="ss-input min-h-10 text-xs sm:w-36"><option value="all">All statuses</option><option value="completed">Completed</option><option value="pending">In progress</option><option value="failed">Failed</option></select></div></div>
+   {error&&<p role="alert" className="m-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+   {loading?<div className="flex items-center justify-center gap-2 p-12 text-sm" style={{color:'var(--muted)'}}><LoaderCircle size={17} className="animate-spin"/> Loading your activity…</div>:filtered.length===0?<div className="px-5 py-14 text-center"><span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl" style={{background:'var(--accent-soft)'}}><Clock3 size={22}/></span><p className="mt-4 text-sm font-extrabold">{items.length?'No matching transfers':'No transfers yet'}</p><p className="ss-copy mt-1 text-xs">{items.length?'Try another search or status filter.':'Your transfer history will appear here after you create a transfer.'}</p>{!items.length&&<Link to="/send" className="ss-primary mt-4">Send your first transfer <ArrowRight size={15}/></Link>}</div>:<div className="divide-y" style={{borderColor:'var(--border)'}}>{filtered.map(txn=><Link key={txn.reference} to={`/track?ref=${encodeURIComponent(txn.reference)}`} className="flex items-center gap-3 p-4 transition hover:bg-black/[.025] sm:px-5"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{background:'var(--accent-soft)',color:'var(--text)'}}>{['completed','delivered'].includes((txn.status||'').toLowerCase())?<ArrowDownLeft size={17}/>:<ArrowUpRight size={17}/>}</span><span className="min-w-0 flex-1"><span className="block truncate text-sm font-extrabold">{txn.recipient_name||'Transfer recipient'}</span><span className="ss-copy mt-1 block truncate font-mono text-[10px]">{txn.reference} · {txn.sender_country||'—'} → {txn.recipient_country||txn.receive_currency||'—'}</span><span className="ss-copy mt-1 block text-[10px] sm:hidden">{txn.created_at?new Date(txn.created_at).toLocaleDateString():'Date unavailable'}</span></span><span className="shrink-0 text-right"><span className="block text-xs font-extrabold tabular-nums sm:text-sm">{money(txn.send_amount,txn.send_currency)}</span><span className="mt-1 block text-[10px]" style={{color:'var(--muted)'}}>Gets {money(txn.receive_amount,txn.receive_currency)}</span></span><span className="hidden shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold capitalize sm:inline-flex" style={statusStyle(txn.status)}>{(txn.status||'pending').replace(/_/g,' ')}</span><ArrowRight size={15} className="shrink-0" style={{color:'var(--muted)'}}/></Link>)}</div>}
+  </section>
+ </div>;
 };
-
-const History = () => {
-  const { authFetch } = useAuth();
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    let cancelled = false;
-    authFetch('/api/remittances/')
-      .then(async (r) => {
-        const data = await r.json().catch(() => []);
-        if (!r.ok) throw new Error(getApiErrorMessage(data, 'Unable to load transfers.'));
-        if (!cancelled) setItems(Array.isArray(data) ? data : (data?.results || []));
-      })
-      .catch((e) => { if (!cancelled) setError(e.message); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [authFetch]);
-
-  return (
-    <div className="min-h-full rounded-2xl bg-stellar-offwhite p-4 sm:p-6">
-      <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
-        <h2 className="text-3xl font-bold text-stellar-black">Transaction History</h2>
-        <Link to="/send" className="bg-stellar-black text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-swift-navy ring-1 ring-stellar-yellow/30">New transfer</Link>
-      </div>
-
-      {error && <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800 mb-4">{error}</div>}
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-xl shadow-md border">
-          <thead className="bg-stellar-black text-white">
-            <tr>
-              <th className="py-3 px-4 text-left">Reference</th>
-              <th className="py-3 px-4 text-left">Recipient</th>
-              <th className="py-3 px-4 text-left">Corridor</th>
-              <th className="py-3 px-4 text-left">Sent</th>
-              <th className="py-3 px-4 text-left">Received</th>
-              <th className="py-3 px-4 text-left">Status</th>
-              <th className="py-3 px-4 text-left">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="7" className="py-10 text-center text-slate-500"><span className="inline-flex items-center gap-2"><LoaderCircle size={16} className="animate-spin" /> Loading…</span></td></tr>
-            ) : items.length === 0 ? (
-              <tr><td colSpan="7" className="py-10 text-center text-slate-500">No remittances yet. <Link to="/send" className="text-swift-blue font-semibold hover:text-stellar-teal">Create one</Link>.</td></tr>
-            ) : items.map((txn) => (
-              <tr key={txn.reference} className="border-b hover:bg-gray-50">
-                <td className="py-3 px-4"><Link to={`/track?ref=${encodeURIComponent(txn.reference)}`} className="font-mono text-swift-blue hover:text-stellar-teal hover:underline">{txn.reference}</Link></td>
-                <td className="py-3 px-4">{txn.recipient_name}</td>
-                <td className="py-3 px-4">{txn.sender_country}/{txn.send_currency} → {txn.receive_currency}</td>
-                <td className="py-3 px-4">{txn.send_amount} {txn.send_currency}</td>
-                <td className="py-3 px-4">{txn.receive_amount} {txn.receive_currency}</td>
-                <td className="py-3 px-4">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${statusColor[txn.status] || 'bg-yellow-100 text-yellow-800'}`}>
-                    {(txn.status || '').replace(/_/g, ' ')}
-                  </span>
-                </td>
-                <td className="py-3 px-4">{txn.created_at ? new Date(txn.created_at).toLocaleString() : ''}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
 export default History;

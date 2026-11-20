@@ -7,18 +7,18 @@ export default {
         // Stellar-inspired brand thematics
         stellar: {
           black: '#0F0F0F',
-          offwhite: '#F9F9F9',
+          offwhite: '#F8F7F3',
           gray: '#969696',
-          yellow: '#FDDA24',
-          orange: '#FF3F00',
-          teal: '#00A7B5',
+          yellow: '#E4B638',
+          orange: '#C99316',
+          teal: '#B88712',
         },
         // SwiftSend core, tuned to blend with Stellar contrast
         swift: {
-          navy: '#0B1F4B',
-          blue: '#0284C7',
-          blueDark: '#0369A1',
-          sky: '#7DD3FC',
+          navy: '#171717',
+          blue: '#A7790C',
+          blueDark: '#8A650B',
+          sky: '#F1CF72',
         },
       },
     },

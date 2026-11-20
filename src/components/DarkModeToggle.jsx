@@ -1,31 +1,20 @@
-import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
+import { useTheme } from '../theme/ThemeContext';
 
-const getInitialTheme = () => {
-  if (typeof window === 'undefined') return false;
-  return localStorage.getItem('theme') === 'dark'
-    || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-};
-
-const DarkModeToggle = () => {
-  const [isDark, setIsDark] = useState(getInitialTheme);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.toggle('dark', isDark);
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  }, [isDark]);
+const DarkModeToggle = ({ compact = false }) => {
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <button
       type="button"
-      onClick={() => setIsDark((dark) => !dark)}
-      className="grid h-10 w-10 place-items-center rounded-xl text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-stellar-teal/20 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+      onClick={toggleTheme}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${compact ? 'h-9 w-9' : 'h-10 px-3 text-sm font-semibold'}`}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       aria-pressed={isDark}
     >
-      {isDark ? <Sun size={18} className="text-amber-300" /> : <Moon size={18} />}
+      {isDark ? <Sun size={17} className="text-amber-400" /> : <Moon size={17} />}
+      {!compact && <span>{isDark ? 'Light mode' : 'Dark mode'}</span>}
     </button>
   );
 };

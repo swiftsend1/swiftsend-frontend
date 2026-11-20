@@ -2,71 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: light;
+  --page: #f4f7fb;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-raised: #ffffff;
+  --text: #14213b;
+  --muted: #68758b;
+  --border: #e5eaf1;
+  --accent: #0e9f91;
+  --accent-strong: #087f75;
+  --accent-soft: #e3f7f3;
+  --gold: #e9b949;
+  --navy: #101d36;
+  --shadow: 0 12px 36px rgba(16, 29, 54, .06);
+}
+
+.dark {
+  color-scheme: dark;
+  --page: #0b1220;
+  --surface: #111c2e;
+  --surface-muted: #172338;
+  --surface-raised: #1a2940;
+  --text: #edf3fb;
+  --muted: #9aa9bd;
+  --border: #27364d;
+  --accent: #38c6b5;
+  --accent-strong: #5ad7c8;
+  --accent-soft: #123a3a;
+  --gold: #efc45b;
+  --navy: #0b1425;
+  --shadow: 0 14px 40px rgba(0, 0, 0, .22);
+}
+
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
+  html { scroll-behavior: smooth; }
   body {
-    @apply m-0 min-w-[320px] bg-white font-sans text-slate-900 antialiased;
+    @apply m-0 min-w-[320px] font-sans antialiased;
+    background: var(--page);
+    color: var(--text);
+    transition: background-color .2s ease, color .2s ease;
   }
+  button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    @apply outline-none ring-2 ring-offset-2;
+    --tw-ring-color: var(--accent);
+    --tw-ring-offset-color: var(--page);
+  }
+  ::selection { background: rgba(18, 184, 166, .22); color: var(--text); }
+}
 
-  .dark body {
-    @apply bg-slate-950 text-slate-100;
+@layer components {
+  .ss-page { color: var(--text); }
+  .ss-surface { background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .ss-muted-surface { background: var(--surface-muted); border: 1px solid var(--border); }
+  .ss-title { color: var(--text); letter-spacing: -.035em; }
+  .ss-copy { color: var(--muted); }
+  .ss-input {
+    width: 100%; border: 1px solid var(--border); border-radius: 12px;
+    background: var(--surface); color: var(--text); padding: .75rem .9rem;
+    transition: border-color .18s ease, box-shadow .18s ease;
   }
-
-  button,
-  a,
-  input,
-  select,
-  textarea {
-    -webkit-tap-highlight-color: transparent;
+  .ss-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent); }
+  .ss-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    border-radius: 12px; background: var(--accent-strong); color: #fff;
+    padding: .75rem 1rem; font-weight: 700; transition: transform .18s ease, filter .18s ease;
   }
-
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    @apply outline-none ring-2 ring-stellar-teal ring-offset-2;
-  }
-
-  ::selection {
-    @apply bg-stellar-yellow/70 text-stellar-black;
-  }
+  .ss-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
 }
 
 @layer utilities {
-  .glass-nav {
-    @apply border-b border-white/40 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60;
-  }
-  .hero-grid {
-    background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
-    background-size: 22px 22px;
-  }
-  @keyframes floaty {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
-  }
-  @keyframes countFadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .glass-nav { @apply border-b backdrop-blur-xl; background: color-mix(in srgb, var(--surface) 86%, transparent); border-color: var(--border); }
+  .hero-grid { background-image: radial-gradient(rgba(15, 23, 42, .08) 1px, transparent 1px); background-size: 22px 22px; }
+  .dark .hero-grid { background-image: radial-gradient(rgba(226, 232, 240, .10) 1px, transparent 1px); }
+  @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes countFadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   .animate-floaty { animation: floaty 6s ease-in-out infinite; }
   .animate-count { animation: countFadeUp .8s ease-out both; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }

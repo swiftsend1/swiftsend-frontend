@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, ShieldCheck, Smartphone, WalletCards } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, ShieldCheck, Smartphone } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
 
@@ -254,7 +254,7 @@ const SendMoney = () => {
             <h3 className="mt-4 text-base font-black">Know before you send</h3>
             <ul className="mt-3 space-y-3 text-xs leading-5 text-white/70">
               <li className="flex gap-2"><CheckCircle2 size={15} className="mt-0.5 shrink-0 text-[#e4b638]"/> Review fees and recipient amount before creating a transfer.</li>
-              <li className="flex gap-2"><CheckCircle2 size={15} className="mt-0.5 shrink-0 text-[#e4b638]"/> Double-check the recipient's name and phone number.</li>
+              <li className="flex gap-2"><CheckCircle2 size={15} className="mt-0.5 shrink-0 text-[#e4b638]"/> Double-check the recipient&apos;s name and phone number.</li>
               <li className="flex gap-2"><CheckCircle2 size={15} className="mt-0.5 shrink-0 text-[#e4b638]"/> Use your transfer reference to check progress.</li>
             </ul>
           </section>

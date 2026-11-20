@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import DarkModeToggle from "./DarkModeToggle";
+import { ThemeProvider } from "../theme/ThemeContext";
 
 describe("DarkModeToggle", () => {
   beforeEach(() => {
@@ -14,19 +15,19 @@ describe("DarkModeToggle", () => {
   });
 
   it("defaults to light mode and can switch to dark", () => {
-    render(<DarkModeToggle />);
+    render(<ThemeProvider><DarkModeToggle /></ThemeProvider>);
 
     const toggle = screen.getByRole("button", { name: "Switch to dark mode" });
     expect(toggle).toHaveAttribute("aria-pressed", "false");
 
     fireEvent.click(toggle);
     expect(screen.getByRole("button", { name: "Switch to light mode" })).toHaveAttribute("aria-pressed", "true");
-    expect(localStorage.getItem("theme")).toBe("dark");
+    expect(localStorage.getItem("swiftsend-theme")).toBe("dark");
     expect(document.documentElement).toHaveClass("dark");
   });
 
   it("switches back to light mode", () => {
-    localStorage.setItem("theme", "dark");
+    localStorage.setItem("swiftsend-theme", "dark");
     render(<DarkModeToggle />);
 
     fireEvent.click(screen.getByRole("button", { name: "Switch to light mode" }));

@@ -1,38 +1,39 @@
-# SwiftSend Premium Frontend Redesign
+# SwiftSend Frontend Redesign
 
-## Direction
-- Visual direction: premium fintech
-- Theme support: light and dark, persisted across sessions and initially respecting system preference
-- Scope: all existing public, authenticated, and supporting pages
-- Stack: retain React 19, Vite, React Router, Tailwind CSS, and lucide-react
+## Confirmed direction
+Bold African fintech, gold-led identity, light and dark themes, mobile-first app-like navigation, and full frontend scope.
 
-## Non-negotiable compatibility rules
-- Preserve all existing route paths and route guards.
-- Preserve AuthProvider, authFetch usage, API endpoints, request/response payloads, and backend contracts.
-- Do not invent live exchange rates, wallet balances, settlement states, or provider integrations.
-- Keep demo/sandbox data visibly identified as demo.
-- Do not remove existing workflows; improve their presentation and usability.
+## Visual system
+- Gold: #E4B638 and #F1CF72 for primary actions and brand moments.
+- Ink: #171717 for contrast and dark surfaces.
+- Light canvas: #F8F7F3; white cards; warm neutral borders.
+- Dark canvas: #10100F; raised charcoal surfaces; warm grey borders.
+- Large readable amounts, strong typography, rounded touch targets, simple hierarchy.
+- Gold is used as an accent, never as low-contrast body text on white.
 
-## Design system
-- Midnight navy: #101D36
-- Teal: #0E9F91 (primary actions and positive states)
-- Gold: #E9B949 (small premium accent)
-- Light canvas: #F4F7FB; dark canvas: #0B1220
-- Inter/system sans typography, tabular numerals for financial values
-- 12px controls, 16–20px cards, restrained shadows, subtle borders, generous whitespace
-- Responsive navigation, clear focus states, reduced-motion support
+## Mobile experience
+- Fixed bottom navigation: Home, Send, Wallet, Activity.
+- Thumb-friendly controls, safe-area padding, compact task-focused pages.
+- Secondary routes remain available through desktop navigation and contextual links.
+- Dense transaction tables should become stacked cards on small screens.
 
-## Delivery sequence
-1. Foundation: theme context, tokens, global surfaces, navigation shell, reusable page framing.
-2. Public experience: landing page, pricing/rates, help and verification.
-3. Authentication: login and registration visual refinement while preserving auth logic.
-4. Core money movement: dashboard, send flow, wallet, receive, withdrawals.
-5. Visibility and trust: transaction history, tracking timeline, evidence and status states.
-6. Supporting/admin: profile, admin area, Stellar showcase, mobile and accessibility pass.
-7. Verification: lint, unit tests, production build, manual route/API regression checklist.
+## Compatibility rules
+- Preserve route paths, guards, AuthProvider, authFetch, endpoints and payloads.
+- Never fabricate balances, live rates, payment confirmation or settlement.
+- Mark sandbox/demo values clearly.
+- Preserve all existing workflows and improve presentation only.
 
-## Current implementation checkpoint
-- Added a shared theme provider with persistent light/dark preference and system preference fallback.
-- Reworked the authenticated application shell and sidebar into a consistent premium workspace.
-- Existing route definitions and API-facing page components remain untouched in this foundation pass.
-- Next: apply the shared visual system page by page, starting with dashboard and send money.
+## Progress
+- Theme provider and toggle established.
+- Gold/ink design tokens applied.
+- Mobile bottom navigation introduced; desktop sidebar simplified.
+- Dashboard uses existing /api/remittances/ data and does not invent wallet totals.
+- CI workflow path corrected to repository root; validation pending.
+
+## Remaining work
+1. Landing, login and registration.
+2. Send money flow and quote review.
+3. Wallet, receive and withdrawal; clearly label demo values.
+4. History and tracking; responsive transaction cards and timeline.
+5. Rates, help, profile, admin and technical showcase.
+6. Responsive, accessibility, API regression and CI verification.

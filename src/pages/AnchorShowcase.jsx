@@ -170,12 +170,12 @@ const AnchorShowcase = () => {
       <section className="rounded-3xl border border-slate-200 bg-gradient-to-br from-stellar-black via-slate-900 to-swift-900 p-5 text-white shadow-sm sm:p-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-stellar-yellow ring-1 ring-white/15">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#e4b638] ring-1 ring-white/15">
               <Sparkles size={14} /> Stellar Anchor Showcase
             </p>
             <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">See a real transfer flow, step by step</h1>
             <p className="mt-2 text-sm leading-6 text-slate-200 sm:text-base">
-              Run a safe demo remittance and watch how SwiftSend moves through quote, collection, <span className="font-semibold text-white">Stellar settlement</span>, and payout with an auditable evidence trail. No real money is moved.
+              Run a demo remittance and inspect the quote, simulated collection and payout, and any available Stellar Testnet evidence. No real money is moved.
             </p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-200">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1"><ShieldCheck size={13} className="text-stellar-yellow" /> Simulated on-ramp & payout</span>
@@ -187,7 +187,7 @@ const AnchorShowcase = () => {
             <p className="font-semibold text-white">How to read this demo</p>
             <ul className="mt-2 space-y-1.5 text-xs leading-5">
               <li>• <b>On-ramp / payout</b>: simulated partners (demo).</li>
-              <li>• <b>Stellar tx hash</b>: real testnet transaction when the backend is configured for testnet; otherwise a safe mock hash.</li>
+              <li>• <b>Stellar transaction hash</b>: treat it as on-chain evidence only when it is a real, verified Stellar Testnet transaction. A mock-mode reference is not a blockchain transaction.</li>
               <li>• Same flow can plug into real anchors later.</li>
             </ul>
           </div>

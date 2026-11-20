@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, LayoutDashboard, LoaderCircle, LockKeyhole, Mail, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
+import DarkModeToggle from '../components/DarkModeToggle';
 
 const isUserAdmin = (user, roles = []) => {
   if (user?.is_staff || user?.is_superuser) return true;
@@ -56,7 +57,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-10 sm:px-6 lg:px-8" style={{background:"var(--page)"}}>
+    <div className="relative min-h-screen px-4 py-10 sm:px-6 lg:px-8" style={{background:"var(--page)"}}><div className="absolute right-4 top-4"><DarkModeToggle compact /></div>
       <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-5xl items-center gap-8 lg:grid-cols-[1fr_1fr]">
         <section className="hidden rounded-[28px] p-8 text-white lg:block" style={{background:"linear-gradient(145deg,#171717,#332a17)"}}>
           <span className="inline-flex items-center gap-2 rounded-full border border-stellar-yellow/30 bg-stellar-yellow/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-stellar-yellow">

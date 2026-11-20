@@ -1,18 +1,16 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowDownLeft,
   ArrowRight,
   ArrowUpRight,
   Check,
-  ChevronDown,
   CircleDollarSign,
   Clock3,
   Globe2,
   LockKeyhole,
   Send,
-  ShieldCheck,
   Wallet,
 } from 'lucide-react';
 
@@ -34,55 +32,31 @@ const formatMoney = (value, max = 2) =>
   new Intl.NumberFormat('en-US', { maximumFractionDigits: max }).format(Number.isFinite(value) ? value : 0);
 
 const Home = () => {
-  const [amount, setAmount] = useState('1000');
-  const [corridorIndex, setCorridorIndex] = useState(0);
-  const [open, setOpen] = useState(false);
-  const corridor = corridors[corridorIndex];
-  const amountNumber = Number(String(amount).replace(/,/g, '')) || 0;
-  const received = useMemo(() => amountNumber * corridor.rate, [amountNumber, corridor.rate]);
-  const total = useMemo(() => amountNumber + (amountNumber ? corridor.fee : 0), [amountNumber, corridor.fee]);
-
   return (
     <div className="bg-[#f5f5f2] text-[#161616]">
       <section className="relative overflow-hidden px-3 pb-10 pt-6 sm:px-6 sm:pb-20 sm:pt-12 lg:px-8">
-        <div className="pointer-events-none absolute inset-y-0 right-0 block w-full overflow-hidden lg:w-[58%]">
-          <div className="absolute inset-0 bg-cover bg-center opacity-[.48] sm:opacity-[.54]" style={{ backgroundImage: "url('https://images.pexels.com/photos/6969933/pexels-photo-6969933.jpeg?auto=compress&cs=tinysrgb&w=1600'), url('/swiftsend-hero.svg')" }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f5f2]/90 via-[#f5f5f2]/45 to-[#f5f5f2]/15 lg:bg-gradient-to-r lg:from-[#f5f5f2] lg:via-[#f5f5f2]/45 lg:to-transparent" />
+        <div className="pointer-events-none absolute inset-0 block w-full overflow-hidden">
+          <div className="absolute inset-0 bg-cover bg-center opacity-[.2] sm:opacity-[.3] lg:opacity-[.64]" style={{ backgroundImage: "url('https://images.pexels.com/photos/6969933/pexels-photo-6969933.jpeg?auto=compress&cs=tinysrgb&w=1600'), url('/swiftsend-hero.svg')" }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f5f2]/90 via-[#f5f5f2]/45 to-[#f5f5f2]/15 lg:bg-gradient-to-r lg:from-[#f5f5f2]/55 lg:via-[#f5f5f2]/20 lg:to-transparent" />
         </div>
         <div className="relative z-10 mx-auto max-w-[1320px]">
-          <div className="grid min-w-0 items-center gap-9 lg:grid-cols-[.82fr_1.18fr] lg:gap-20">
-            <div className="min-w-0 max-w-xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#deded8] bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#74746e] shadow-sm">
+          <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
+            <div className="hidden min-w-0 max-w-xl lg:block">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#deded8] bg-white/90 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-[#74746e] shadow-sm backdrop-blur">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#c59620]" /> SwiftSend
               </span>
-              <h1 className="mt-6 text-[clamp(2.75rem,13vw,4.5rem)] font-black leading-[.92] tracking-[-.07em]">Money, <span className="text-[#b28214]">moving.</span></h1>
-              <p className="mt-5 max-w-sm text-base leading-7 text-[#75756f]">Fast, simple transfers across Africa and the world.</p>
+              <h1 className="mt-6 text-[clamp(2.8rem,11vw,5rem)] font-black leading-[.92] tracking-[-.07em] text-[#161616]">Send and receive money <span className="text-[#b28214]">seamlessly.</span></h1>
+              <p className="mt-5 max-w-sm text-base leading-7 text-[#6f6f68] sm:text-lg">Simple transfers across Africa and the world. Know the cost. Track the journey.</p>
               <div className="mt-7 grid w-full gap-3 sm:flex sm:w-auto">
-                <Link to="/send" className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-black/10 transition hover:-translate-y-0.5 hover:bg-[#302f2b] sm:w-auto">Send money <ArrowUpRight size={16} className="text-[#e3bb49]" /></Link>
-                <Link to="/track" className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-[#d8d8d2] bg-white px-5 py-3.5 text-sm font-bold text-[#161616] transition hover:-translate-y-0.5 hover:bg-[#fbfbf9] sm:w-auto">Track a transfer <ArrowRight size={16} /></Link>
+                <Link to="/send" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-black text-white shadow-xl shadow-black/10 transition hover:-translate-y-0.5 hover:bg-[#302f2b] sm:w-auto">Send money <ArrowUpRight size={16} className="text-[#e3bb49]" /></Link>
+                <Link to="/track" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#d8d8d2] bg-white/90 px-5 py-3.5 text-sm font-black text-[#161616] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white sm:w-auto">Track transfer <ArrowRight size={16} /></Link>
               </div>
-              <div className="mt-8 flex items-center gap-3 text-xs font-semibold text-[#888881]"><span className="grid h-7 w-7 place-items-center rounded-full bg-[#e7f1e6] text-[#498b50]"><ShieldCheck size={14} /></span>Secure by design <span className="text-[#c9c9c3]">·</span> Clear by default</div>
+              <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold text-[#888881]"><span className="inline-flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-full bg-[#e7f1e6] text-[#498b50]"><Check size={12} /></span>Transparent fees</span><span className="inline-flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-full bg-[#e7f1e6] text-[#498b50]"><Check size={12} /></span>Trackable transfers</span></div>
             </div>
-
-            <QuoteCard
-              amount={amount}
-              setAmount={setAmount}
-              corridor={corridor}
-              setCorridorIndex={setCorridorIndex}
-              open={open}
-              setOpen={setOpen}
-              received={received}
-              total={total}
-            />
+            <HeroPhoneMockup />
           </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-2 sm:mt-14 sm:grid-cols-4 lg:mt-20">
-            <QuickAction icon={<Send />} label="Send" to="/send" />
-            <QuickAction icon={<ArrowDownLeft />} label="Receive" to="/receive" />
-            <QuickAction icon={<Clock3 />} label="Track" to="/track" />
-            <QuickAction icon={<Wallet />} label="Wallet" to="/wallet" />
-          </div>
-          <RatesTicker />
+          <HeroCTAGrid />
+          <HeroRatesTicker />
         </div>
       </section>
 
@@ -136,38 +110,143 @@ const Home = () => {
   );
 };
 
-const QuoteCard = ({ amount, setAmount, corridor, setCorridorIndex, open, setOpen, received, total }) => (
-  <div className="relative mx-auto min-w-0 w-full max-w-[570px] lg:mr-0">
-    <div className="absolute -inset-4 rounded-[2.5rem] bg-[#e6d8a7]/35 blur-2xl" />
-    <div className="relative min-w-0 rounded-[1.5rem] border border-[#deded8] bg-white p-3 shadow-[0_25px_70px_-30px_rgba(22,22,22,.3)] sm:rounded-[1.75rem] sm:p-6">
-      <div className="flex items-center justify-between"><div><p className="text-xs font-black uppercase tracking-[0.16em] text-[#999991]">Quick quote</p><h2 className="mt-1 text-xl font-black tracking-[-.03em]">Send money</h2></div><span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#f5edcf] text-[#ae7d0d]"><CircleDollarSign size={19} /></span></div>
-      <div className="mt-5 grid min-w-0 gap-3 sm:mt-6 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
-        <MoneyField label="You send" value={amount} currency={corridor.from} onChange={(value) => setAmount(value.replace(/[^0-9.]/g, ''))} inputId="hero-send-amount" />
-        <div className="hidden h-10 w-10 place-items-center rounded-full bg-[#f5f5f2] text-[#9a9a92] sm:grid"><ArrowRight size={16} /></div>
-        <div className="rounded-2xl border border-[#e8d799] bg-[#fff9e7] p-4"><p className="text-xs font-bold text-[#999991]">Recipient gets</p><p className="mt-2 text-2xl font-black tracking-[-.05em]">{formatMoney(received)} <span className="text-sm tracking-normal text-[#77776f]">{corridor.to}</span></p><p className="mt-1 text-[11px] text-[#888880]">1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p></div>
+const HeroPhoneMockup = () => {
+  const [typedAmount, setTypedAmount] = useState('');
+  const [pulse, setPulse] = useState(false);
+  const [flash, setFlash] = useState(false);
+  const [corridorIdx, setCorridorIdx] = useState(0);
+  const corridor = corridors[corridorIdx];
+  const amountNumber = Number(typedAmount.replace(/[^0-9.]/g, '')) || 0;
+  const received = formatMoney(amountNumber * corridor.rate);
+  const total = formatMoney(amountNumber + (amountNumber ? corridor.fee : 0));
+
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      setTypedAmount('1,000');
+      return undefined;
+    }
+    const timers = [];
+    const typing = ['1', '10', '100', '1,000'];
+    typing.forEach((value, i) => timers.push(setTimeout(() => setTypedAmount(value), 400 + i * 900)));
+    const tapAt = 400 + typing.length * 900 + 700;
+    timers.push(setTimeout(() => { setPulse(true); setCorridorIdx((i) => (i + 1) % corridors.length); }, tapAt + 200));
+    timers.push(setTimeout(() => setFlash(true), tapAt + 300));
+    timers.push(setTimeout(() => setPulse(false), tapAt + 1300));
+    timers.push(setTimeout(() => setFlash(false), tapAt + 1800));
+    return () => timers.forEach((timer) => clearTimeout(timer));
+  }, []);
+
+  return (
+    <div className="mx-auto mt-2 w-full max-w-[300px] sm:mt-8 lg:mt-10 lg:max-w-[360px]" aria-label="Interactive SwiftSend product preview">
+      <div className="rounded-[1.5rem] border-[5px] border-[#e3bb49] bg-[#161616] p-0.5 shadow-2xl shadow-black/20">
+        <div className="rounded-[1.6rem] bg-[#11100e] p-0.5">
+          <div className="rounded-[1.4rem] bg-black p-3 pb-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black tracking-[0.16em] text-[#e3bb49]">SwiftSend</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#e3bb49]/30" />
+            </div>
+            <h2 className="mt-4 text-[1.35rem] font-black leading-tight tracking-tight text-[#f6f3eb]"><span className="lg:hidden">Cross-border transfers, <span className="text-[#e3bb49]">made simple.</span></span><span className="hidden lg:inline">Send and receive <span className="text-[#e3bb49]">money seamlessly.</span></span></h2>
+            <p className="mt-1.5 text-[10px] leading-4 text-[#8a857d]"><span className="lg:hidden">Send and receive money seamlessly.</span><span className="hidden lg:inline">Quote it. Confirm it. Track it.</span></p>
+            <div className="mt-3.5 grid grid-cols-2 gap-1.5">
+              <Link to="/send" className="rounded-xl bg-[#e3bb49] px-3.5 py-2.5 text-center text-sm font-black text-[#161616] shadow-lg shadow-black/20">Send money</Link>
+              <Link to="/track" className="rounded-xl border border-[#2a261c] bg-black px-3.5 py-2.5 text-center text-sm font-bold text-[#e6e3d8]">Track a transfer</Link>
+            </div>
+            <p className="mt-2 text-[10px] font-bold text-[#8a857d]">Secure by design · Clear by default</p>
+            <div className="mt-3 rounded-2xl bg-[#161616] p-2.5 ring-1 ring-[#e3bb49]/30">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#9a9688]">Quick quote</p>
+                <CircleDollarSign size={15} className="text-[#e3bb49]" />
+              </div>
+              <div className="mt-2.5 grid gap-2 sm:grid-cols-[1fr_1fr]">
+                <div className="rounded-xl bg-[#11100e] p-2 ring-1 ring-[#302c22]">
+                  <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#7a766c]">You send</p>
+                  <div className="mt-1.5 flex items-baseline gap-2">
+                    <span className="text-xl font-black tabular-nums text-[#f6f3eb]">{typedAmount || '0'}</span>
+                    <span className="text-xl font-black text-[#e3bb49] ss-blink">▌</span>
+                    <span className="rounded-full bg-[#2a261c] px-2 py-0.5 text-[10px] font-black text-[#e3bb49]">{corridor.from}</span>
+                  </div>
+                </div>
+                <div className="rounded-xl bg-[#11100e] p-2 ring-1 ring-[#302c22]">
+                  <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#7a766c]">Recipient gets</p>
+                  <span className={`mt-1.5 block text-base font-black tabular-nums text-[#e3bb49] ${flash ? 'phone-flash' : ''}`}>{received} <span className="text-[11px] text-[#7a766c]">{corridor.to}</span></span>
+                </div>
+              </div>
+              <div className="mt-2.5 flex items-center gap-2 rounded-2xl bg-[#11100e] p-2 ring-1 ring-[#302c22]">
+                <span className={`h-1.5 w-1.5 rounded-full bg-[#e3bb49] ${pulse ? 'phone-dot-pulse' : ''}`} />
+                <span className="text-xs font-black text-[#f6f3eb]">{corridor.flag}</span>
+                <span className="text-xs font-bold text-[#9a9688]">{corridor.from} → {corridor.to}</span>
+              </div>
+              <Link to="/send" className="mt-2.5 block w-full rounded-2xl bg-[#e3bb49] px-4 py-2.5 text-center text-sm font-black text-[#161616] shadow-lg shadow-black/20">Continue</Link>
+              <p className="mt-2 text-[10px] text-[#7a766c]">Total: {formatMoney(total)} {corridor.from}</p>
+            </div>
+            <div className="mt-3 grid grid-cols-4 gap-1.5">
+              {[
+                { icon: <Send size={13} />, label: 'Send', to: '/send' },
+                { icon: <ArrowDownLeft size={13} />, label: 'Receive', to: '/receive' },
+                { icon: <Clock3 size={13} />, label: 'Track', to: '/track' },
+                { icon: <Wallet size={13} />, label: 'Wallet', to: '/wallet' },
+              ].map((item) => (
+                <Link key={item.label} to={item.to} className="flex flex-col items-center gap-1 rounded-xl border border-[#2a261c] bg-black px-1 py-2.5 text-[#8a857d]">
+                  <span className="grid h-5 w-5 place-items-center rounded-lg bg-[#2a261c] text-[#e3bb49]">{item.icon}</span>
+                  <span className="text-[8px] font-black uppercase tracking-wide">{item.label}</span>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-3 rounded-xl border border-[#2a261c] lg:hidden">
+              <div className="ss-rate-viewport">
+                <div className="ss-rate-track flex w-max">
+                  {[...rates, ...rates].map((rate, i) => (
+                    <div key={`${rate.pair}-${i}`} className="flex min-w-[170px] items-center gap-2 border-r border-[#2a261c] px-4 py-2.5">
+                      <span className="text-[9px] font-black text-[#7a766c]">{rate.pair}</span>
+                      <span className="text-sm font-black text-[#e3bb49]">{rate.value}</span>
+                      <span className={`text-[9px] font-bold ${rate.up ? 'text-[#4e9b59]' : 'text-[#bd6c55]'}`}>{rate.change}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="relative mt-3 flex items-center justify-between rounded-2xl bg-[#f5f5f2] px-4 py-3"><span className="text-xs font-bold text-[#85857e]">Payout country</span><button type="button" onClick={() => setOpen((value) => !value)} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-black shadow-sm" aria-expanded={open}><span>{corridor.flag}</span>{corridor.country}<ChevronDown size={13} /></button>{open && <div className="absolute left-3 right-3 top-[calc(100%+6px)] z-20 rounded-2xl border border-[#dfdfda] bg-white p-1.5 shadow-xl">{corridors.map((item, index) => <button key={`${item.from}-${item.to}-${index}`} type="button" onClick={() => { setCorridorIndex(index); setOpen(false); }} className="flex w-full items-center gap-2 rounded-xl px-3 py-3 text-left text-sm hover:bg-[#f5f5f2]"><span>{item.flag}</span><span className="font-bold">{item.country}</span><span className="ml-auto text-xs text-[#999991]">{item.from} → {item.to}</span></button>)}</div>}</div>
-      <div className="mt-3 flex items-center justify-between border-t border-[#ededeb] pt-4"><span className="text-xs font-bold text-[#999991]">Total including fee</span><span className="text-sm font-black">{formatMoney(total)} {corridor.from}</span></div>
-      <Link to="/send" className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#302f2b]">Continue <ArrowRight size={16} className="text-[#e3bb49]" /></Link>
-      <div className="mt-4 flex items-center justify-center gap-2 text-[11px] font-bold text-[#999991]"><ShieldCheck size={14} className="text-[#ae7d0d]" /> Rate shown before you send</div>
     </div>
-  </div>
-);
+  );
+};
 
-const MoneyField = ({ label, value, currency, onChange, inputId }) => <div className="min-w-0 rounded-2xl border border-[#dfdfda] bg-[#fbfbf9] p-3 focus-within:border-[#c79b2b] focus-within:ring-4 focus-within:ring-[#e9c65f]/20 sm:p-4"><label htmlFor={inputId} className="block text-xs font-bold text-[#999991]">{label}</label><div className="mt-2 flex min-w-0 items-center gap-2 sm:gap-3"><input id={inputId} value={value} onChange={(event) => onChange(event.target.value)} inputMode="decimal" className="min-w-0 flex-1 bg-transparent text-2xl font-black tracking-[-.05em] outline-none" aria-label={label} /><span className="shrink-0 rounded-full bg-white px-2.5 py-1.5 text-xs font-black shadow-sm sm:px-3">{currency}</span></div></div>;
+const HeroCTAGrid = () => {
+  const actions = [
+    { icon: <ArrowDownLeft size={15} />, label: 'Receive money', to: '/receive' },
+    { icon: <Wallet size={15} />, label: 'Wallet', to: '/wallet' },
+    { icon: <Globe2 size={15} />, label: 'Exchange rates', to: '/rates' },
+  ];
+  return (
+    <div className="mx-auto mt-7 hidden max-w-[760px] flex-wrap justify-center gap-2 sm:mt-9 lg:flex">
+      {actions.map((action) => (
+        <Link key={action.to} to={action.to} className="group inline-flex min-h-10 items-center gap-2 rounded-full border border-[#d8d8d2] bg-white/80 px-3.5 py-2 text-xs font-black text-[#6f6f68] backdrop-blur transition hover:-translate-y-0.5 hover:border-[#c9a73b] hover:bg-white hover:text-[#161616]">
+          <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#f5edcf] text-[#ae7d0d] transition group-hover:bg-[#e9d994]">{action.icon}</span>
+          <span className="whitespace-nowrap">{action.label}</span>
+        </Link>
+      ))}
+    </div>
+  );
+};
 
-const QuickAction = ({ icon, label, to }) => <Link to={to} className="group flex items-center gap-3 rounded-2xl border border-[#deded8] bg-white px-4 py-4 transition hover:-translate-y-0.5 hover:border-[#d4c37e] hover:shadow-lg"><span className="grid h-9 w-9 place-items-center rounded-xl bg-[#f5edcf] text-[#ae7d0d] transition group-hover:bg-[#e9d994]">{icon}</span><span className="text-sm font-black">{label}</span><ArrowRight size={15} className="ml-auto text-[#aaa9a1] transition group-hover:translate-x-0.5 group-hover:text-[#161616]" /></Link>;
+const SolutionCard = ({ icon, label, detail, to, dark = false }) => <Link to={to} className={`group rounded-[1.5rem] border p-5 transition hover:-translate-y-1 hover:shadow-xl ${dark ? 'border-[#161616] bg-[#161616] text-white' : 'border-[#e1e1dc] bg-[#f9f9f7]'}`}><div className="flex items-start justify-between"><span className={`grid h-10 w-10 place-items-center rounded-xl ${dark ? 'bg-[#e3bb49] text-[#161616]' : 'bg-[#f5edcf] text-[#ae7d0d]'}`}>{icon}</span><ArrowUpRight size={17} className={dark ? 'text-white/40' : 'text-[#aaa9a1]'} /></div><p className="mt-9 text-base font-black">{label}</p><p className={`mt-1 text-xs font-semibold ${dark ? 'text-white/45' : 'text-[#898981]'}`}>{detail}</p></Link>;
 
-const RatesTicker = () => (
-  <div className="mt-4 overflow-hidden rounded-2xl border border-[#deded8] bg-white" aria-label="Indicative exchange rates">
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#ededeb] px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#999991]"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#4e9b59]" /> Indicative rates <span className="hidden font-semibold normal-case tracking-normal text-[#b3b3ab] sm:inline">moving with the market</span></div>
+const StatusRow = ({ title, time, done = false, active = false }) => <div className="flex items-center gap-3"><span className={`grid h-7 w-7 place-items-center rounded-full ${done ? 'bg-[#e7f1e6] text-[#498b50]' : active ? 'bg-[#f5edcf] text-[#ae7d0d]' : 'bg-[#f5f5f2] text-[#b0b0a8]'}`}>{done ? <Check size={13} /> : active ? <Clock3 size={13} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}</span><span className={`text-sm font-bold ${done || active ? 'text-[#34342f]' : 'text-[#aaa9a1]'}`}>{title}</span><span className="ml-auto text-xs font-semibold text-[#aaa9a1]">{time}</span></div>;
+
+const HeroRatesTicker = () => (
+  <div className="mx-auto mt-8 hidden max-w-[1320px] overflow-hidden rounded-2xl border border-[#d8d8d2] bg-white/80 shadow-sm backdrop-blur lg:block">
+    <div className="flex items-center gap-3 border-b border-[#ededeb] px-5 py-3 text-[10px] font-black uppercase tracking-[0.16em] text-[#999991]">
+      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#4e9b59]" /> Indicative exchange rates
+      <span className="font-semibold normal-case tracking-normal text-[#b3b3ab]">moving with the market</span>
+    </div>
     <div className="ss-rate-viewport">
       <div className="ss-rate-track flex w-max">
         {[...rates, ...rates].map((rate, index) => (
-          <div key={`${rate.pair}-${index}`} className="flex min-w-[190px] items-center gap-3 border-r border-[#ededeb] px-5 py-3.5">
+          <div key={rate.pair + index} className="flex min-w-[220px] items-center gap-4 border-r border-[#ededeb] px-6 py-4">
             <span className="text-xs font-black text-[#44443e]">{rate.pair}</span>
-            <span className="text-sm font-black text-[#161616]">{rate.value}</span>
-            <span className={`text-[11px] font-bold ${rate.up ? 'text-[#4e9b59]' : 'text-[#bd6c55]'}`}>{rate.change}</span>
+            <span className="text-base font-black text-[#161616]">{rate.value}</span>
+            <span className={rate.up ? 'text-xs font-bold text-[#4e9b59]' : 'text-xs font-bold text-[#bd6c55]'}>{rate.change}</span>
           </div>
         ))}
       </div>
@@ -175,13 +254,6 @@ const RatesTicker = () => (
   </div>
 );
 
-const SolutionCard = ({ icon, label, detail, to, dark = false }) => <Link to={to} className={`group rounded-[1.5rem] border p-5 transition hover:-translate-y-1 hover:shadow-xl ${dark ? 'border-[#161616] bg-[#161616] text-white' : 'border-[#e1e1dc] bg-[#f9f9f7]'}`}><div className="flex items-start justify-between"><span className={`grid h-10 w-10 place-items-center rounded-xl ${dark ? 'bg-[#e3bb49] text-[#161616]' : 'bg-[#f5edcf] text-[#ae7d0d]'}`}>{icon}</span><ArrowUpRight size={17} className={dark ? 'text-white/40' : 'text-[#aaa9a1]'} /></div><p className="mt-9 text-base font-black">{label}</p><p className={`mt-1 text-xs font-semibold ${dark ? 'text-white/45' : 'text-[#898981]'}`}>{detail}</p></Link>;
-
-const StatusRow = ({ title, time, done = false, active = false }) => <div className="flex items-center gap-3"><span className={`grid h-7 w-7 place-items-center rounded-full ${done ? 'bg-[#e7f1e6] text-[#498b50]' : active ? 'bg-[#f5edcf] text-[#ae7d0d]' : 'bg-[#f5f5f2] text-[#b0b0a8]'}`}>{done ? <Check size={13} /> : active ? <Clock3 size={13} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}</span><span className={`text-sm font-bold ${done || active ? 'text-[#34342f]' : 'text-[#aaa9a1]'}`}>{title}</span><span className="ml-auto text-xs font-semibold text-[#aaa9a1]">{time}</span></div>;
-
-QuoteCard.propTypes = { amount: PropTypes.string.isRequired, setAmount: PropTypes.func.isRequired, corridor: PropTypes.shape({ from: PropTypes.string, to: PropTypes.string, flag: PropTypes.string, country: PropTypes.string, rate: PropTypes.number, fee: PropTypes.number }).isRequired, setCorridorIndex: PropTypes.func.isRequired, open: PropTypes.bool.isRequired, setOpen: PropTypes.func.isRequired, received: PropTypes.number.isRequired, total: PropTypes.number.isRequired };
-MoneyField.propTypes = { label: PropTypes.string.isRequired, value: PropTypes.string.isRequired, currency: PropTypes.string.isRequired, onChange: PropTypes.func.isRequired, inputId: PropTypes.string.isRequired };
-QuickAction.propTypes = { icon: PropTypes.node.isRequired, label: PropTypes.string.isRequired, to: PropTypes.string.isRequired };
 SolutionCard.propTypes = { icon: PropTypes.node.isRequired, label: PropTypes.string.isRequired, detail: PropTypes.string.isRequired, to: PropTypes.string.isRequired, dark: PropTypes.bool };
 StatusRow.propTypes = { title: PropTypes.string.isRequired, time: PropTypes.string.isRequired, done: PropTypes.bool, active: PropTypes.bool };
 

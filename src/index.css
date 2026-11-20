@@ -24,6 +24,12 @@
 @keyframes ss-rate-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ss-rate-viewport{overflow:hidden}
 .ss-rate-track{animation:ss-rate-scroll 28s linear infinite}
+@keyframes phone-tap{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(227,187,49,.5)}50%{transform:scale(1.06);box-shadow:0 0 26px -1px rgba(227,187,49,.85)}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(227,187,49,.45)}}
+@keyframes phone-flash{0%{opacity:.25;transform:translateY(3px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes phone-dot-pulse{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.6);opacity:1}}
+.phone-tap{animation:phone-tap 1.2s ease-in-out both}
+.phone-flash{animation:phone-flash .55s cubic-bezier(.2,.8,.2,1) both}
+.phone-dot-pulse{animation:phone-dot-pulse 1.7s ease-in-out both}
 }
 @layer utilities{.glass-nav{@apply border-b backdrop-blur-xl;background:color-mix(in srgb,var(--surface) 90%,transparent);border-color:var(--border)}.hero-grid{background-image:radial-gradient(rgba(30,25,10,.08) 1px,transparent 1px);background-size:22px 22px}.dark .hero-grid{background-image:radial-gradient(rgba(245,220,160,.1) 1px,transparent 1px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}

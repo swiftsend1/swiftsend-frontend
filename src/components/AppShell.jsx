@@ -1,76 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { Menu, Search, Bell } from 'lucide-react';
+import { useEffect } from 'react';
+import { NavLink,Outlet,useLocation } from 'react-router-dom';
+import { ArrowLeftRight,Clock3,Home,WalletCards } from 'lucide-react';
 import AppSidebar from './AppSidebar';
 import DarkModeToggle from './DarkModeToggle';
-
-const pageTitles = {
-  '/dashboard': ['Overview', 'A clear view of your money movement.'],
-  '/send': ['Send money', 'Move money across borders with clarity and confidence.'],
-  '/receive': ['Receive money', 'Manage incoming transfers and payment details.'],
-  '/wallet': ['My wallet', 'Your wallet activity and available funds.'],
-  '/history': ['Transactions', 'Every transfer, in one place.'],
-  '/track': ['Track a transfer', 'Follow your transfer from initiation to delivery.'],
-  '/withdraw': ['Withdraw funds', 'Move available funds to your preferred destination.'],
-  '/profile': ['Your profile', 'Manage your personal details and preferences.'],
-  '/anchor-demo': ['Technology showcase', 'Explore how SwiftSend uses Stellar technology.'],
-};
-
-const AppShell = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  const [title, subtitle] = pageTitles[location.pathname] || ['Your account', 'Welcome back to SwiftSend.'];
-
-  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
-  useEffect(() => {
-    if (!mobileOpen) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, [mobileOpen]);
-
-  return (
-    <div className="ss-page min-h-[calc(100vh-76px)]" style={{ background: 'var(--page)' }}>
-      <div className="mx-auto flex max-w-[1600px]">
-        <AppSidebar mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
-        <div className="min-w-0 flex-1">
-          <div className="sticky top-[76px] z-30 flex items-center justify-between border-b px-4 py-3 backdrop-blur-xl sm:px-6 lg:hidden"
-            style={{ background: 'color-mix(in srgb, var(--surface) 92%, transparent)', borderColor: 'var(--border)' }}>
-            <button type="button" onClick={() => setMobileOpen(true)}
-              className="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold"
-              style={{ borderColor: 'var(--border)', color: 'var(--text)' }} aria-label="Open app menu">
-              <Menu size={18} /> Menu
-            </button>
-            <DarkModeToggle compact />
-          </div>
-
-          <div className="flex items-center justify-between gap-4 border-b px-5 py-5 sm:px-7 lg:px-10"
-            style={{ borderColor: 'var(--border)' }}>
-            <div className="min-w-0">
-              <p className="mb-1 text-xs font-bold uppercase tracking-[.16em]" style={{ color: 'var(--accent)' }}>SwiftSend workspace</p>
-              <h1 className="ss-title text-2xl font-extrabold sm:text-[28px]">{title}</h1>
-              <p className="ss-copy mt-1 hidden text-sm sm:block">{subtitle}</p>
-            </div>
-            <div className="hidden items-center gap-2 lg:flex">
-              <button type="button" className="grid h-10 w-10 place-items-center rounded-xl border"
-                style={{ borderColor: 'var(--border)', color: 'var(--muted)', background: 'var(--surface)' }} aria-label="Search">
-                <Search size={17} />
-              </button>
-              <button type="button" className="grid h-10 w-10 place-items-center rounded-xl border"
-                style={{ borderColor: 'var(--border)', color: 'var(--muted)', background: 'var(--surface)' }} aria-label="Notifications">
-                <Bell size={17} />
-              </button>
-              <DarkModeToggle compact />
-            </div>
-          </div>
-
-          <main className="p-4 sm:p-6 lg:p-8 xl:px-10">
-            <Outlet />
-          </main>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default AppShell;
+const titles={'/dashboard':['Home','Your money, made simpler.'],'/send':['Send money','Send across borders with confidence.'],'/receive':['Receive money','Manage incoming transfers.'],'/wallet':['Wallet','Your funds and wallet activity.'],'/history':['Activity','Your recent money movement.'],'/track':['Track transfer','Follow your transfer to delivery.'],'/withdraw':['Withdraw','Move funds to your preferred destination.'],'/profile':['Profile','Manage your account and preferences.'],'/anchor-demo':['Technology showcase','Explore the technology behind SwiftSend.']};
+const items=[{to:'/dashboard',label:'Home',icon:Home,end:true},{to:'/send',label:'Send',icon:ArrowLeftRight},{to:'/wallet',label:'Wallet',icon:WalletCards},{to:'/history',label:'Activity',icon:Clock3}];
+export default function AppShell(){const location=useLocation();const [title,subtitle]=titles[location.pathname]||['Your account','Welcome back to SwiftSend.'];useEffect(()=>{window.scrollTo({top:0,behavior:'instant'})},[location.pathname]);return <div className="ss-page min-h-[calc(100vh-76px)]" style={{background:'var(--page)'}}><div className="mx-auto flex max-w-[1600px]"><AppSidebar/><div className="min-w-0 flex-1"><div className="glass-nav sticky top-[76px] z-30 flex items-center justify-between px-4 py-3.5 sm:px-6 lg:hidden"><div className="flex items-center gap-2.5"><span className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black" style={{background:'var(--accent)',color:'#17140c'}}>S</span><div><p className="text-sm font-extrabold leading-tight">SwiftSend</p><p className="text-[10px] font-semibold" style={{color:'var(--muted)'}}>Money without borders</p></div></div><DarkModeToggle compact/></div><div className="flex items-center justify-between gap-4 border-b px-4 py-5 sm:px-7 lg:px-10" style={{borderColor:'var(--border)'}}><div className="min-w-0"><p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.18em]" style={{color:'var(--accent-strong)'}}>SWIFTSEND</p><h1 className="ss-title text-2xl font-extrabold sm:text-[28px]">{title}</h1><p className="ss-copy mt-1 hidden text-sm sm:block">{subtitle}</p></div><div className="hidden lg:block"><DarkModeToggle/></div></div><main className="p-3.5 sm:p-6 lg:p-8 xl:px-10"><Outlet/></main></div></div><nav className="fixed inset-x-0 bottom-0 z-[75] border-t px-2 pt-2 backdrop-blur-xl lg:hidden" style={{background:'color-mix(in srgb,var(--surface) 94%,transparent)',borderColor:'var(--border)',paddingBottom:'max(.5rem,env(safe-area-inset-bottom))'}} aria-label="Bottom navigation"><div className="mx-auto grid max-w-lg grid-cols-4 gap-1">{items.map(({to,label,icon:Icon,end})=><NavLink key={to} to={to} end={end} className="flex min-h-[54px] flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold transition" style={({isActive})=>({color:isActive?'#17140c':'var(--muted)',background:isActive?'var(--accent)':'transparent'})}><Icon size={19} strokeWidth={2.3}/><span>{label}</span></NavLink>)}</div></nav></div>}

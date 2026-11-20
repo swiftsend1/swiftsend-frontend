@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowUpRight, CircleHelp, LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
+import DarkModeToggle from './DarkModeToggle';
 
 const Navbar = () => {
   const { isAuthenticated, signOut, user } = useAuth();
@@ -38,6 +39,7 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <DarkModeToggle compact />
           {!inApp && (
             <>
               <div className="hidden items-center gap-1 sm:flex">

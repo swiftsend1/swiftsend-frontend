@@ -10,7 +10,7 @@ const isUserAdmin = (user, roles = []) => {
   return allRoles.some((r) => typeof r === 'string' && ['admin', 'staff', 'superuser', 'administrator'].includes(r.toLowerCase()));
 };
 
-const inputClass = 'mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20';
+const inputClass = 'ss-input mt-2 min-h-12 text-sm';
 
 const AdminLogin = () => {
   const location = useLocation();
@@ -93,7 +93,7 @@ const AdminLogin = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="admin-password" className="text-sm font-semibold text-slate-700">Password</label>
+              <label htmlFor="admin-password" className="text-sm font-semibold">Password</label>
               <div className="relative">
                 <LockKeyhole size={17} className="pointer-events-none absolute left-3.5 top-1/2 mt-1 -translate-y-1/2 text-slate-400" />
                 <input id="admin-password" type={showPassword ? 'text' : 'password'} required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className={`${inputClass} pl-10 pr-11`} placeholder="Enter password" />

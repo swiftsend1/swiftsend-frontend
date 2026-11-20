@@ -14,7 +14,7 @@ const renderRegister = () =>
       <MemoryRouter initialEntries={["/register"]}>
         <Routes>
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<div>home page</div>} />
+          <Route path="/dashboard" element={<div>home page</div>} />
           <Route path="/login" element={<div>login page</div>} />
         </Routes>
       </MemoryRouter>

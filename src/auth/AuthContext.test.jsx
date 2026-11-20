@@ -166,7 +166,7 @@ describe("PublicOnlyRoute", () => {
             <Route element={<PublicOnlyRoute />}>
               <Route path="/login" element={<div>login page</div>} />
             </Route>
-            <Route path="/" element={<div>home page</div>} />
+            <Route path="/dashboard" element={<div>home page</div>} />
           </Routes>
         </MemoryRouter>
       </AuthProvider>,

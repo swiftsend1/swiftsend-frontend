@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowDownLeft, ArrowRight, ArrowUpRight, CheckCircle2, Clock3,
+  ArrowRight, ArrowUpRight, CheckCircle2, Clock3,
   Globe2, Plus, Send, ShieldCheck, WalletCards, Activity,
 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';

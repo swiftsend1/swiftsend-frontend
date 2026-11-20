@@ -1,92 +1,36 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Globe2, ShieldCheck } from 'lucide-react';
-
-const countries = [
-  { flag: '🇰🇪', name: 'Kenya', currency: 'KES' },
-  { flag: '🇺🇬', name: 'Uganda', currency: 'UGX' },
-  { flag: '🇳🇬', name: 'Nigeria', currency: 'NGN' },
-  { flag: '🇬🇭', name: 'Ghana', currency: 'GHS' },
-  { flag: '🇺🇸', name: 'United States', currency: 'USD' },
-  { flag: '🇬🇧', name: 'United Kingdom', currency: 'GBP' },
-];
 
 const Footer = () => {
-  const [selected, setSelected] = useState(countries[0]);
+  const links = [
+    { to: '/send', label: 'Send money' },
+    { to: '/receive', label: 'Receive money' },
+    { to: '/rates', label: 'Exchange rates' },
+    { to: '/track', label: 'Track a transfer' },
+    { to: '/help', label: 'Help centre' },
+    { to: '/login', label: 'Log in' },
+    { to: '/register', label: 'Create account' },
+  ];
 
   return (
-    <footer className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-        <div className="grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-5">
-          <div className="lg:col-span-2">
-            <Link to="/" className="inline-flex items-center gap-2.5" aria-label="SwiftSend home">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-stellar-black via-swift-navy to-stellar-teal">
-                <span className="relative block h-4 w-5">
-                  <i aria-hidden="true" className="absolute left-0 top-1 block h-1.5 w-4 rounded-full bg-white" />
-                  <i aria-hidden="true" className="absolute right-0 top-4 block h-1.5 w-5 rounded-full bg-stellar-yellow" />
-                </span>
+    <footer className="border-t border-[#e1e1dc] bg-[#f5f5f2] px-4 py-7 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[1320px] flex-col gap-6 sm:gap-5">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <Link to="/" className="inline-flex items-center gap-2.5" aria-label="SwiftSend home">
+            <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#161616]">
+              <span className="relative block h-3.5 w-4">
+                <i aria-hidden="true" className="absolute left-0 top-1 block h-1.5 w-3 rounded-full bg-white" />
+                <i aria-hidden="true" className="absolute right-0 top-3 block h-1.5 w-4 rounded-full bg-[#e3bb49]" />
               </span>
-              <span className="text-lg font-bold tracking-[-0.04em] text-stellar-black dark:text-white">SwiftSend</span>
-            </Link>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-slate-600 dark:text-slate-400">
-              SwiftSend — Connecting Africa to the World. A global remittance platform making cross-border money transfers faster, simpler, more affordable, and more transparent, starting in Kenya.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-stellar-offwhite px-2.5 py-1.5 text-stellar-black ring-1 ring-stellar-yellow/60 dark:bg-slate-800 dark:text-stellar-yellow"><ShieldCheck size={13} /> Secure by design</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1.5 text-swift-navy dark:bg-slate-800 dark:text-sky-300"><Globe2 size={13} /> Built on Stellar rails</span>
-            </div>
-            <div className="mt-6">
-              <label htmlFor="country-currency" className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Country & currency</label>
-              <div className="mt-2 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                <span className="text-lg" aria-hidden="true">{selected.flag}</span>
-                <select
-                  id="country-currency"
-                  value={selected.currency}
-                  onChange={(e) => setSelected(countries.find((c) => c.currency === e.target.value) || countries[0])}
-                  className="bg-transparent text-sm font-semibold text-slate-800 outline-none dark:text-slate-100"
-                >
-                  {countries.map((c) => (
-                    <option key={c.currency} value={c.currency} className="text-slate-900">{c.name} ({c.currency})</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-sm font-bold text-stellar-black dark:text-white">Products</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link className="transition hover:text-swift-blue" to="/send">Send money</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/receive">Receive money</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/rates">Exchange rates</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/track">Track a transfer</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="text-sm font-bold text-stellar-black dark:text-white">Solutions</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link className="transition hover:text-swift-blue" to="/help">USSD & offline access</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/wallet">Mobile money</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/withdraw">Bank payouts</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/dashboard">Business dashboard</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="text-sm font-bold text-stellar-black dark:text-white">Company & Support</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link className="transition hover:text-swift-blue" to="/">About</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/help">Help centre</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/login">Log in</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/register">Create account</Link></li>
-            </ul>
-          </div>
+            </span>
+            <span className="text-base font-black tracking-[-0.04em] text-[#161616]">SwiftSend</span>
+          </Link>
+          <nav className="flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold text-[#77776f]" aria-label="Footer navigation">
+            {links.map((link) => <Link key={link.to} to={link.to} className="transition hover:text-[#161616]">{link.label}</Link>)}
+          </nav>
         </div>
-
-        <div className="mt-10 flex flex-col gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} SwiftSend. All rights reserved. Trusted payments for people and businesses.</p>
-          <Link to="/help" className="inline-flex items-center gap-1 font-semibold text-swift-blue transition hover:text-stellar-teal">Security & compliance <ArrowUpRight size={13} /></Link>
+        <div className="flex flex-col gap-2 border-t border-[#e1e1dc] pt-5 text-[11px] font-semibold text-[#999991] sm:flex-row sm:items-center sm:justify-between">
+          <p>Move money simply.</p>
+          <p>&copy; {new Date().getFullYear()} SwiftSend</p>
         </div>
       </div>
     </footer>

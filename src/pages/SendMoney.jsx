@@ -125,8 +125,8 @@ const SendMoney = () => {
               <div className="flex justify-between gap-3"><span style={{ color: 'var(--muted)' }}>Exchange rate</span><b className="text-right">1 {created.send_currency} = {created.exchange_rate} {created.receive_currency}</b></div>
               <div className="flex justify-between gap-3 border-t pt-3 text-base" style={{ borderColor: 'var(--border)' }}><b>Recipient gets</b><b style={{ color: 'var(--accent-strong)' }}>{created.receive_amount} {created.receive_currency}</b></div>
             </div>
-            <Link to={created.reference ? `/track?ref=${encodeURIComponent(created.reference)}` : '/history'} className="ss-primary min-h-12 w-full">Track transfer <ArrowRight size={17}/></Link>
-            <button type="button" onClick={() => { setCreated(null); setQuote(null); setStep(0); setForm((current) => ({ ...current, recipient_name: '', recipient_contact: '' })); }} className="w-full rounded-xl border px-4 py-3 text-sm font-bold" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}>Start another transfer</button>
+            <Link to={created.reference ? `/track?ref=${encodeURIComponent(created.reference)}` : '/history'} className="ss-press ss-primary min-h-12 w-full">Track transfer <ArrowRight size={17}/></Link>
+            <button type="button" onClick={() => { setCreated(null); setQuote(null); setStep(0); setForm((current) => ({ ...current, recipient_name: '', recipient_contact: '' })); }} className="ss-press w-full rounded-xl border px-4 py-3 text-sm font-bold transition active:scale-[.98]" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}>Start another transfer</button>
           </div>
         </section>
       </div>
@@ -145,17 +145,19 @@ const SendMoney = () => {
       </header>
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-        <section className="ss-surface overflow-hidden rounded-[24px]">
+        <section key={step} className="ss-surface ss-enter overflow-hidden rounded-[24px]">
           <div className="px-4 pb-5 pt-5 sm:px-6" style={{ borderBottom: '1px solid var(--border)' }}>
             <div className="mb-4 flex items-center justify-between">
               <p className="text-xs font-extrabold">Transfer setup</p>
               <p className="text-[11px] font-bold" style={{ color: 'var(--muted)' }}>STEP {step + 1} OF 3</p>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              {steps.map((label, index) => <div key={label}>
-                <div className="mb-2 h-1.5 overflow-hidden rounded-full" style={{ background: index <= step ? 'var(--accent)' : 'var(--surface-muted)' }}/>
-                <p className="text-[10px] font-bold sm:text-xs" style={{ color: index === step ? 'var(--text)' : 'var(--muted)' }}>{index + 1}. {label}</p>
-              </div>)}
+              {steps.map((label, index) => (
+                <button key={label} type="button" onClick={() => setStep(index)} className="ss-pill flex flex-col gap-2 rounded-xl px-1 py-2 transition active:scale-[.96]" aria-label={`Jump to step ${index + 1}: ${label}`} aria-current={step === index ? 'step' : undefined}>
+                  <div className="h-1.5 overflow-hidden rounded-full" style={{ background: index <= step ? 'var(--accent)' : 'var(--surface-muted)' }} />
+                  <p className="text-[10px] font-bold sm:text-xs" style={{ color: index === step ? 'var(--text)' : 'var(--muted)' }}>{index + 1}. {label}</p>
+                </button>
+              ))}
             </div>
           </div>
 
@@ -189,7 +191,7 @@ const SendMoney = () => {
               </div>
               {quoteError && <p role="alert" className="rounded-xl bg-red-50 p-3 text-xs text-red-700">{quoteError}</p>}
               {quoting && <p className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--muted)' }}><LoaderCircle size={14} className="animate-spin"/> Getting your quote…</p>}
-              {quote && <div className="rounded-2xl p-4" style={{ background: 'var(--accent-soft)', border: '1px solid color-mix(in srgb,var(--accent) 45%,transparent)' }}>
+              {quote && <div className="ss-enter rounded-2xl p-4" style={{ background: 'var(--accent-soft)', border: '1px solid color-mix(in srgb,var(--accent) 45%,transparent)' }}>
                 <p className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: 'var(--accent-strong)' }}>Recipient receives</p>
                 <p className="mt-1 text-2xl font-black tracking-tight">{quote.receive_amount} <span className="text-sm">{quote.receive_currency}</span></p>
                 <p className="mt-1 text-[11px]" style={{ color: 'var(--muted)' }}>Quote from the SwiftSend transfer service</p>
@@ -232,14 +234,14 @@ const SendMoney = () => {
             </>}
 
             <div className="flex gap-2 border-t pt-4" style={{ borderColor: 'var(--border)' }}>
-              {step > 0 && <button type="button" onClick={() => { setError(''); setStep((current) => current - 1); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border px-4 text-sm font-bold" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}><ArrowLeft size={16}/> Back</button>}
-              {step < 2 ? <button type="button" disabled={!canContinue} onClick={() => { setError(''); setStep((current) => current + 1); }} className="ss-primary min-h-12 flex-1 disabled:cursor-not-allowed disabled:opacity-45">Continue <ArrowRight size={17}/></button> : <button type="button" disabled={submitting || !quote} onClick={submit} className="ss-primary min-h-12 flex-1 disabled:cursor-not-allowed disabled:opacity-45">{submitting ? <><LoaderCircle size={17} className="animate-spin"/> Creating transfer…</> : <>Create transfer <Check size={17}/></>}</button>}
+              {step > 0 && <button type="button" onClick={() => { setError(''); setStep((current) => current - 1); }} className="ss-press inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border px-4 text-sm font-bold transition active:scale-[.98]" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}><ArrowLeft size={16}/> Back</button>}
+              {step < 2 ? <button type="button" disabled={!canContinue} onClick={() => { setError(''); setStep((current) => current + 1); }} className="ss-press ss-primary min-h-12 flex-1 active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-45">Continue <ArrowRight size={17}/></button> : <button type="button" disabled={submitting || !quote} onClick={submit} className="ss-press ss-primary min-h-12 flex-1 active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-45">{submitting ? <><LoaderCircle size={17} className="animate-spin"/> Creating transfer…</> : <>Create transfer <Check size={17}/></>}</button>}
             </div>
           </div>
         </section>
 
         <aside className="space-y-4">
-          <section className="ss-surface rounded-[22px] p-4 sm:p-5">
+          <section className="ss-enter ss-surface rounded-[22px] p-4 sm:p-5">
             <div className="flex items-center justify-between"><h3 className="text-sm font-extrabold">Your quote</h3>{quoting&&<LoaderCircle size={15} className="animate-spin" style={{ color: 'var(--accent-strong)' }}/>}</div>
             {quote ? <div className="mt-4 space-y-3">
               <div className="flex items-center justify-between gap-3"><span className="text-xs" style={{ color: 'var(--muted)' }}>You send</span><b className="text-sm">{quote.send_amount} {quote.send_currency}</b></div>

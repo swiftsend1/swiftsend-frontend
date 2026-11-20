@@ -1,21 +1,18 @@
 import PropTypes from 'prop-types';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  ArrowDownLeft,
   ArrowRight,
   ArrowUpRight,
-  BadgeCheck,
-  Banknote,
-  Building2,
-  CheckCircle2,
+  Check,
   ChevronDown,
+  CircleDollarSign,
+  Clock3,
   Globe2,
-  Landmark,
   LockKeyhole,
-  PhoneCall,
+  Send,
   ShieldCheck,
-  Smartphone,
-  Timer,
   Wallet,
 } from 'lucide-react';
 
@@ -26,11 +23,12 @@ const corridors = [
   { from: 'EUR', to: 'NGN', flag: '🇳🇬', country: 'Nigeria', rate: 1624.5, fee: 3.49 },
 ];
 
-const partners = ['Safaricom', 'MTN MoMo', 'Equity Bank', 'KCB Group', 'Airtel Money', 'Flutterwave'];
-
-const heroImage = 'https://images.pexels.com/photos/7534791/pexels-photo-7534791.jpeg?auto=compress&cs=tinysrgb&w=1600';
-const featureImgA = 'https://images.pexels.com/photos/37594379/pexels-photo-37594379.jpeg?auto=compress&cs=tinysrgb&w=1200';
-const featureImgB = 'https://images.pexels.com/photos/6969802/pexels-photo-6969802.jpeg?auto=compress&cs=tinysrgb&w=1200';
+const rates = [
+  { pair: 'USD / KES', value: '129.42', change: '+0.18%', up: true },
+  { pair: 'USD / UGX', value: '3,785.10', change: '+0.06%', up: true },
+  { pair: 'GBP / KES', value: '165.08', change: '-0.12%', up: false },
+  { pair: 'EUR / NGN', value: '1,624.50', change: '+0.21%', up: true },
+];
 
 const formatMoney = (value, max = 2) =>
   new Intl.NumberFormat('en-US', { maximumFractionDigits: max }).format(Number.isFinite(value) ? value : 0);
@@ -39,325 +37,152 @@ const Home = () => {
   const [amount, setAmount] = useState('1000');
   const [corridorIndex, setCorridorIndex] = useState(0);
   const [open, setOpen] = useState(false);
-  const [statsVisible, setStatsVisible] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setStatsVisible(true), 150);
-    return () => clearTimeout(t);
-  }, []);
-
   const corridor = corridors[corridorIndex];
   const amountNumber = Number(String(amount).replace(/,/g, '')) || 0;
   const received = useMemo(() => amountNumber * corridor.rate, [amountNumber, corridor.rate]);
-  const totalCost = useMemo(() => amountNumber + (amountNumber > 0 ? corridor.fee : 0), [amountNumber, corridor.fee]);
+  const total = useMemo(() => amountNumber + (amountNumber ? corridor.fee : 0), [amountNumber, corridor.fee]);
 
   return (
-    <div className="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      {/* (1) Hero */}
-      <section className="relative overflow-hidden border-b border-slate-200/70">
-        <div className="absolute inset-0">
-          <img src={heroImage} alt="" className="h-full w-full object-cover" loading="eager" />
-          <div className="absolute inset-0 bg-stellar-black/65" />
-          <div className="absolute inset-0 bg-gradient-to-r from-stellar-black/95 via-stellar-black/85 to-amber-950/35" />
+    <div className="bg-[#f5f5f2] text-[#161616]">
+      <section className="relative overflow-hidden px-3 pb-10 pt-6 sm:px-6 sm:pb-20 sm:pt-12 lg:px-8">
+        <div className="pointer-events-none absolute inset-y-0 right-0 block w-full overflow-hidden lg:w-[58%]">
+          <div className="absolute inset-0 bg-cover bg-center opacity-[.48] sm:opacity-[.54]" style={{ backgroundImage: "url('https://images.pexels.com/photos/6969933/pexels-photo-6969933.jpeg?auto=compress&cs=tinysrgb&w=1600'), url('/swiftsend-hero.svg')" }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f5f2]/90 via-[#f5f5f2]/45 to-[#f5f5f2]/15 lg:bg-gradient-to-r lg:from-[#f5f5f2] lg:via-[#f5f5f2]/45 lg:to-transparent" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:px-8 lg:pb-20 lg:pt-20">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
-            <div className="text-center lg:text-left">
-              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-amber-100 shadow-sm backdrop-blur sm:text-xs">
-                <BadgeCheck size={14} className="shrink-0 text-stellar-yellow" /> <span className="truncate sm:whitespace-normal">SwiftSend — Connecting Africa to the World</span>
+        <div className="relative z-10 mx-auto max-w-[1320px]">
+          <div className="grid min-w-0 items-center gap-9 lg:grid-cols-[.82fr_1.18fr] lg:gap-20">
+            <div className="min-w-0 max-w-xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#deded8] bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#74746e] shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#c59620]" /> SwiftSend
+              </span>
+              <h1 className="mt-6 text-[clamp(2.75rem,13vw,4.5rem)] font-black leading-[.92] tracking-[-.07em]">Money, <span className="text-[#b28214]">moving.</span></h1>
+              <p className="mt-5 max-w-sm text-base leading-7 text-[#75756f]">Fast, simple transfers across Africa and the world.</p>
+              <div className="mt-7 grid w-full gap-3 sm:flex sm:w-auto">
+                <Link to="/send" className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-black/10 transition hover:-translate-y-0.5 hover:bg-[#302f2b] sm:w-auto">Send money <ArrowUpRight size={16} className="text-[#e3bb49]" /></Link>
+                <Link to="/track" className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-[#d8d8d2] bg-white px-5 py-3.5 text-sm font-bold text-[#161616] transition hover:-translate-y-0.5 hover:bg-[#fbfbf9] sm:w-auto">Track a transfer <ArrowRight size={16} /></Link>
               </div>
-              <h1 className="mt-5 text-[2rem] font-extrabold leading-[1.08] tracking-[-0.03em] text-white sm:mt-6 sm:text-5xl lg:text-6xl">
-                Connecting Africa to the world, one transfer at a time.
-              </h1>
-              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:mt-5 sm:text-lg sm:leading-8 lg:mx-0">
-                SwiftSend is a global remittance platform built to connect Africa with the world — starting in Kenya, expanding across East Africa, and ultimately reaching the rest of the world. We make sending and receiving money across borders faster, simpler, more affordable, and more transparent through modern payment technologies, Stellar blockchain infrastructure, and accessible channels like web and USSD.
-              </p>
-              <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row lg:justify-start">
-                <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-6 py-3.5 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/20 transition hover:-translate-y-0.5 hover:bg-yellow-300 sm:w-auto">
-                  Get Started <ArrowUpRight size={17} />
-                </Link>
-                <Link to="/help" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 sm:w-auto">
-                  Learn more <ArrowRight size={17} />
-                </Link>
-              </div>
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-slate-200 lg:justify-start">
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-stellar-yellow" /> Fast & transparent transfers</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-stellar-yellow" /> Web & USSD access</span>
-                <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-stellar-yellow" /> Kenya to the world, on Stellar-inspired rails</span>
-              </div>
+              <div className="mt-8 flex items-center gap-3 text-xs font-semibold text-[#888881]"><span className="grid h-7 w-7 place-items-center rounded-full bg-[#e7f1e6] text-[#498b50]"><ShieldCheck size={14} /></span>Secure by design <span className="text-[#c9c9c3]">·</span> Clear by default</div>
             </div>
 
-            {/* Indicative corridor preview widget */}
-            <div className="w-full">
-              <div className="rounded-3xl border border-white/20 bg-white/95 p-4 shadow-[0_30px_80px_-30px_rgba(2,6,23,.6)] backdrop-blur sm:p-6">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
-                <div className="flex-1">
-                  <label htmlFor="hero-send-amount" className="block text-xs font-bold uppercase tracking-wider text-slate-500">You send</label>
-                  <div className="mt-2 flex items-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-stellar-teal focus-within:bg-white focus-within:ring-4 focus-within:ring-stellar-teal/20">
-                    <span className="mr-2 text-sm font-bold text-slate-500">{corridor.from}</span>
-                    <input
-                      id="hero-send-amount"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-                      inputMode="decimal"
-                      className="w-full min-w-0 bg-transparent text-xl font-extrabold tracking-tight text-stellar-black outline-none sm:text-2xl"
-                      aria-label="Amount to send"
-                    />
-                  </div>
-                </div>
-                <div className="relative flex-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Recipient gets</label>
-                  <div className="mt-2 rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                      <div className="min-w-0">
-                        <p className="break-words text-xl font-extrabold tracking-tight text-stellar-black sm:text-2xl">{formatMoney(received)} <span className="text-base font-bold text-slate-600">{corridor.to}</span></p>
-                        <p className="mt-1 text-xs leading-5 text-slate-600">Illustrative rate: 1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p>
-                      </div>
-                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-white px-3 py-2.5 text-sm font-semibold text-stellar-black shadow-sm hover:bg-amber-50 sm:w-auto sm:shrink-0" aria-expanded={open} aria-label="Select corridor">
-                        <span>{corridor.flag}</span> <span className="truncate">{corridor.country}</span> <ChevronDown size={15} className="shrink-0" />
-                      </button>
-                    </div>
-                    {open && (
-                      <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-20 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl sm:left-auto sm:min-w-[240px]">
-                        {corridors.map((c, i) => (
-                          <button key={`${c.from}-${c.to}-${i}`} type="button" onClick={() => { setCorridorIndex(i); setOpen(false); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-slate-50">
-                            <span>{c.flag}</span>
-                            <span className="font-semibold text-slate-800">{c.country}</span>
-                            <span className="ml-auto text-xs text-slate-500">{c.from}→{c.to}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="lg:w-56">
-                  <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                    <p className="text-xs font-semibold text-slate-500">Estimated total</p>
-                    <p className="mt-1 text-xl font-extrabold text-stellar-black">{formatMoney(totalCost)} {corridor.from}</p>
-                    <p className="text-xs text-slate-500">Includes fee {formatMoney(corridor.fee)} {corridor.from}</p>
-                  </div>
-                  <Link to="/send" className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-black px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-slate-900/20 ring-1 ring-stellar-yellow/30 hover:bg-swift-navy">
-                    Send now <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-              <div className="mt-4 flex flex-col gap-2 text-xs font-medium text-slate-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-amber-700" /> Secure API workflows</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-amber-700" /> Transfer status visibility</span>
-                <span className="inline-flex items-center gap-1.5"><BadgeCheck size={14} className="text-amber-700" /> Fees and FX shown before confirmation</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-          {/* Monochrome partner logo strip */}
-          <div className="mt-10 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur sm:mt-12 sm:p-5">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-slate-200 sm:text-xs sm:tracking-[0.2em]">Potential payout and payment rails — subject to partner activation</p>
-            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6">
-              {partners.map((p) => (
-                <div key={p} className="flex h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-2 text-center text-xs font-bold tracking-wide text-slate-200 transition hover:bg-white/20 sm:h-14 sm:px-3 sm:text-sm">
-                  {p}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* (3) 3-column card grid for core features */}
-      <section className="bg-slate-50 py-14 sm:py-20 dark:bg-slate-900/40">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">Core rails</p>
-            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">Accessible channels for everyone</h2>
-            <p className="mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-300">Bridging people, families, and businesses with reliable payout options across web, mobile money, bank rails, and USSD.</p>
-          </div>
-          <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
-            <FeatureCard
-              icon={<PhoneCall className="h-6 w-6" />}
-              title="USSD Offline Transfers"
-              text="Enable send, confirm, and track flows on feature phones via USSD sessions — no smartphone or data required."
-              bullets={['Session-based secure menus', 'Low-bandwidth reach', 'Agent & consumer friendly']}
-            />
-            <FeatureCard
-              icon={<Smartphone className="h-6 w-6" />}
-              title="Mobile Money"
-              text="Instant collections and disbursements to leading mobile money wallets with real-time status and reconciliation hooks."
-              bullets={['Popular wallet networks', 'Fast settlement visibility', 'Transparent fees & FX']}
-            />
-            <FeatureCard
-              icon={<Landmark className="h-6 w-6" />}
-              title="Bank Payouts"
-              text="Direct-to-bank transfers for businesses and recipients, with compliance checks and auditable transaction trails."
-              bullets={['Local & regional banks', 'Reference-rich payouts', 'Operational controls']}
+            <QuoteCard
+              amount={amount}
+              setAmount={setAmount}
+              corridor={corridor}
+              setCorridorIndex={setCorridorIndex}
+              open={open}
+              setOpen={setOpen}
+              received={received}
+              total={total}
             />
           </div>
+
+          <div className="mt-10 grid grid-cols-2 gap-2 sm:mt-14 sm:grid-cols-4 lg:mt-20">
+            <QuickAction icon={<Send />} label="Send" to="/send" />
+            <QuickAction icon={<ArrowDownLeft />} label="Receive" to="/receive" />
+            <QuickAction icon={<Clock3 />} label="Track" to="/track" />
+            <QuickAction icon={<Wallet />} label="Wallet" to="/wallet" />
+          </div>
+          <RatesTicker />
         </div>
       </section>
 
-      {/* (4) Animated statistics strip */}
-      <section className="border-y border-slate-200 bg-white py-10 sm:py-12 dark:border-slate-800 dark:bg-slate-950">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 sm:gap-6 sm:px-6 md:grid-cols-4 lg:px-8">
-          <Stat value="Kenya + East Africa" label="Initial market focus" sub="Corridors expanding over time" visible={statsVisible} delay="0ms" />
-          <Stat value="Quote first" label="Transparent pricing" sub="before transfer creation" visible={statsVisible} delay="100ms" />
-          <Stat value="Status updates" label="Transfer visibility" sub="recorded at each stage" visible={statsVisible} delay="200ms" />
-          <Stat value="Multi-channel" label="Access" sub="Web and planned USSD" visible={statsVisible} delay="300ms" />
+      <section className="hidden border-y border-[#e1e1dc] bg-white px-4 py-14 sm:block sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-[1320px]">
+          <div className="flex items-end justify-between gap-6">
+            <div><p className="text-xs font-black uppercase tracking-[0.16em] text-[#b28214]">What you can do</p><h2 className="mt-2 text-3xl font-black tracking-[-.055em] sm:text-5xl">Your money, in motion.</h2></div>
+            <span className="hidden rounded-full bg-[#f5f5f2] px-3 py-1.5 text-xs font-bold text-[#8b8b84] sm:inline-flex">Built for everyday transfers</span>
+          </div>
+          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <SolutionCard icon={<Send />} label="Send money" detail="To wallets and banks" to="/send" />
+            <SolutionCard icon={<ArrowDownLeft />} label="Receive money" detail="Share your details" to="/receive" />
+            <SolutionCard icon={<Globe2 />} label="Exchange rates" detail="See the real numbers" to="/rates" />
+            <SolutionCard icon={<LockKeyhole />} label="Stay protected" detail="Secure every step" to="/help" dark />
+          </div>
         </div>
       </section>
 
-      {/* (5) Alternating 2-column feature sections with UI illustrations */}
-      <section className="overflow-x-clip bg-white py-14 sm:py-20 dark:bg-slate-950">
-        <div className="mx-auto max-w-7xl space-y-14 px-4 sm:space-y-20 sm:px-6 lg:space-y-28 lg:px-8">
-          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">For people, families & businesses</p>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">A world where sending money across borders feels as easy as sending a message.</h3>
-              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Starting in Kenya and expanding across East Africa to the rest of the world, SwiftSend makes cross-border transfers faster, simpler, more affordable, and more transparent — from app to USSD.</p>
-              <ul className="mt-6 space-y-3 text-slate-700 dark:text-slate-200">
-                {['Quote-driven pricing where enabled', 'Accessible web and USSD journeys', 'Simple, transparent tracking from start to finish'].map((t) => (
-                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" /> <span className="text-sm sm:text-base">{t}</span></li>
-                ))}
-              </ul>
-              <Link to="/send" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-700Dark sm:mt-8">Explore send flow <ArrowRight size={16} /></Link>
-            </div>
-            <div className="relative">
-              <div className="absolute -inset-2 rounded-[2rem] bg-sky-100/60 blur-2xl sm:-inset-4 dark:bg-sky-900/20" />
-              <img src={featureImgA} alt="Customer completing a secure digital payment experience" className="relative aspect-[4/3] w-full rounded-3xl border border-slate-200 object-cover shadow-2xl shadow-slate-900/10" loading="lazy" />
-              <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:absolute sm:-bottom-5 sm:-left-4 sm:mt-0 dark:border-slate-700 dark:bg-slate-900">
-                <p className="text-xs font-semibold text-slate-500">Live transfer status</p>
-                <p className="mt-1 text-sm font-bold text-stellar-black dark:text-white">Payout pending → Completed</p>
-                <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-green-600"><BadgeCheck size={14} /> Evidence trail recorded</p>
-              </div>
-            </div>
+      <section className="hidden px-4 py-14 sm:block sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto grid max-w-[1320px] gap-4 lg:grid-cols-[.8fr_1.2fr]">
+          <div className="rounded-[1.75rem] bg-[#161616] p-6 text-white sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#e3bb49]">Transfer status</p>
+            <h2 className="mt-3 max-w-sm text-3xl font-black leading-tight tracking-[-.055em] sm:text-4xl">Know where your money is.</h2>
+            <p className="mt-4 max-w-xs text-sm leading-6 text-white/50">Every transfer has a clear next step.</p>
+            <Link to="/track" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-bold text-[#161616] transition hover:bg-[#f0eee7]">Track transfer <ArrowRight size={15} /></Link>
+            <div className="mt-12 flex items-center gap-3 text-xs font-semibold text-white/50"><span className="grid h-8 w-8 place-items-center rounded-xl bg-white/10 text-[#e3bb49]"><Clock3 size={15} /></span> Live updates</div>
           </div>
 
-          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-            <div className="order-2 lg:order-1 relative">
-              <div className="absolute -inset-2 rounded-[2rem] bg-indigo-100/60 blur-2xl sm:-inset-4 dark:bg-indigo-900/20" />
-              <img src={featureImgB} alt="Business user managing cross-border payments securely" className="relative aspect-[4/3] w-full rounded-3xl border border-slate-200 object-cover shadow-2xl shadow-slate-900/10" loading="lazy" />
-              <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:absolute sm:-right-3 sm:-top-4 sm:mt-0 dark:border-slate-700 dark:bg-slate-900">
-                <p className="text-xs font-semibold text-slate-500">Business controls</p>
-                <p className="mt-1 text-sm font-bold text-stellar-black dark:text-white">Corridors, fees & reconciliation</p>
-                <div className="mt-2 flex flex-wrap gap-2 text-[11px] font-semibold">
-                  <span className="rounded-full bg-stellar-offwhite px-2 py-1 text-stellar-black ring-1 ring-stellar-yellow/40">FX rules</span>
-                  <span className="rounded-full bg-slate-100 px-2 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-200">Audit logs</span>
-                </div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">Our mission</p>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">Making global money transfers accessible to everyone, starting with Africa.</h3>
-              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">By combining modern payment technologies, Stellar blockchain infrastructure, and accessible channels such as web and USSD, SwiftSend bridges the gap between people, families, and businesses regardless of where they are in the world.</p>
-              <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
-                {[
-                  { icon: <Building2 className="h-5 w-5" />, title: 'B2B collections & payouts', desc: 'Support partners, merchants, and enterprise disbursements.' },
-                  { icon: <Wallet className="h-5 w-5" />, title: 'Multi-rail orchestration', desc: 'Route across wallet and bank channels by corridor.' },
-                  { icon: <Banknote className="h-5 w-5" />, title: 'Transparent pricing', desc: 'Quote-driven fees and FX visibility for users.' },
-                  { icon: <ShieldCheck className="h-5 w-5" />, title: 'Operational safeguards', desc: 'Controls, evidence hooks, and status integrity.' },
-                ].map((f) => (
-                  <div key={f.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-                    <div className="flex items-center gap-2 text-amber-700">{f.icon}<span className="text-sm font-bold text-stellar-black dark:text-white">{f.title}</span></div>
-                    <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{f.desc}</p>
-                  </div>
-                ))}
+          <div className="rounded-[1.75rem] border border-[#dfdfda] bg-white p-6 sm:p-8">
+            <div className="flex items-center justify-between border-b border-[#ededeb] pb-5"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#999991]">Recent transfer</p><p className="mt-1 font-black text-[#161616]">USD → KES</p></div><span className="rounded-full bg-[#e7f1e6] px-3 py-1.5 text-xs font-bold text-[#498b50]">On track</span></div>
+            <div className="grid gap-8 pt-6 md:grid-cols-[.8fr_1.2fr] md:items-center">
+              <div><p className="text-4xl font-black tracking-[-.06em] text-[#161616]">$1,000</p><p className="mt-1 text-sm text-[#85857e]">To Kenya · #SS-2048</p><div className="mt-5 flex items-center gap-2 text-xs font-bold text-[#498b50]"><Check size={14} /> Recipient gets {formatMoney(129420)} KES</div></div>
+              <div className="space-y-4">
+                <StatusRow title="Transfer created" time="10:42 AM" done />
+                <StatusRow title="Funds secured" time="10:43 AM" done />
+                <StatusRow title="Payout to Kenya" time="In progress" active />
+                <StatusRow title="Recipient paid" time="Next" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* (6) Dark-themed security and compliance banner */}
-      <section className="bg-stellar-black py-12 text-white sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-10">
-            <div>
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-sky-200"><ShieldCheck size={14} /> Security & compliance</p>
-              <h3 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-4xl">Built with trust, controls, and auditability at the core</h3>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200/90 sm:text-lg sm:leading-8">Protect customer funds and data with layered safeguards, monitored workflows, and compliance-aware processes across every transfer stage.</p>
-              <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4">
-                {[
-                  { icon: <LockKeyhole className="h-5 w-5" />, title: 'Encryption & access controls', desc: 'Secure data handling, authenticated APIs, and least-privilege operations.' },
-                  { icon: <CheckCircle2 className="h-5 w-5" />, title: 'KYC/AML-ready workflows', desc: 'Designed to integrate verification and screening controls by corridor.' },
-                  { icon: <Globe2 className="h-5 w-5" />, title: 'Regulatory-aware corridors', desc: 'Configurable rules and partner integrations for local requirements.' },
-                  { icon: <BadgeCheck className="h-5 w-5" />, title: 'Audit trails & evidence', desc: 'Traceable events, references, and status changes for oversight.' },
-                ].map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-white/15 bg-white/5 p-4 backdrop-blur">
-                    <div className="flex items-center gap-2 text-stellar-yellow">{item.icon}<span className="font-bold text-white">{item.title}</span></div>
-                    <p className="mt-2 text-sm leading-6 text-slate-200/85">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-3xl border border-white/15 bg-gradient-to-br from-white/10 to-white/5 p-6 sm:p-8">
-              <h4 className="text-xl font-bold">Compliance posture</h4>
-              <p className="mt-2 text-sm text-slate-200/85">Operational transparency for partners, auditors, and customers.</p>
-              <div className="mt-6 space-y-3">
-                {['End-to-end transaction lifecycle monitoring', 'Role-based access for admin operations', 'Idempotent flows and reconciliation-ready references', 'Configurable webhook and integration safeguards'].map((row) => (
-                  <div key={row} className="flex items-start gap-3 rounded-xl border border-white/10 bg-swift-navy px-4 py-3">
-                    <ShieldCheck className="mt-0.5 h-4 w-4 text-stellar-yellow" />
-                    <span className="text-sm text-slate-100">{row}</span>
-                  </div>
-                ))}
-              </div>
-              <Link to="/register" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-stellar-yellow px-5 py-3 text-sm font-bold text-stellar-black hover:bg-yellow-300">
-                Start building with SwiftSend <ArrowUpRight size={16} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-white py-12 sm:py-16 dark:bg-slate-950">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-indigo-50 px-5 py-8 text-center sm:px-10 sm:py-10 lg:px-16">
-            <h3 className="text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl dark:text-stellar-black">Join us in connecting Africa to the world.</h3>
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">Our vision: a world where sending money across borders feels as easy as sending a message. Start with SwiftSend today.</p>
-            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
-              <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-6 py-3.5 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/20 hover:bg-yellow-300 sm:w-auto">Get Started <ArrowUpRight size={16} /></Link>
-              <Link to="/rates" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-stellar-black hover:bg-slate-50 sm:w-auto">View pricing <ArrowRight size={16} /></Link>
-            </div>
-          </div>
+      <section className="hidden px-4 pb-14 sm:block sm:px-6 sm:pb-20 lg:px-8">
+        <div className="mx-auto flex max-w-[1320px] flex-col items-start justify-between gap-6 rounded-[1.75rem] bg-[#e9e3ce] px-6 py-8 sm:flex-row sm:items-center sm:px-10 sm:py-10">
+          <div><p className="text-xs font-black uppercase tracking-[0.16em] text-[#a47712]">Ready when you are</p><h2 className="mt-2 text-2xl font-black tracking-[-.045em] sm:text-3xl">Make your next move.</h2></div>
+          <Link to="/register" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#302f2b] sm:w-auto">Get started <ArrowUpRight size={16} className="text-[#e3bb49]" /></Link>
         </div>
       </section>
     </div>
   );
 };
 
-const FeatureCard = ({ icon, title, text, bullets }) => (
-  <article className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900">
-    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-amber-700 dark:bg-slate-800 dark:text-stellar-yellow">{icon}</div>
-    <h3 className="mt-5 text-xl font-bold tracking-tight text-stellar-black dark:text-white">{title}</h3>
-    <p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{text}</p>
-    <ul className="mt-4 space-y-2">
-      {bullets.map((b) => (
-        <li key={b} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"><CheckCircle2 className="mt-0.5 h-4 w-4 text-amber-700" /> {b}</li>
-      ))}
-    </ul>
-  </article>
-);
-
-const Stat = ({ value, label, sub, visible, delay }) => (
-  <div className={`rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-center sm:p-5 dark:border-slate-800 dark:bg-slate-900/60 ${visible ? 'animate-count' : 'opacity-0'}`} style={{ animationDelay: delay }}>
-    <p className="text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl dark:text-stellar-yellow">{value}</p>
-    <p className="mt-1 text-xs font-bold leading-5 text-slate-800 sm:text-sm dark:text-slate-100">{label}</p>
-    <p className="mt-1 text-[11px] leading-4 text-slate-500 sm:text-xs dark:text-slate-400">{sub}</p>
+const QuoteCard = ({ amount, setAmount, corridor, setCorridorIndex, open, setOpen, received, total }) => (
+  <div className="relative mx-auto min-w-0 w-full max-w-[570px] lg:mr-0">
+    <div className="absolute -inset-4 rounded-[2.5rem] bg-[#e6d8a7]/35 blur-2xl" />
+    <div className="relative min-w-0 rounded-[1.5rem] border border-[#deded8] bg-white p-3 shadow-[0_25px_70px_-30px_rgba(22,22,22,.3)] sm:rounded-[1.75rem] sm:p-6">
+      <div className="flex items-center justify-between"><div><p className="text-xs font-black uppercase tracking-[0.16em] text-[#999991]">Quick quote</p><h2 className="mt-1 text-xl font-black tracking-[-.03em]">Send money</h2></div><span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#f5edcf] text-[#ae7d0d]"><CircleDollarSign size={19} /></span></div>
+      <div className="mt-5 grid min-w-0 gap-3 sm:mt-6 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
+        <MoneyField label="You send" value={amount} currency={corridor.from} onChange={(value) => setAmount(value.replace(/[^0-9.]/g, ''))} inputId="hero-send-amount" />
+        <div className="hidden h-10 w-10 place-items-center rounded-full bg-[#f5f5f2] text-[#9a9a92] sm:grid"><ArrowRight size={16} /></div>
+        <div className="rounded-2xl border border-[#e8d799] bg-[#fff9e7] p-4"><p className="text-xs font-bold text-[#999991]">Recipient gets</p><p className="mt-2 text-2xl font-black tracking-[-.05em]">{formatMoney(received)} <span className="text-sm tracking-normal text-[#77776f]">{corridor.to}</span></p><p className="mt-1 text-[11px] text-[#888880]">1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p></div>
+      </div>
+      <div className="relative mt-3 flex items-center justify-between rounded-2xl bg-[#f5f5f2] px-4 py-3"><span className="text-xs font-bold text-[#85857e]">Payout country</span><button type="button" onClick={() => setOpen((value) => !value)} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-black shadow-sm" aria-expanded={open}><span>{corridor.flag}</span>{corridor.country}<ChevronDown size={13} /></button>{open && <div className="absolute left-3 right-3 top-[calc(100%+6px)] z-20 rounded-2xl border border-[#dfdfda] bg-white p-1.5 shadow-xl">{corridors.map((item, index) => <button key={`${item.from}-${item.to}-${index}`} type="button" onClick={() => { setCorridorIndex(index); setOpen(false); }} className="flex w-full items-center gap-2 rounded-xl px-3 py-3 text-left text-sm hover:bg-[#f5f5f2]"><span>{item.flag}</span><span className="font-bold">{item.country}</span><span className="ml-auto text-xs text-[#999991]">{item.from} → {item.to}</span></button>)}</div>}</div>
+      <div className="mt-3 flex items-center justify-between border-t border-[#ededeb] pt-4"><span className="text-xs font-bold text-[#999991]">Total including fee</span><span className="text-sm font-black">{formatMoney(total)} {corridor.from}</span></div>
+      <Link to="/send" className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#302f2b]">Continue <ArrowRight size={16} className="text-[#e3bb49]" /></Link>
+      <div className="mt-4 flex items-center justify-center gap-2 text-[11px] font-bold text-[#999991]"><ShieldCheck size={14} className="text-[#ae7d0d]" /> Rate shown before you send</div>
+    </div>
   </div>
 );
 
-FeatureCard.propTypes = {
-  icon: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  bullets: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+const MoneyField = ({ label, value, currency, onChange, inputId }) => <div className="min-w-0 rounded-2xl border border-[#dfdfda] bg-[#fbfbf9] p-3 focus-within:border-[#c79b2b] focus-within:ring-4 focus-within:ring-[#e9c65f]/20 sm:p-4"><label htmlFor={inputId} className="block text-xs font-bold text-[#999991]">{label}</label><div className="mt-2 flex min-w-0 items-center gap-2 sm:gap-3"><input id={inputId} value={value} onChange={(event) => onChange(event.target.value)} inputMode="decimal" className="min-w-0 flex-1 bg-transparent text-2xl font-black tracking-[-.05em] outline-none" aria-label={label} /><span className="shrink-0 rounded-full bg-white px-2.5 py-1.5 text-xs font-black shadow-sm sm:px-3">{currency}</span></div></div>;
 
-Stat.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired,
-  sub: PropTypes.string.isRequired,
-  visible: PropTypes.bool.isRequired,
-  delay: PropTypes.string.isRequired,
-};
+const QuickAction = ({ icon, label, to }) => <Link to={to} className="group flex items-center gap-3 rounded-2xl border border-[#deded8] bg-white px-4 py-4 transition hover:-translate-y-0.5 hover:border-[#d4c37e] hover:shadow-lg"><span className="grid h-9 w-9 place-items-center rounded-xl bg-[#f5edcf] text-[#ae7d0d] transition group-hover:bg-[#e9d994]">{icon}</span><span className="text-sm font-black">{label}</span><ArrowRight size={15} className="ml-auto text-[#aaa9a1] transition group-hover:translate-x-0.5 group-hover:text-[#161616]" /></Link>;
+
+const RatesTicker = () => (
+  <div className="mt-4 overflow-hidden rounded-2xl border border-[#deded8] bg-white" aria-label="Indicative exchange rates">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#ededeb] px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#999991]"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#4e9b59]" /> Indicative rates <span className="hidden font-semibold normal-case tracking-normal text-[#b3b3ab] sm:inline">moving with the market</span></div>
+    <div className="ss-rate-viewport">
+      <div className="ss-rate-track flex w-max">
+        {[...rates, ...rates].map((rate, index) => (
+          <div key={`${rate.pair}-${index}`} className="flex min-w-[190px] items-center gap-3 border-r border-[#ededeb] px-5 py-3.5">
+            <span className="text-xs font-black text-[#44443e]">{rate.pair}</span>
+            <span className="text-sm font-black text-[#161616]">{rate.value}</span>
+            <span className={`text-[11px] font-bold ${rate.up ? 'text-[#4e9b59]' : 'text-[#bd6c55]'}`}>{rate.change}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const SolutionCard = ({ icon, label, detail, to, dark = false }) => <Link to={to} className={`group rounded-[1.5rem] border p-5 transition hover:-translate-y-1 hover:shadow-xl ${dark ? 'border-[#161616] bg-[#161616] text-white' : 'border-[#e1e1dc] bg-[#f9f9f7]'}`}><div className="flex items-start justify-between"><span className={`grid h-10 w-10 place-items-center rounded-xl ${dark ? 'bg-[#e3bb49] text-[#161616]' : 'bg-[#f5edcf] text-[#ae7d0d]'}`}>{icon}</span><ArrowUpRight size={17} className={dark ? 'text-white/40' : 'text-[#aaa9a1]'} /></div><p className="mt-9 text-base font-black">{label}</p><p className={`mt-1 text-xs font-semibold ${dark ? 'text-white/45' : 'text-[#898981]'}`}>{detail}</p></Link>;
+
+const StatusRow = ({ title, time, done = false, active = false }) => <div className="flex items-center gap-3"><span className={`grid h-7 w-7 place-items-center rounded-full ${done ? 'bg-[#e7f1e6] text-[#498b50]' : active ? 'bg-[#f5edcf] text-[#ae7d0d]' : 'bg-[#f5f5f2] text-[#b0b0a8]'}`}>{done ? <Check size={13} /> : active ? <Clock3 size={13} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}</span><span className={`text-sm font-bold ${done || active ? 'text-[#34342f]' : 'text-[#aaa9a1]'}`}>{title}</span><span className="ml-auto text-xs font-semibold text-[#aaa9a1]">{time}</span></div>;
+
+QuoteCard.propTypes = { amount: PropTypes.string.isRequired, setAmount: PropTypes.func.isRequired, corridor: PropTypes.shape({ from: PropTypes.string, to: PropTypes.string, flag: PropTypes.string, country: PropTypes.string, rate: PropTypes.number, fee: PropTypes.number }).isRequired, setCorridorIndex: PropTypes.func.isRequired, open: PropTypes.bool.isRequired, setOpen: PropTypes.func.isRequired, received: PropTypes.number.isRequired, total: PropTypes.number.isRequired };
+MoneyField.propTypes = { label: PropTypes.string.isRequired, value: PropTypes.string.isRequired, currency: PropTypes.string.isRequired, onChange: PropTypes.func.isRequired, inputId: PropTypes.string.isRequired };
+QuickAction.propTypes = { icon: PropTypes.node.isRequired, label: PropTypes.string.isRequired, to: PropTypes.string.isRequired };
+SolutionCard.propTypes = { icon: PropTypes.node.isRequired, label: PropTypes.string.isRequired, detail: PropTypes.string.isRequired, to: PropTypes.string.isRequired, dark: PropTypes.bool };
+StatusRow.propTypes = { title: PropTypes.string.isRequired, time: PropTypes.string.isRequired, done: PropTypes.bool, active: PropTypes.bool };
 
 export default Home;

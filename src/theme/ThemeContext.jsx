@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ThemeContext } from './themeContext';
 
-const ThemeContext = createContext({ theme: 'light', isDark: false, setTheme: () => {}, toggleTheme: () => {} });
 const STORAGE_KEY = 'swiftsend-theme';
 
 const getInitialTheme = () => {
@@ -33,8 +33,3 @@ export const ThemeProvider = ({ children }) => {
 };
 
 ThemeProvider.propTypes = { children: PropTypes.node.isRequired };
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  return context || { theme: 'light', isDark: false, setTheme: () => {}, toggleTheme: () => {} };
-};

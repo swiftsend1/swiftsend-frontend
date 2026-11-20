@@ -141,7 +141,7 @@ describe("ProtectedRoute", () => {
       <AuthProvider>
         <MemoryRouter initialEntries={["/merchant"]}>
           <Routes>
-            <Route path="/dashboard" element={<div>home page</div>} />
+            <Route path="/" element={<div>home page</div>} />
             <Route element={<ProtectedRoute allowedRoles={["merchant"]} />}>
               <Route path="/merchant" element={<div>merchant page</div>} />
             </Route>

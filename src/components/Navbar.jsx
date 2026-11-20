@@ -21,7 +21,9 @@ const Navbar = () => {
   }, [open]);
 
   const publicLinks = [
-    { to: '/rates', label: 'Pricing' },
+    { to: '/send', label: 'Send money' },
+    { to: '/receive', label: 'Receive money' },
+    { to: '/rates', label: 'Exchange rates' },
     { to: '/help', label: 'Help' },
   ];
 
@@ -47,9 +49,10 @@ const Navbar = () => {
                   <Link key={l.to} to={l.to} className="rounded-lg px-3 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]">{l.label}</Link>
                 ))}
                 {isAuthenticated && (
-                  <Link to="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-muted)]">
-                    <LayoutDashboard size={15} /> Dashboard
-                  </Link>
+                  <>
+                    <Link to="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-muted)]"><LayoutDashboard size={15} /> Overview</Link>
+                    <Link to="/wallet" className="rounded-lg px-3 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]">Wallet</Link>
+                  </>
                 )}
               </div>
               <button
@@ -76,7 +79,7 @@ const Navbar = () => {
             <>
               <Link to="/login" className="rounded-xl px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 sm:px-3 dark:text-slate-200 dark:hover:bg-slate-800">Log in</Link>
               <Link to="/register" className="inline-flex items-center gap-1.5 rounded-xl bg-[#171717] px-3 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-[#e4b638]/50 transition hover:bg-[#29251a] sm:px-4">
-                <span className="hidden xs:inline sm:inline">Get Started</span>
+                <span className="hidden xs:inline sm:inline">Get started</span>
                 <span className="sm:hidden">Start</span>
                 <ArrowUpRight size={15} className="hidden text-[#e4b638] sm:block" />
               </Link>

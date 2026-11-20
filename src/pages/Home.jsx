@@ -57,13 +57,13 @@ const Home = () => {
         <div className="absolute inset-0">
           <img src={heroImage} alt="" className="h-full w-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-stellar-black/65" />
-          <div className="absolute inset-0 bg-gradient-to-r from-stellar-black/95 via-swift-navy/80 to-stellar-teal/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-stellar-black/95 via-stellar-black/85 to-amber-950/35" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:px-8 lg:pb-20 lg:pt-20">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
             <div className="text-center lg:text-left">
-              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-sky-100 shadow-sm backdrop-blur sm:text-xs">
-                <BadgeCheck size={14} className="shrink-0 text-sky-300" /> <span className="truncate sm:whitespace-normal">SwiftSend — Connecting Africa to the World</span>
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-amber-100 shadow-sm backdrop-blur sm:text-xs">
+                <BadgeCheck size={14} className="shrink-0 text-stellar-yellow" /> <span className="truncate sm:whitespace-normal">SwiftSend — Connecting Africa to the World</span>
               </div>
               <h1 className="mt-5 text-[2rem] font-extrabold leading-[1.08] tracking-[-0.03em] text-white sm:mt-6 sm:text-5xl lg:text-6xl">
                 Connecting Africa to the world, one transfer at a time.
@@ -81,12 +81,12 @@ const Home = () => {
               </div>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-slate-200 lg:justify-start">
                 <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-stellar-yellow" /> Fast & transparent transfers</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-stellar-teal" /> Web & USSD access</span>
+                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-stellar-yellow" /> Web & USSD access</span>
                 <span className="inline-flex items-center gap-1.5"><Globe2 size={14} className="text-stellar-yellow" /> Kenya to the world, on Stellar-inspired rails</span>
               </div>
             </div>
 
-            {/* Live remittance exchange rate calculator widget */}
+            {/* Indicative corridor preview widget */}
             <div className="w-full">
               <div className="rounded-3xl border border-white/20 bg-white/95 p-4 shadow-[0_30px_80px_-30px_rgba(2,6,23,.6)] backdrop-blur sm:p-6">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
@@ -106,13 +106,13 @@ const Home = () => {
                 </div>
                 <div className="relative flex-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Recipient gets</label>
-                  <div className="mt-2 rounded-2xl border border-sky-200 bg-sky-50/70 px-4 py-3">
+                  <div className="mt-2 rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="min-w-0">
                         <p className="break-words text-xl font-extrabold tracking-tight text-stellar-black sm:text-2xl">{formatMoney(received)} <span className="text-base font-bold text-slate-600">{corridor.to}</span></p>
-                        <p className="mt-1 text-xs leading-5 text-slate-600">Live rate: 1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p>
+                        <p className="mt-1 text-xs leading-5 text-slate-600">Illustrative rate: 1 {corridor.from} = {formatMoney(corridor.rate, 4)} {corridor.to}</p>
                       </div>
-                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-white px-3 py-2.5 text-sm font-semibold text-stellar-black shadow-sm hover:bg-sky-50 sm:w-auto sm:shrink-0" aria-expanded={open} aria-label="Select corridor">
+                      <button type="button" onClick={() => setOpen((v) => !v)} className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-white px-3 py-2.5 text-sm font-semibold text-stellar-black shadow-sm hover:bg-amber-50 sm:w-auto sm:shrink-0" aria-expanded={open} aria-label="Select corridor">
                         <span>{corridor.flag}</span> <span className="truncate">{corridor.country}</span> <ChevronDown size={15} className="shrink-0" />
                       </button>
                     </div>
@@ -141,9 +141,9 @@ const Home = () => {
                 </div>
               </div>
               <div className="mt-4 flex flex-col gap-2 text-xs font-medium text-slate-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-swift-blue" /> Bank-grade encryption</span>
-                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-swift-blue" /> Real-time status tracking</span>
-                <span className="inline-flex items-center gap-1.5"><BadgeCheck size={14} className="text-swift-blue" /> No hidden FX markups shown upfront</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck size={14} className="text-amber-700" /> Secure API workflows</span>
+                <span className="inline-flex items-center gap-1.5"><Timer size={14} className="text-amber-700" /> Transfer status visibility</span>
+                <span className="inline-flex items-center gap-1.5"><BadgeCheck size={14} className="text-amber-700" /> Fees and FX shown before confirmation</span>
               </div>
             </div>
           </div>
@@ -151,7 +151,7 @@ const Home = () => {
 
           {/* Monochrome partner logo strip */}
           <div className="mt-10 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur sm:mt-12 sm:p-5">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-slate-200 sm:text-xs sm:tracking-[0.2em]">Powering payouts with trusted partners</p>
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-slate-200 sm:text-xs sm:tracking-[0.2em]">Potential payout and payment rails — subject to partner activation</p>
             <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6">
               {partners.map((p) => (
                 <div key={p} className="flex h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-2 text-center text-xs font-bold tracking-wide text-slate-200 transition hover:bg-white/20 sm:h-14 sm:px-3 sm:text-sm">
@@ -167,7 +167,7 @@ const Home = () => {
       <section className="bg-slate-50 py-14 sm:py-20 dark:bg-slate-900/40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-swift-blue">Core rails</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">Core rails</p>
             <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">Accessible channels for everyone</h2>
             <p className="mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-300">Bridging people, families, and businesses with reliable payout options across web, mobile money, bank rails, and USSD.</p>
           </div>
@@ -197,10 +197,10 @@ const Home = () => {
       {/* (4) Animated statistics strip */}
       <section className="border-y border-slate-200 bg-white py-10 sm:py-12 dark:border-slate-800 dark:bg-slate-950">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 sm:gap-6 sm:px-6 md:grid-cols-4 lg:px-8">
-          <Stat value="35+" label="Supported countries" sub="and growing corridors" visible={statsVisible} delay="0ms" />
-          <Stat value="< 5 min" label="Typical transaction speed" sub="for wallet payouts" visible={statsVisible} delay="100ms" />
-          <Stat value="99.95%" label="Platform reliability" sub="resilient infrastructure" visible={statsVisible} delay="200ms" />
-          <Stat value="24/7" label="Tracking & support" sub="end-to-end visibility" visible={statsVisible} delay="300ms" />
+          <Stat value="Kenya + East Africa" label="Initial market focus" sub="Corridors expanding over time" visible={statsVisible} delay="0ms" />
+          <Stat value="Quote first" label="Transparent pricing" sub="before transfer creation" visible={statsVisible} delay="100ms" />
+          <Stat value="Status updates" label="Transfer visibility" sub="recorded at each stage" visible={statsVisible} delay="200ms" />
+          <Stat value="Multi-channel" label="Access" sub="Web and planned USSD" visible={statsVisible} delay="300ms" />
         </div>
       </section>
 
@@ -209,15 +209,15 @@ const Home = () => {
         <div className="mx-auto max-w-7xl space-y-14 px-4 sm:space-y-20 sm:px-6 lg:space-y-28 lg:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-swift-blue">For people, families & businesses</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">For people, families & businesses</p>
               <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">A world where sending money across borders feels as easy as sending a message.</h3>
               <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">Starting in Kenya and expanding across East Africa to the rest of the world, SwiftSend makes cross-border transfers faster, simpler, more affordable, and more transparent — from app to USSD.</p>
               <ul className="mt-6 space-y-3 text-slate-700 dark:text-slate-200">
-                {['Live FX quotes and upfront pricing', 'Accessible web and USSD journeys', 'Simple, transparent tracking from start to finish'].map((t) => (
-                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-swift-blue" /> <span className="text-sm sm:text-base">{t}</span></li>
+                {['Quote-driven pricing where enabled', 'Accessible web and USSD journeys', 'Simple, transparent tracking from start to finish'].map((t) => (
+                  <li key={t} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" /> <span className="text-sm sm:text-base">{t}</span></li>
                 ))}
               </ul>
-              <Link to="/send" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-swift-blue hover:text-swift-blueDark sm:mt-8">Explore send flow <ArrowRight size={16} /></Link>
+              <Link to="/send" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-700Dark sm:mt-8">Explore send flow <ArrowRight size={16} /></Link>
             </div>
             <div className="relative">
               <div className="absolute -inset-2 rounded-[2rem] bg-sky-100/60 blur-2xl sm:-inset-4 dark:bg-sky-900/20" />
@@ -244,7 +244,7 @@ const Home = () => {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-swift-blue">Our mission</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">Our mission</p>
               <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-4xl dark:text-white">Making global money transfers accessible to everyone, starting with Africa.</h3>
               <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-300">By combining modern payment technologies, Stellar blockchain infrastructure, and accessible channels such as web and USSD, SwiftSend bridges the gap between people, families, and businesses regardless of where they are in the world.</p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
@@ -255,7 +255,7 @@ const Home = () => {
                   { icon: <ShieldCheck className="h-5 w-5" />, title: 'Operational safeguards', desc: 'Controls, evidence hooks, and status integrity.' },
                 ].map((f) => (
                   <div key={f.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-                    <div className="flex items-center gap-2 text-swift-blue">{f.icon}<span className="text-sm font-bold text-stellar-black dark:text-white">{f.title}</span></div>
+                    <div className="flex items-center gap-2 text-amber-700">{f.icon}<span className="text-sm font-bold text-stellar-black dark:text-white">{f.title}</span></div>
                     <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{f.desc}</p>
                   </div>
                 ))}
@@ -281,7 +281,7 @@ const Home = () => {
                   { icon: <BadgeCheck className="h-5 w-5" />, title: 'Audit trails & evidence', desc: 'Traceable events, references, and status changes for oversight.' },
                 ].map((item) => (
                   <div key={item.title} className="rounded-2xl border border-white/15 bg-white/5 p-4 backdrop-blur">
-                    <div className="flex items-center gap-2 text-sky-300">{item.icon}<span className="font-bold text-white">{item.title}</span></div>
+                    <div className="flex items-center gap-2 text-stellar-yellow">{item.icon}<span className="font-bold text-white">{item.title}</span></div>
                     <p className="mt-2 text-sm leading-6 text-slate-200/85">{item.desc}</p>
                   </div>
                 ))}
@@ -293,7 +293,7 @@ const Home = () => {
               <div className="mt-6 space-y-3">
                 {['End-to-end transaction lifecycle monitoring', 'Role-based access for admin operations', 'Idempotent flows and reconciliation-ready references', 'Configurable webhook and integration safeguards'].map((row) => (
                   <div key={row} className="flex items-start gap-3 rounded-xl border border-white/10 bg-swift-navy px-4 py-3">
-                    <ShieldCheck className="mt-0.5 h-4 w-4 text-sky-300" />
+                    <ShieldCheck className="mt-0.5 h-4 w-4 text-stellar-yellow" />
                     <span className="text-sm text-slate-100">{row}</span>
                   </div>
                 ))}
@@ -325,12 +325,12 @@ const Home = () => {
 
 const FeatureCard = ({ icon, title, text, bullets }) => (
   <article className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900">
-    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-swift-blue dark:bg-slate-800 dark:text-sky-300">{icon}</div>
+    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-amber-700 dark:bg-slate-800 dark:text-stellar-yellow">{icon}</div>
     <h3 className="mt-5 text-xl font-bold tracking-tight text-stellar-black dark:text-white">{title}</h3>
     <p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{text}</p>
     <ul className="mt-4 space-y-2">
       {bullets.map((b) => (
-        <li key={b} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"><CheckCircle2 className="mt-0.5 h-4 w-4 text-swift-blue" /> {b}</li>
+        <li key={b} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"><CheckCircle2 className="mt-0.5 h-4 w-4 text-amber-700" /> {b}</li>
       ))}
     </ul>
   </article>
@@ -338,7 +338,7 @@ const FeatureCard = ({ icon, title, text, bullets }) => (
 
 const Stat = ({ value, label, sub, visible, delay }) => (
   <div className={`rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-center sm:p-5 dark:border-slate-800 dark:bg-slate-900/60 ${visible ? 'animate-count' : 'opacity-0'}`} style={{ animationDelay: delay }}>
-    <p className="text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl dark:text-sky-300">{value}</p>
+    <p className="text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl dark:text-stellar-yellow">{value}</p>
     <p className="mt-1 text-xs font-bold leading-5 text-slate-800 sm:text-sm dark:text-slate-100">{label}</p>
     <p className="mt-1 text-[11px] leading-4 text-slate-500 sm:text-xs dark:text-slate-400">{sub}</p>
   </div>

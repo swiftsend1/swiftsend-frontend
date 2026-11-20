@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -343,5 +344,20 @@ const Stat = ({ value, label, sub, visible, delay }) => (
     <p className="mt-1 text-[11px] leading-4 text-slate-500 sm:text-xs dark:text-slate-400">{sub}</p>
   </div>
 );
+
+FeatureCard.propTypes = {
+  icon: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  bullets: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+Stat.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  label: PropTypes.string.isRequired,
+  sub: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
+  delay: PropTypes.string.isRequired,
+};
 
 export default Home;

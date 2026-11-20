@@ -25,6 +25,12 @@ jobs:
       - name: Run frontend tests
         run: npx vitest run
 
+      - name: Build production frontend
+        run: npm run build
+
+      - name: Check lint
+        run: npm run lint
+
       - name: Send failure notification email
         if: failure()
         continue-on-error: true

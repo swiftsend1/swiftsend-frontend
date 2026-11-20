@@ -32,18 +32,18 @@ const StatusBadge = ({ status }) => {
     return <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700"><XCircle size={12} /> Failed</span>;
   }
   if (s === 'initiated') {
-    return <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 capitalize"><Clock size={12} /> {s.replace(/_/g, ' ')}</span>;
+    return <span className="inline-flex items-center gap-1 rounded-full bg-[var(--surface-muted)] px-2.5 py-1 text-xs font-semibold text-[var(--text)] capitalize"><Clock size={12} /> {s.replace(/_/g, ' ')}</span>;
   }
   return <span className="inline-flex items-center gap-1 rounded-full bg-stellar-yellow/20 px-2.5 py-1 text-xs font-semibold text-stellar-black ring-1 ring-stellar-yellow/50 capitalize"><AlertCircle size={12} /> {s.replace(/_/g, ' ') || 'unknown'}</span>;
 };
 
 const StatCard = ({ icon, label, value, hint, tone = 'default' }) => (
-  <div className={`rounded-2xl border bg-white p-5 shadow-sm ${tone === 'accent' ? 'border-stellar-yellow/40 ring-1 ring-stellar-yellow/20' : 'border-slate-200'}`}>
+  <div className={`rounded-2xl border bg-[var(--surface)] p-5 shadow-sm ${tone === 'accent' ? 'border-stellar-yellow/40 ring-1 ring-stellar-yellow/20' : 'border-[var(--border)]'}`}>
     <div className="flex items-start justify-between gap-3">
       <div>
-        <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>
+        <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">{label}</p>
         <p className="mt-2 text-2xl font-extrabold tracking-tight text-stellar-black">{value}</p>
-        {hint ? <p className="mt-1 text-xs text-slate-500">{hint}</p> : null}
+        {hint ? <p className="mt-1 text-xs text-[var(--muted)]">{hint}</p> : null}
       </div>
       <div className="grid h-11 w-11 place-items-center rounded-xl bg-stellar-offwhite text-stellar-black ring-1 ring-slate-200">{icon}</div>
     </div>
@@ -143,10 +143,10 @@ const AdminDashboard = () => {
   if (!isAdmin) {
     return (
       <div className="flex min-h-full items-center justify-center rounded-2xl bg-stellar-offwhite p-4 sm:p-6">
-        <div className="max-w-md space-y-3 rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <div className="max-w-md space-y-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-sm">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-rose-50 text-rose-600"><ShieldCheck size={22} /></div>
           <h2 className="text-xl font-bold text-stellar-black">Admin access required</h2>
-          <p className="text-sm text-slate-600">You do not have permission to view the admin dashboard.</p>
+          <p className="text-sm text-[var(--muted)]">You do not have permission to view the admin dashboard.</p>
         </div>
       </div>
     );
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-full space-y-6">
-      <section className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-stellar-black via-swift-navy to-stellar-teal p-5 text-white shadow-lg sm:p-7">
+      <section className="overflow-hidden rounded-3xl border border-[var(--border)] bg-gradient-to-br from-stellar-black via-swift-navy to-stellar-teal p-5 text-white shadow-lg sm:p-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-stellar-yellow"><LayoutDashboard size={14} /> Operations Control</p>
@@ -162,7 +162,7 @@ const AdminDashboard = () => {
             <p className="mt-2 max-w-2xl text-sm text-slate-200 sm:text-base">Monitor users, remittance operations, status health, volumes, and activity across SwiftSend from one place.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs text-slate-200 backdrop-blur">
+            <div className="rounded-xl border border-white/15 bg-[var(--surface)]/10 px-3 py-2 text-xs text-slate-200 backdrop-blur">
               Last updated: <span className="font-semibold text-white">{lastUpdated ? lastUpdated.toLocaleTimeString() : '—'}</span>
             </div>
             <button
@@ -180,7 +180,7 @@ const AdminDashboard = () => {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`rounded-xl px-4 py-2 text-sm font-semibold capitalize transition ${tab === t ? 'bg-white text-stellar-black shadow' : 'border border-white/20 bg-white/10 text-white hover:bg-white/20'}`}
+              className={`rounded-xl px-4 py-2 text-sm font-semibold capitalize transition ${tab === t ? 'bg-[var(--surface)] text-stellar-black shadow' : 'border border-white/20 bg-[var(--surface)]/10 text-white hover:bg-[var(--surface)]/20'}`}
             >
               {t}
             </button>
@@ -189,7 +189,7 @@ const AdminDashboard = () => {
       </section>
 
       {error && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">{error}</div>}
-      {loading && <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-slate-500 shadow-sm">Loading admin operations data…</div>}
+      {loading && <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-10 text-center text-[var(--muted)] shadow-sm">Loading admin operations data…</div>}
 
       {!loading && tab === 'overview' && (
         <>
@@ -201,31 +201,31 @@ const AdminDashboard = () => {
           </section>
 
           <section className="grid gap-4 lg:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Sent Volume (sample)</p>
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">Sent Volume (sample)</p>
               <p className="mt-2 text-2xl font-extrabold text-stellar-black">{derived.totalSent.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
-              <p className="mt-1 text-xs text-slate-500">Sum of send amounts from loaded remittances</p>
+              <p className="mt-1 text-xs text-[var(--muted)]">Sum of send amounts from loaded remittances</p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Received Volume (sample)</p>
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">Received Volume (sample)</p>
               <p className="mt-2 text-2xl font-extrabold text-stellar-black">{derived.totalReceived.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
-              <p className="mt-1 text-xs text-slate-500">Sum of receive amounts from loaded remittances</p>
+              <p className="mt-1 text-xs text-[var(--muted)]">Sum of receive amounts from loaded remittances</p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Fees Collected (sample)</p>
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">Fees Collected (sample)</p>
               <p className="mt-2 text-2xl font-extrabold text-stellar-black">{derived.totalFees.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
-              <p className="mt-1 text-xs text-slate-500">Sum of fee amounts from loaded remittances</p>
+              <p className="mt-1 text-xs text-[var(--muted)]">Sum of fee amounts from loaded remittances</p>
             </div>
           </section>
 
           <section className="grid gap-4 xl:grid-cols-[1.4fr_.9fr]">
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
               <div className="border-b border-slate-100 p-5">
                 <h2 className="flex items-center gap-2 text-lg font-extrabold text-stellar-black"><Activity size={18} className="text-stellar-teal" /> Recent Transactions</h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full text-sm">
-                  <thead className="bg-stellar-offwhite text-slate-700">
+                  <thead className="bg-stellar-offwhite text-[var(--text)]">
                     <tr>
                       <th className="p-4 text-left font-semibold">Reference</th>
                       <th className="p-4 text-left font-semibold">Corridor</th>
@@ -237,15 +237,15 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {(overview?.recent_remittances || []).length === 0 ? (
-                      <tr><td colSpan="6" className="p-8 text-center text-slate-500">No recent transactions.</td></tr>
+                      <tr><td colSpan="6" className="p-8 text-center text-[var(--muted)]">No recent transactions.</td></tr>
                     ) : (overview.recent_remittances || []).map((r) => (
-                      <tr key={r.reference} className="hover:bg-slate-50">
+                      <tr key={r.reference} className="hover:bg-[var(--surface-muted)]">
                         <td className="p-4 font-mono text-xs font-semibold text-swift-blue">{r.reference}</td>
                         <td className="p-4">{r.corridor_code || '—'}</td>
                         <td className="p-4">{r.send_amount} {r.send_currency}</td>
                         <td className="p-4">{r.receive_amount} {r.receive_currency}</td>
                         <td className="p-4"><StatusBadge status={r.status} /></td>
-                        <td className="p-4 text-slate-500">{formatDateTime(r.created_at)}</td>
+                        <td className="p-4 text-[var(--muted)]">{formatDateTime(r.created_at)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -254,10 +254,10 @@ const AdminDashboard = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
                 <h2 className="text-base font-extrabold text-stellar-black">Status breakdown</h2>
                 <div className="mt-3 space-y-2">
-                  {derived.statusEntries.length === 0 ? <p className="text-sm text-slate-500">No data.</p> : derived.statusEntries.map(([status, count]) => (
+                  {derived.statusEntries.length === 0 ? <p className="text-sm text-[var(--muted)]">No data.</p> : derived.statusEntries.map(([status, count]) => (
                     <div key={status} className="flex items-center justify-between gap-3 rounded-xl bg-stellar-offwhite px-3 py-2">
                       <div className="min-w-0 flex-1"><StatusBadge status={status} /></div>
                       <span className="text-sm font-extrabold text-stellar-black">{count}</span>
@@ -265,17 +265,17 @@ const AdminDashboard = () => {
                   ))}
                 </div>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
                 <h2 className="text-base font-extrabold text-stellar-black">Channels</h2>
                 <div className="mt-3 space-y-2">
-                  {derived.channelEntries.length === 0 ? <p className="text-sm text-slate-500">No data.</p> : derived.channelEntries.map(([channel, count]) => (
+                  {derived.channelEntries.length === 0 ? <p className="text-sm text-[var(--muted)]">No data.</p> : derived.channelEntries.map(([channel, count]) => (
                     <div key={channel} className="flex items-center justify-between rounded-xl border border-slate-100 px-3 py-2">
-                      <span className="text-sm font-semibold capitalize text-slate-700">{channel}</span>
+                      <span className="text-sm font-semibold capitalize text-[var(--text)]">{channel}</span>
                       <span className="rounded-full bg-stellar-black px-2.5 py-0.5 text-xs font-bold text-stellar-yellow">{count}</span>
                     </div>
                   ))}
                 </div>
-                <p className="mt-3 text-xs text-slate-500">Operations monitored from available admin APIs (users, remittances, overview).</p>
+                <p className="mt-3 text-xs text-[var(--muted)]">Operations monitored from available admin APIs (users, remittances, overview).</p>
               </div>
             </div>
           </section>
@@ -283,20 +283,20 @@ const AdminDashboard = () => {
       )}
 
       {!loading && tab === 'users' && (
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
           <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="flex items-center gap-2 text-lg font-extrabold text-stellar-black"><Users size={18} className="text-stellar-teal" /> Users</h2>
-              <p className="text-sm text-slate-500">{filteredUsers.length} of {users.length} users</p>
+              <p className="text-sm text-[var(--muted)]">{filteredUsers.length} of {users.length} users</p>
             </div>
             <label className="relative block w-full sm:w-80">
               <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input value={userQuery} onChange={(e) => setUserQuery(e.target.value)} placeholder="Search name, email, role…" className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20" />
+              <input value={userQuery} onChange={(e) => setUserQuery(e.target.value)} placeholder="Search name, email, role…" className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm outline-none focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20" />
             </label>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="bg-stellar-offwhite text-slate-700">
+              <thead className="bg-stellar-offwhite text-[var(--text)]">
                 <tr>
                   <th className="p-4 text-left font-semibold">User</th>
                   <th className="p-4 text-left font-semibold">Email</th>
@@ -308,28 +308,28 @@ const AdminDashboard = () => {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredUsers.length === 0 ? (
-                  <tr><td colSpan="6" className="p-8 text-center text-slate-500">No users match your search.</td></tr>
+                  <tr><td colSpan="6" className="p-8 text-center text-[var(--muted)]">No users match your search.</td></tr>
                 ) : filteredUsers.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-50">
+                  <tr key={u.id} className="hover:bg-[var(--surface-muted)]">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <div className="grid h-9 w-9 place-items-center rounded-full bg-stellar-yellow/20 font-bold text-stellar-black ring-1 ring-stellar-yellow/40">{(u.name || u.email || 'U').slice(0, 2).toUpperCase()}</div>
                         <div>
                           <div className="font-semibold text-stellar-black">{u.name || '—'}</div>
-                          <div className="text-xs text-slate-500">@{u.username || '—'}</div>
+                          <div className="text-xs text-[var(--muted)]">@{u.username || '—'}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 text-slate-700">{u.email || '—'}</td>
+                    <td className="p-4 text-[var(--text)]">{u.email || '—'}</td>
                     <td className="p-4">
-                      <div className="flex flex-wrap gap-1.5">{(u.roles || []).map((role) => <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{role}</span>)}</div>
+                      <div className="flex flex-wrap gap-1.5">{(u.roles || []).map((role) => <span key={role} className="rounded-full bg-[var(--surface-muted)] px-2 py-0.5 text-xs font-semibold text-[var(--text)]">{role}</span>)}</div>
                     </td>
                     <td className="p-4">
                       {u.is_active ? <span className="font-medium text-emerald-600">Active</span> : <span className="text-slate-400">Inactive</span>}
                       {(u.is_staff || u.is_superuser) && <span className="ml-2 rounded-full bg-stellar-black px-2 py-0.5 text-xs font-semibold text-stellar-yellow">Staff</span>}
                     </td>
-                    <td className="p-4 text-slate-500">{formatDate(u.date_joined)}</td>
-                    <td className="p-4 text-slate-500">{formatDateTime(u.last_login)}</td>
+                    <td className="p-4 text-[var(--muted)]">{formatDate(u.date_joined)}</td>
+                    <td className="p-4 text-[var(--muted)]">{formatDateTime(u.last_login)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -339,25 +339,25 @@ const AdminDashboard = () => {
       )}
 
       {!loading && tab === 'transactions' && (
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
           <div className="flex flex-col gap-3 border-b border-slate-100 p-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h2 className="flex items-center gap-2 text-lg font-extrabold text-stellar-black"><ArrowRightLeft size={18} className="text-stellar-teal" /> Transactions</h2>
-              <p className="text-sm text-slate-500">{filteredRemittances.length} of {remittances.length} transactions</p>
+              <p className="text-sm text-[var(--muted)]">{filteredRemittances.length} of {remittances.length} transactions</p>
             </div>
             <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
               <label className="relative block sm:w-72">
                 <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input value={txQuery} onChange={(e) => setTxQuery(e.target.value)} placeholder="Search ref, user, corridor, hash…" className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20" />
+                <input value={txQuery} onChange={(e) => setTxQuery(e.target.value)} placeholder="Search ref, user, corridor, hash…" className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm outline-none focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20" />
               </label>
-              <select value={txStatus} onChange={(e) => setTxStatus(e.target.value)} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20">
+              <select value={txStatus} onChange={(e) => setTxStatus(e.target.value)} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm font-medium text-[var(--text)] outline-none focus:border-stellar-teal focus:ring-4 focus:ring-stellar-teal/20">
                 {statusOptions.map((s) => <option key={s} value={s}>{s === 'all' ? 'All statuses' : s.replace(/_/g, ' ')}</option>)}
               </select>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="bg-stellar-offwhite text-slate-700">
+              <thead className="bg-stellar-offwhite text-[var(--text)]">
                 <tr>
                   <th className="p-4 text-left font-semibold">Reference</th>
                   <th className="p-4 text-left font-semibold">User</th>
@@ -372,24 +372,24 @@ const AdminDashboard = () => {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredRemittances.length === 0 ? (
-                  <tr><td colSpan="9" className="p-8 text-center text-slate-500">No transactions match your filters.</td></tr>
+                  <tr><td colSpan="9" className="p-8 text-center text-[var(--muted)]">No transactions match your filters.</td></tr>
                 ) : filteredRemittances.map((r) => (
-                  <tr key={r.reference} className="hover:bg-slate-50">
+                  <tr key={r.reference} className="hover:bg-[var(--surface-muted)]">
                     <td className="p-4 font-mono text-xs font-semibold text-swift-blue">{r.reference}</td>
-                    <td className="p-4 text-slate-700">{r.owner_email || '—'}</td>
+                    <td className="p-4 text-[var(--text)]">{r.owner_email || '—'}</td>
                     <td className="p-4">
                       <div className="font-medium text-stellar-black">{r.sender_country || '—'}→{r.recipient_country || '—'}</div>
-                      <div className="text-xs text-slate-500">{r.corridor_code || '—'} • {(r.channel || '—').toString()}</div>
+                      <div className="text-xs text-[var(--muted)]">{r.corridor_code || '—'} • {(r.channel || '—').toString()}</div>
                     </td>
                     <td className="p-4">{r.send_amount} {r.send_currency}</td>
                     <td className="p-4">{r.receive_amount} {r.receive_currency}</td>
                     <td className="p-4">{r.fee_amount} {r.send_currency}</td>
                     <td className="p-4"><StatusBadge status={r.status} /></td>
-                    <td className="p-4 text-xs text-slate-600">
+                    <td className="p-4 text-xs text-[var(--muted)]">
                       <div className="max-w-[180px] truncate" title={r.stellar_tx_hash || ''}>Stellar: <span className="font-mono">{r.stellar_tx_hash || '—'}</span></div>
                       <div className="max-w-[180px] truncate" title={r.payout_reference || ''}>Payout: <span className="font-mono">{r.payout_reference || '—'}</span></div>
                     </td>
-                    <td className="p-4 text-slate-500">
+                    <td className="p-4 text-[var(--muted)]">
                       <div>{formatDateTime(r.created_at)}</div>
                       {r.completed_at ? <div className="text-xs text-emerald-700">Done: {formatDateTime(r.completed_at)}</div> : null}
                     </td>

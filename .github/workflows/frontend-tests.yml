@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: package-lock.json
 
@@ -29,8 +29,8 @@ jobs:
         if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
-          serverAddress: smtp.gmail.com
-          serverPort: 465
+          server_address: smtp.gmail.com
+          server_port: 465
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "SwiftSend CI failed - frontend tests"

@@ -1,97 +1,139 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowDownToLine,
-  BarChart3,
-  CircleHelp,
-  History,
-  LayoutDashboard,
-  Link2,
-  MapPin,
-  Send,
-  ShieldCheck,
-  UserRound,
-  WalletCards,
+  ArrowDownLeft, ArrowRight, ArrowUpRight, CheckCircle2, Clock3,
+  Globe2, Plus, Send, ShieldCheck, WalletCards, Activity,
 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
+import { getApiErrorMessage } from '../auth/api';
 
-const features = [
-  { to: '/send', title: 'Send Money', desc: 'Create a new cross-border transfer with transparent quotes.', icon: Send, color: 'bg-stellar-yellow/20 text-stellar-black' },
-  { to: '/receive', title: 'Receive Money', desc: 'View receive options and payout details.', icon: ArrowDownToLine, color: 'bg-emerald-100 text-emerald-700' },
-  { to: '/wallet', title: 'Wallet', desc: 'Manage balances and wallet-related actions.', icon: WalletCards, color: 'bg-indigo-100 text-indigo-700' },
-  { to: '/history', title: 'Transaction History', desc: 'Review your remittances and past activity.', icon: History, color: 'bg-amber-100 text-amber-700' },
-  { to: '/track', title: 'Track Transfer', desc: 'Check transfer status, progress, and evidence.', icon: MapPin, color: 'bg-rose-100 text-rose-700' },
-  { to: '/anchor-demo', title: 'Stellar Anchor Demo', desc: 'Run a guided demo showing how SwiftSend settles with Stellar (testnet) and anchors.', icon: Link2, color: 'bg-swift-100 text-swift-700' },
-  { to: '/withdraw', title: 'Withdraw', desc: 'Request withdrawals and manage payout destinations.', icon: WalletCards, color: 'bg-teal-100 text-teal-700' },
-  { to: '/rates', title: 'Exchange Rates', desc: 'Check corridor pricing and currency rates.', icon: BarChart3, color: 'bg-cyan-100 text-cyan-700' },
-  { to: '/profile', title: 'Profile', desc: 'View and manage your account details.', icon: UserRound, color: 'bg-slate-100 text-slate-700' },
-  { to: '/help', title: 'Help Centre', desc: 'Get support, guidance, and answers.', icon: CircleHelp, color: 'bg-violet-100 text-violet-700' },
-];
-
-const getDisplayName = (user) => user?.name || user?.full_name || user?.first_name || user?.email?.split('@')[0] || 'there';
-const isUserAdmin = (user, roles = []) => {
-  if (user?.is_staff || user?.is_superuser) return true;
-  const allRoles = [...roles, ...(Array.isArray(user?.roles) ? user.roles : [])];
-  return allRoles.some((r) => typeof r === 'string' && ['admin', 'staff', 'superuser', 'administrator'].includes(r.toLowerCase()));
+const money = (amount, currency) => {
+  if (amount === null || amount === undefined || amount === '') return '—';
+  const value = Number(amount);
+  if (!Number.isFinite(value)) return `${amount} ${currency || ''}`.trim();
+  return `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value)} ${currency || ''}`.trim();
 };
+const readableStatus = (status = '') => status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+const statusTone = (status = '') => {
+  if (['completed', 'delivered', 'success'].includes(status.toLowerCase())) return { bg: 'var(--accent-soft)', color: 'var(--accent-strong)' };
+  if (['failed', 'cancelled', 'rejected'].includes(status.toLowerCase())) return { bg: 'rgba(239,68,68,.12)', color: '#dc2626' };
+  return { bg: 'rgba(234,179,8,.13)', color: 'var(--text)' };
+};
+const getDisplayName = (user) => user?.name || user?.full_name || user?.first_name || user?.email?.split('@')[0] || 'there';
 
 const Dashboard = () => {
-  const { user, roles } = useAuth();
-  const name = getDisplayName(user);
-  const admin = isUserAdmin(user, roles);
-  const allFeatures = admin
-    ? [{ to: '/admin', title: 'Admin Dashboard', desc: 'Monitor users, remittances, and platform activity.', icon: LayoutDashboard, color: 'bg-stellar-black text-stellar-yellow' }, ...features]
-    : features;
+  const { user, authFetch } = useAuth();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    authFetch('/api/remittances/')
+      .then(async (response) => {
+        const data = await response.json().catch(() => []);
+        if (!response.ok) throw new Error(getApiErrorMessage(data, 'We could not load your recent transfers.'));
+        if (!cancelled) setItems(Array.isArray(data) ? data : (data?.results || []));
+      })
+      .catch((err) => { if (!cancelled) setError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [authFetch]);
+
+  const stats = useMemo(() => ({
+    total: items.length,
+    completed: items.filter((item) => ['completed', 'delivered'].includes((item.status || '').toLowerCase())).length,
+    pending: items.filter((item) => !['completed', 'delivered', 'failed', 'cancelled'].includes((item.status || '').toLowerCase())).length,
+  }), [items]);
+
+  const shortcuts = [
+    { to: '/send', title: 'Send money', description: 'Start a cross-border transfer', icon: Send, primary: true },
+    { to: '/wallet', title: 'My wallet', description: 'View wallet actions and balances', icon: WalletCards },
+    { to: '/track', title: 'Track transfer', description: 'Check a transfer reference', icon: Globe2 },
+  ];
 
   return (
-    <div className="space-y-6 sm:space-y-8">
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold text-stellar-teal">Central dashboard</p>
-            <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-stellar-black sm:text-3xl">Welcome, {name}</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-              Access all SwiftSend features from one place — send and receive money, manage your wallet, track transfers, review history, and get support.
-            </p>
+    <div className="ss-page space-y-7">
+      <section className="relative overflow-hidden rounded-[24px] p-6 text-white sm:p-8" style={{ background: 'linear-gradient(118deg,#101d36 0%,#172d49 58%,#087f75 125%)' }}>
+        <div className="pointer-events-none absolute -right-12 -top-24 h-72 w-72 rounded-full border-[1px] border-white/10" />
+        <div className="pointer-events-none absolute -right-2 -top-14 h-52 w-52 rounded-full border-[1px] border-white/10" />
+        <div className="relative flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.15em] text-teal-100">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> Your money, in motion
+            </span>
+            <h2 className="mt-5 text-3xl font-extrabold tracking-[-.045em] sm:text-4xl">Good to see you, {getDisplayName(user)}.</h2>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-slate-200 sm:text-base">Send across borders with more clarity. Keep an eye on every transfer from one simple workspace.</p>
           </div>
-          <Link to="/send" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-5 py-3 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/10 hover:bg-yellow-300 sm:w-auto">
-            <Send size={16} /> New transfer
+          <Link to="/send" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-extrabold text-[#102039] shadow-lg transition hover:-translate-y-0.5" style={{ background: '#efc45b' }}>
+            <Plus size={17} /> New transfer <ArrowUpRight size={16} />
           </Link>
         </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Quick access</p>
-            <p className="mt-1 text-sm font-semibold text-slate-800">All app features in one hub</p>
-          </div>
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Navigation</p>
-            <p className="mt-1 text-sm font-semibold text-slate-800">Use sidebar (desktop) or app menu (mobile)</p>
-          </div>
-          <div className="rounded-2xl bg-stellar-offwhite p-4 ring-1 ring-stellar-yellow/40">
-            <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stellar-black"><ShieldCheck size={13} className="text-stellar-teal" /> Secure</p>
-            <p className="mt-1 text-sm font-semibold text-slate-800">Authenticated session active</p>
-          </div>
+        <div className="relative mt-8 grid gap-3 sm:grid-cols-3">
+          {[
+            { label: 'Transfers created', value: loading ? '—' : stats.total, icon: Activity },
+            { label: 'Successfully completed', value: loading ? '—' : stats.completed, icon: CheckCircle2 },
+            { label: 'In progress', value: loading ? '—' : stats.pending, icon: Clock3 },
+          ].map(({ label, value, icon: Icon }) => (
+            <div key={label} className="rounded-2xl border border-white/10 bg-white/[.08] p-4 backdrop-blur-sm">
+              <div className="flex items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-300">{label}</span><Icon size={16} className="text-teal-200" /></div>
+              <p className="mt-2 text-2xl font-extrabold tabular-nums">{value}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section>
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-lg font-extrabold tracking-tight text-stellar-black sm:text-xl">All features</h2>
-          <p className="text-xs font-medium text-slate-500 sm:text-sm">{allFeatures.length} available</p>
+        <div className="mb-4 flex items-end justify-between gap-3">
+          <div><p className="text-xs font-bold uppercase tracking-[.16em]" style={{ color: 'var(--accent)' }}>Quick actions</p><h3 className="ss-title mt-1 text-xl font-extrabold">What would you like to do?</h3></div>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3">
-          {allFeatures.map(({ to, title, desc, icon: Icon, color }) => (
-            <Link key={to} to={to} className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-stellar-teal/40 hover:shadow-md sm:p-5">
-              <div className="flex items-start gap-4">
-                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${color}`}><Icon size={20} /></span>
-                <div className="min-w-0">
-                  <h3 className="text-base font-bold text-slate-900 group-hover:text-swift-blue">{title}</h3>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">{desc}</p>
-                  <p className="mt-3 text-xs font-bold uppercase tracking-wide text-stellar-teal">Open →</p>
-                </div>
-              </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          {shortcuts.map(({ to, title, description, icon: Icon, primary }) => (
+            <Link key={to} to={to} className="group flex items-center gap-4 rounded-2xl border p-4 transition hover:-translate-y-0.5 hover:shadow-md sm:p-5"
+              style={{ background: primary ? 'var(--accent-soft)' : 'var(--surface)', borderColor: primary ? 'color-mix(in srgb, var(--accent) 35%, var(--border))' : 'var(--border)', boxShadow: 'var(--shadow)' }}>
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ background: primary ? 'var(--accent)' : 'var(--surface-muted)', color: primary ? '#fff' : 'var(--accent-strong)' }}><Icon size={20} /></span>
+              <span className="min-w-0 flex-1"><span className="block text-sm font-extrabold" style={{ color: 'var(--text)' }}>{title}</span><span className="mt-1 block text-xs leading-5" style={{ color: 'var(--muted)' }}>{description}</span></span>
+              <ArrowRight size={17} className="shrink-0 transition group-hover:translate-x-1" style={{ color: 'var(--muted)' }} />
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="overflow-hidden rounded-2xl border" style={{ background: 'var(--surface)', borderColor: 'var(--border)', boxShadow: 'var(--shadow)' }}>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b px-5 py-5 sm:px-6" style={{ borderColor: 'var(--border)' }}>
+          <div><p className="text-xs font-bold uppercase tracking-[.16em]" style={{ color: 'var(--accent)' }}>Your activity</p><h3 className="ss-title mt-1 text-lg font-extrabold">Recent transfers</h3></div>
+          <Link to="/history" className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: 'var(--accent-strong)' }}>View all <ArrowRight size={15} /></Link>
+        </div>
+        {error && <div className="m-5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700" role="alert">{error}</div>}
+        {loading ? (
+          <div className="px-6 py-12 text-center text-sm" style={{ color: 'var(--muted)' }}>Loading your transfers…</div>
+        ) : items.length === 0 ? (
+          <div className="px-6 py-12 text-center">
+            <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}><Send size={21} /></span>
+            <p className="ss-title mt-4 font-bold">Your transfer activity will appear here</p>
+            <p className="ss-copy mt-1 text-sm">Create your first transfer to get started.</p>
+            <Link to="/send" className="ss-primary mt-5">Start a transfer <ArrowRight size={16} /></Link>
+          </div>
+        ) : (
+          <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
+            {items.slice(0, 5).map((item) => {
+              const tone = statusTone(item.status);
+              return (
+                <Link key={item.reference} to={`/track?ref=${encodeURIComponent(item.reference)}`} className="flex flex-wrap items-center gap-3 px-5 py-4 transition hover:bg-black/[.02] sm:px-6 dark:hover:bg-white/[.025]">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: 'var(--surface-muted)', color: 'var(--accent-strong)' }}><ArrowUpRight size={18} /></span>
+                  <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold" style={{ color: 'var(--text)' }}>{item.recipient_name || 'Transfer recipient'}</span><span className="mt-1 block truncate font-mono text-[11px]" style={{ color: 'var(--muted)' }}>{item.reference} · {item.sender_country || '—'} → {item.recipient_country || item.receive_currency || '—'}</span></span>
+                  <span className="text-right"><span className="block text-sm font-extrabold tabular-nums" style={{ color: 'var(--text)' }}>{money(item.send_amount, item.send_currency)}</span><span className="mt-1 block text-[11px]" style={{ color: 'var(--muted)' }}>{item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Date unavailable'}</span></span>
+                  <span className="rounded-full px-2.5 py-1 text-[11px] font-bold" style={{ background: tone.bg, color: tone.color }}>{readableStatus(item.status)}</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-4 rounded-2xl border p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6" style={{ background: 'var(--surface-muted)', borderColor: 'var(--border)' }}>
+        <div className="flex items-start gap-3"><span className="mt-0.5 text-[var(--accent)]"><ShieldCheck size={20} /></span><div><p className="text-sm font-extrabold" style={{ color: 'var(--text)' }}>Know where your transfer stands</p><p className="mt-1 text-xs leading-5" style={{ color: 'var(--muted)' }}>Use your transfer reference to view its latest recorded status and progress.</p></div></div>
+        <Link to="/track" className="inline-flex shrink-0 items-center gap-2 text-sm font-bold" style={{ color: 'var(--accent-strong)' }}>Track a transfer <ArrowRight size={15} /></Link>
       </section>
     </div>
   );

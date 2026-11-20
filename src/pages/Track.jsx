@@ -1,179 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback,useEffect,useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CheckCircle2, Circle, Download, ExternalLink, FileJson, LoaderCircle, MapPin, Play, Search, XCircle, Zap } from 'lucide-react';
+import { CheckCircle2,Circle,Download,FileJson,LoaderCircle,MapPin,Play,Search,ShieldCheck,Zap } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
-import { apiUrl, getApiErrorMessage } from '../auth/api';
-
-const statusLabel = (s) => (s || '').replace(/_/g, ' ');
-
-const Track = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { authFetch } = useAuth();
-  const [refId, setRefId] = useState(searchParams.get('ref') || '');
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [actionLoading, setActionLoading] = useState('');
-  const [error, setError] = useState('');
-  const [showEvidence, setShowEvidence] = useState(false);
-
-  const fetchTrack = useCallback(async (ref) => {
-    const value = (ref || '').trim();
-    if (!value) return;
-    setLoading(true); setError(''); setResult(null);
-    try {
-      const response = await fetch(apiUrl(`/api/track/${encodeURIComponent(value)}/`));
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(getApiErrorMessage(data, 'Transfer not found. Check your reference ID.'));
-      setResult(data);
-      setSearchParams({ ref: data.reference });
-    } catch (e) {
-      setError(e.message || 'Unable to track this transfer.');
-    } finally {
-      setLoading(false);
-    }
-  }, [setSearchParams]);
-
-  useEffect(() => {
-    const ref = searchParams.get('ref');
-    if (ref) { setRefId(ref); fetchTrack(ref); }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const runAction = async (path, label) => {
-    if (!result?.reference) return;
-    setActionLoading(label); setError('');
-    try {
-      const response = await authFetch(`/api/remittances/${encodeURIComponent(result.reference)}/${path}/`, { method: 'POST' });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(getApiErrorMessage(data, `Unable to ${label}.`));
-      if (data.remittance) setResult({ ...data.remittance, evidence_report: data.evidence_report });
-      else await fetchTrack(result.reference);
-    } catch (e) {
-      setError(e.message || `Unable to ${label}.`);
-    } finally {
-      setActionLoading('');
-    }
-  };
-
-  const stages = result?.progress?.stages || [];
-  const completed = new Set(result?.progress?.completed_stages || []);
-  const report = result?.evidence_report;
-
-  const downloadEvidence = () => {
-    if (!report) return;
-    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `swiftsend-evidence-${result.reference}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
-
-  return (
-    <div className="min-h-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-cyan-50/20">
-      <div className="mx-auto max-w-5xl px-4 py-12 lg:px-8">
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#e7faf3] px-4 py-2 text-sm font-semibold text-[#087869] mb-4"><MapPin size={16} /> Real-Time Tracking</div>
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">Track Your Transfer</h1>
-          <p className="mt-3 text-lg text-slate-600">Follow every step from sending to delivery with full transparency</p>
-        </div>
-
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-900/5 border border-slate-100 overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-slate-900 to-[#0f766e] p-6 text-white">
-            <h2 className="text-xl font-bold flex items-center gap-2"><Search size={20} /> Enter Reference Number</h2>
-            <p className="text-sm text-slate-200 mt-1">Track your transfer using the reference ID you received</p>
-          </div>
-          <div className="p-6">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <input value={refId} onChange={(e) => setRefId(e.target.value)} className="flex-1 px-6 py-4 text-lg font-mono rounded-xl border-2 border-slate-200 focus:border-[#0f766e] focus:ring-4 focus:ring-emerald-50 transition" placeholder="e.g. SSABC1234567" />
-              <button onClick={() => fetchTrack(refId)} disabled={loading || !refId.trim()} className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#0f766e] to-[#0b645e] text-white font-bold shadow-lg hover:shadow-xl transition disabled:opacity-50 flex items-center justify-center gap-2">
-                {loading ? <LoaderCircle size={20} className="animate-spin" /> : <Search size={20} />} Track Transfer
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {error && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800 mb-6" role="alert">{error}</div>}
-
-        {result && (
-          <div className="space-y-6">
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-900/5 border border-slate-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-6 border-b border-emerald-100">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm text-slate-600 mb-1">Transfer Reference</p>
-                    <p className="text-2xl font-mono font-bold text-slate-900">{result.reference}</p>
-                  </div>
-                  <span className={`px-4 py-2 rounded-full text-sm font-bold ${result.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : result.status === 'failed' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
-                    {statusLabel(result.status)}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Route</p><p className="font-semibold">{result.sender_country} → {result.recipient_country}</p></div>
-                <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Amount Sent</p><p className="font-semibold">{result.send_amount} {result.send_currency}</p></div>
-                <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Recipient Gets</p><p className="font-semibold text-[#0f766e]">{result.receive_amount} {result.receive_currency}</p></div>
-                <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Channel</p><p className="font-semibold capitalize">{result.channel}</p></div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-900/5 border border-slate-100 overflow-hidden">
-              <div className="p-6 border-b flex items-center justify-between">
-                <div><h3 className="text-xl font-bold text-slate-900 flex items-center gap-2"><Zap className="text-[#0f766e]" /> Transfer Progress</h3><p className="text-sm text-slate-600 mt-1">End-to-end journey tracking</p></div>
-                <div className="flex gap-2">
-                  <button onClick={() => runAction('advance', 'advance')} disabled={!!actionLoading || result.status === 'completed' || result.status === 'failed'} className="px-4 py-2 rounded-lg border-2 border-slate-200 text-sm font-semibold hover:bg-slate-50 disabled:opacity-50">Advance</button>
-                  <button onClick={() => runAction('validate', 'run validation')} disabled={!!actionLoading || result.status === 'completed'} className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#0f766e] to-[#0b645e] text-white text-sm font-semibold hover:shadow-lg disabled:opacity-50 flex items-center gap-2">{actionLoading ? <LoaderCircle size={14} className="animate-spin" /> : <Play size={14} />} Validate</button>
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {stages.map((stage, idx) => {
-                    const done = completed.has(stage);
-                    const current = result.status === stage;
-                    return (
-                      <div key={stage} className="flex gap-4">
-                        <div className="flex flex-col items-center">
-                          <div className={`grid h-10 w-10 place-items-center rounded-full ${done ? 'bg-gradient-to-br from-[#0f766e] to-[#22d3ee] text-white' : current ? 'bg-amber-100 text-amber-700 ring-4 ring-amber-50' : 'bg-slate-100 text-slate-400'}`}>
-                            {done ? <CheckCircle2 size={20} /> : current ? <Circle size={20} /> : <Circle size={20} />}
-                          </div>
-                          {idx < stages.length - 1 && <div className={`w-0.5 h-12 mt-2 ${done ? 'bg-emerald-200' : 'bg-slate-200'}`} />}
-                        </div>
-                        <div className="flex-1 pb-8">
-                          <p className={`font-bold ${done || current ? 'text-slate-900' : 'text-slate-400'}`}>{statusLabel(stage)}</p>
-                          <p className="text-sm text-slate-500 mt-1">{done ? 'Completed' : current ? 'In Progress' : 'Pending'}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-3xl shadow-xl shadow-slate-900/5 border border-slate-100 p-6">
-                <h3 className="font-bold text-lg mb-4">Verification Details</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between p-3 bg-slate-50 rounded-xl"><span className="text-slate-600">Stellar TX Hash</span><span className="font-mono text-xs max-w-[150px] truncate">{result.stellar_tx_hash || '—'}</span></div>
-                  <div className="flex justify-between p-3 bg-slate-50 rounded-xl"><span className="text-slate-600">On-ramp Ref</span><span className="font-mono text-xs">{result.on_ramp_reference || '—'}</span></div>
-                  <div className="flex justify-between p-3 bg-slate-50 rounded-xl"><span className="text-slate-600">Anchor Ref</span><span className="font-mono text-xs">{result.anchor_reference || '—'}</span></div>
-                  <div className="flex justify-between p-3 bg-slate-50 rounded-xl"><span className="text-slate-600">Payout Ref</span><span className="font-mono text-xs">{result.payout_reference || '—'}</span></div>
-                </div>
-              </div>
-              <div className="bg-white rounded-3xl shadow-xl shadow-slate-900/5 border border-slate-100 p-6">
-                <h3 className="font-bold text-lg mb-4">Evidence & Reports</h3>
-                <p className="text-sm text-slate-600 mb-4">Download complete audit trail with all transaction details</p>
-                <div className="space-y-3">
-                  <button onClick={() => setShowEvidence((v) => !v)} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-slate-200 hover:bg-slate-50 transition"><FileJson size={18} /> {showEvidence ? 'Hide' : 'View'} Evidence Report</button>
-                  {report && <button onClick={downloadEvidence} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#0f766e] to-[#0b645e] text-white hover:shadow-lg transition"><Download size={18} /> Download JSON</button>}
-                </div>
-              </div>
-            </div>
-
-            {showEvidence && report && <pre className="text-xs bg-slate-900 text-slate-100 rounded-2xl p-6 overflow-auto max-h-96 shadow-xl">{JSON.stringify(report, null, 2)}</pre>}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+import { apiUrl,getApiErrorMessage } from '../auth/api';
+const statusLabel=s=>(s||'').replace(/_/g,' ');
+const Track=()=>{
+ const [searchParams,setSearchParams]=useSearchParams();const {authFetch}=useAuth();const [refId,setRefId]=useState(searchParams.get('ref')||'');const [result,setResult]=useState(null);const [loading,setLoading]=useState(false);const [actionLoading,setActionLoading]=useState('');const [error,setError]=useState('');const [showEvidence,setShowEvidence]=useState(false);
+ const fetchTrack=useCallback(async ref=>{const value=(ref||'').trim();if(!value)return;setLoading(true);setError('');setResult(null);try{const response=await fetch(apiUrl(`/api/track/${encodeURIComponent(value)}/`));const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(getApiErrorMessage(data,'Transfer not found. Check your reference ID.'));setResult(data);setSearchParams({ref:data.reference});}catch(e){setError(e.message||'Unable to track this transfer.');}finally{setLoading(false);}},[setSearchParams]);
+ useEffect(()=>{const ref=searchParams.get('ref');if(ref){setRefId(ref);fetchTrack(ref);}},[]); // eslint-disable-line react-hooks/exhaustive-deps
+ const runAction=async(path,label)=>{if(!result?.reference)return;setActionLoading(label);setError('');try{const response=await authFetch(`/api/remittances/${encodeURIComponent(result.reference)}/${path}/`,{method:'POST'});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(getApiErrorMessage(data,`Unable to ${label}.`));if(data.remittance)setResult({...data.remittance,evidence_report:data.evidence_report});else await fetchTrack(result.reference);}catch(e){setError(e.message||`Unable to ${label}.`);}finally{setActionLoading('');}};
+ const stages=result?.progress?.stages||[];const completed=new Set(result?.progress?.completed_stages||[]);const report=result?.evidence_report;
+ const downloadEvidence=()=>{if(!report)return;const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`swiftsend-evidence-${result.reference}.json`;a.click();URL.revokeObjectURL(a.href);};
+ const status=(result?.status||'').toLowerCase();const terminal=['completed','failed','cancelled'].includes(status);
+ return <div className="mx-auto max-w-5xl space-y-5 sm:space-y-7">
+  <header><span className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.15em]" style={{background:'var(--accent-soft)',color:'var(--accent-strong)'}}><MapPin size={13}/> Transfer tracking</span><h2 className="ss-title mt-3 text-2xl font-black tracking-tight sm:text-3xl">Know where your money is.</h2><p className="ss-copy mt-1 text-sm">Enter your reference to view the latest recorded transfer status.</p></header>
+  <section className="ss-surface rounded-[22px] p-4 sm:p-5"><form onSubmit={e=>{e.preventDefault();fetchTrack(refId);}}><label htmlFor="tracking-reference" className="mb-2 block text-xs font-extrabold">Transfer reference</label><div className="flex flex-col gap-2 sm:flex-row"><input id="tracking-reference" value={refId} onChange={e=>setRefId(e.target.value)} className="ss-input min-h-12 flex-1 font-mono text-sm" placeholder="Enter your transfer reference"/><button type="submit" disabled={loading||!refId.trim()} className="ss-primary min-h-12 disabled:opacity-50">{loading?<LoaderCircle size={17} className="animate-spin"/>:<Search size={17}/>} Track transfer</button></div></form></section>
+  {error&&<p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+  {result&&<div className="space-y-5">
+   <section className="ss-surface overflow-hidden rounded-[22px]"><div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5" style={{background:'linear-gradient(120deg,var(--accent-soft),var(--surface))',borderBottom:'1px solid var(--border)'}}><div><p className="ss-copy text-[10px] font-extrabold uppercase tracking-widest">Transfer reference</p><p className="mt-1 break-all font-mono text-lg font-black">{result.reference}</p></div><span className="inline-flex w-fit rounded-full px-3 py-1.5 text-xs font-extrabold capitalize" style={status==='completed'?{background:'var(--accent)',color:'#17140c'}:status==='failed'?{background:'rgba(239,68,68,.12)',color:'#dc2626'}:{background:'var(--surface-muted)',color:'var(--text)'}}>{statusLabel(result.status)}</span></div><div className="grid grid-cols-2 gap-2 p-3 sm:grid-cols-4 sm:p-4">{[{label:'Route',value:`${result.sender_country||'—'} → ${result.recipient_country||'—'}`},{label:'You sent',value:`${result.send_amount} ${result.send_currency}`},{label:'Recipient gets',value:`${result.receive_amount} ${result.receive_currency}`},{label:'Channel',value:result.channel||'—'}].map(x=><div key={x.label} className="rounded-xl p-3" style={{background:'var(--surface-muted)'}}><p className="ss-copy text-[10px] font-bold">{x.label}</p><p className="mt-1 break-words text-sm font-extrabold">{x.value}</p></div>)}</div></section>
+   <section className="ss-surface rounded-[22px] p-4 sm:p-6"><div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h3 className="flex items-center gap-2 text-base font-black"><Zap size={17} style={{color:'var(--accent-strong)'}}/> Transfer progress</h3><p className="ss-copy mt-1 text-xs">Follow each recorded step in the transfer journey.</p></div><div className="flex flex-wrap gap-2"><button type="button" onClick={()=>runAction('advance','advance')} disabled={!!actionLoading||terminal} className="min-h-10 rounded-xl border px-3 text-xs font-bold disabled:opacity-40" style={{borderColor:'var(--border)'}}>Advance demo</button><button type="button" onClick={()=>runAction('validate','run validation')} disabled={!!actionLoading||status==='completed'} className="ss-primary min-h-10 text-xs disabled:opacity-40">{actionLoading?<LoaderCircle size={14} className="animate-spin"/>:<Play size={14}/>} Validate</button></div></div>
+    {stages.length?<div className="mt-6 space-y-0">{stages.map((stage,index)=>{const done=completed.has(stage);const current=status===stage;return <div key={stage} className="flex gap-3"><div className="flex flex-col items-center"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={done?{background:'var(--accent)',color:'#17140c'}:current?{background:'var(--accent-soft)',color:'var(--accent-strong)',outline:'3px solid var(--accent-soft)'}:{background:'var(--surface-muted)',color:'var(--muted)'}}>{done?<CheckCircle2 size={18}/>:<Circle size={18}/>}</span>{index<stages.length-1&&<span className="my-1 min-h-8 w-0.5 flex-1" style={{background:done?'var(--accent)':'var(--border)'}}/>}</div><div className="min-w-0 flex-1 pb-6"><p className="text-sm font-extrabold capitalize">{statusLabel(stage)}</p><p className="ss-copy mt-1 text-xs">{done?'Recorded as completed':current?'Current recorded stage':'Waiting for this stage'}</p></div></div>;})}</div>:<p className="ss-copy py-8 text-center text-sm">No progress stages are available for this transfer yet.</p>}
+   </section>
+   <section className="grid gap-4 sm:grid-cols-2"><div className="ss-surface rounded-[22px] p-4 sm:p-5"><h3 className="flex items-center gap-2 text-sm font-extrabold"><ShieldCheck size={16} style={{color:'var(--accent-strong)'}}/> Verification details</h3><div className="mt-4 space-y-2 text-xs">{[['Stellar transaction',result.stellar_tx_hash],['On-ramp reference',result.on_ramp_reference],['Anchor reference',result.anchor_reference],['Payout reference',result.payout_reference]].map(([label,value])=><div key={label} className="flex items-start justify-between gap-3 rounded-xl p-3" style={{background:'var(--surface-muted)'}}><span className="ss-copy">{label}</span><span className="max-w-[58%] break-all text-right font-mono font-semibold">{value||'Not available'}</span></div>)}</div></div><div className="ss-surface rounded-[22px] p-4 sm:p-5"><h3 className="flex items-center gap-2 text-sm font-extrabold"><FileJson size={16} style={{color:'var(--accent-strong)'}}/> Evidence & reports</h3><p className="ss-copy mt-2 text-xs leading-5">View or download the evidence report returned by the transfer service.</p><button type="button" onClick={()=>setShowEvidence(v=>!v)} className="mt-4 min-h-11 w-full rounded-xl border px-3 text-xs font-bold" style={{borderColor:'var(--border)'}}>{showEvidence?'Hide':'View'} evidence report</button>{report&&<button type="button" onClick={downloadEvidence} className="ss-primary mt-2 min-h-11 w-full text-xs"><Download size={15}/> Download JSON</button>}</div></section>
+   {showEvidence&&report&&<pre className="max-h-96 overflow-auto rounded-2xl bg-[#171717] p-4 text-xs text-white">{JSON.stringify(report,null,2)}</pre>}
+  </div>}
+ </div>;
 };
-
 export default Track;

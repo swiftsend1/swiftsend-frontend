@@ -56,9 +56,9 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-stellar-black px-4 py-10 sm:px-6 lg:px-8">
+    <div className="min-h-screen px-4 py-10 sm:px-6 lg:px-8" style={{background:"var(--page)"}}>
       <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-5xl items-center gap-8 lg:grid-cols-[1fr_1fr]">
-        <section className="hidden text-white lg:block">
+        <section className="hidden rounded-[28px] p-8 text-white lg:block" style={{background:"linear-gradient(145deg,#171717,#332a17)"}}>
           <span className="inline-flex items-center gap-2 rounded-full border border-stellar-yellow/30 bg-stellar-yellow/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-stellar-yellow">
             <ShieldCheck size={14} /> Separate Admin Access
           </span>
@@ -70,7 +70,7 @@ const AdminLogin = () => {
           </div>
         </section>
 
-        <section className="w-full rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,.6)] sm:p-10">
+        <section className="ss-surface w-full rounded-[28px] p-6 sm:p-10">
           <div className="mb-6 flex items-center gap-3 lg:hidden">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-stellar-black text-stellar-yellow"><LayoutDashboard size={18} /></span>
             <div>
@@ -79,14 +79,14 @@ const AdminLogin = () => {
             </div>
           </div>
           <p className="text-sm font-bold uppercase tracking-[.16em] text-stellar-teal">Admin sign in</p>
-          <h2 className="mt-2 text-3xl font-bold tracking-[-.045em] text-stellar-black">Access operations dashboard</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-500">Use your admin/staff credentials. Regular user access does not apply here.</p>
+          <h2 className="ss-title mt-2 text-3xl font-bold tracking-[-.045em]">Access operations dashboard</h2>
+          <p className="ss-copy mt-2 text-sm leading-6">Use your admin/staff credentials. Regular user access does not apply here.</p>
 
           {error ? <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">{error}</div> : null}
 
           <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="admin-email" className="text-sm font-semibold text-slate-700">Admin email</label>
+              <label htmlFor="admin-email" className="text-sm font-semibold">Admin email</label>
               <div className="relative">
                 <Mail size={17} className="pointer-events-none absolute left-3.5 top-1/2 mt-1 -translate-y-1/2 text-slate-400" />
                 <input id="admin-email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className={`${inputClass} pl-10`} placeholder="admin@company.com" />

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-const ThemeContext = createContext(null);
+const ThemeContext = createContext({ theme: 'light', isDark: false, setTheme: () => {}, toggleTheme: () => {} });
 const STORAGE_KEY = 'swiftsend-theme';
 
 const getInitialTheme = () => {
@@ -33,6 +33,5 @@ export const ThemeProvider = ({ children }) => {
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error('useTheme must be used inside ThemeProvider');
-  return context;
+  return context || { theme: 'light', isDark: false, setTheme: () => {}, toggleTheme: () => {} };
 };

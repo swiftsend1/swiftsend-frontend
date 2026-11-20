@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity,
@@ -37,6 +38,8 @@ const StatusBadge = ({ status }) => {
   return <span className="inline-flex items-center gap-1 rounded-full bg-stellar-yellow/20 px-2.5 py-1 text-xs font-semibold text-stellar-black ring-1 ring-stellar-yellow/50 capitalize"><AlertCircle size={12} /> {s.replace(/_/g, ' ') || 'unknown'}</span>;
 };
 
+StatusBadge.propTypes = { status: PropTypes.string };
+
 const StatCard = ({ icon, label, value, hint, tone = 'default' }) => (
   <div className={`rounded-2xl border bg-[var(--surface)] p-5 shadow-sm ${tone === 'accent' ? 'border-stellar-yellow/40 ring-1 ring-stellar-yellow/20' : 'border-[var(--border)]'}`}>
     <div className="flex items-start justify-between gap-3">
@@ -49,6 +52,14 @@ const StatCard = ({ icon, label, value, hint, tone = 'default' }) => (
     </div>
   </div>
 );
+
+StatCard.propTypes = {
+  icon: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  hint: PropTypes.string,
+  tone: PropTypes.string,
+};
 
 const AdminDashboard = () => {
   const { authFetch, user, roles } = useAuth();

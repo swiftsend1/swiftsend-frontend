@@ -56,10 +56,10 @@ const Footer = () => {
           <div>
             <h2 className="text-sm font-bold text-stellar-black dark:text-white">Products</h2>
             <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link className="transition hover:text-swift-blue" to="/send">Cross-border transfers</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/receive">Collections & payouts</Link></li>
+              <li><Link className="transition hover:text-swift-blue" to="/send">Send money</Link></li>
+              <li><Link className="transition hover:text-swift-blue" to="/receive">Receive money</Link></li>
               <li><Link className="transition hover:text-swift-blue" to="/rates">FX & pricing</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/track">Transfer tracking</Link></li>
+              <li><Link className="transition hover:text-swift-blue" to="/track">Track a transfer</Link></li>
             </ul>
           </div>
 
@@ -79,7 +79,7 @@ const Footer = () => {
               <li><Link className="transition hover:text-swift-blue" to="/">About</Link></li>
               <li><Link className="transition hover:text-swift-blue" to="/help">Help centre</Link></li>
               <li><Link className="transition hover:text-swift-blue" to="/login">Log in</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/register">Get started</Link></li>
+              <li><Link className="transition hover:text-swift-blue" to="/register">Create account</Link></li>
             </ul>
           </div>
         </div>

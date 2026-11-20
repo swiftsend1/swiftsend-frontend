@@ -58,7 +58,7 @@ const Footer = () => {
             <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
               <li><Link className="transition hover:text-swift-blue" to="/send">Send money</Link></li>
               <li><Link className="transition hover:text-swift-blue" to="/receive">Receive money</Link></li>
-              <li><Link className="transition hover:text-swift-blue" to="/rates">FX & pricing</Link></li>
+              <li><Link className="transition hover:text-swift-blue" to="/rates">Exchange rates</Link></li>
               <li><Link className="transition hover:text-swift-blue" to="/track">Track a transfer</Link></li>
             </ul>
           </div>

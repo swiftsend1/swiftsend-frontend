@@ -28,11 +28,11 @@ describe("DarkModeToggle", () => {
 
   it("switches back to light mode", () => {
     localStorage.setItem("swiftsend-theme", "dark");
-    render(<DarkModeToggle />);
+    render(<ThemeProvider><DarkModeToggle /></ThemeProvider>);
 
     fireEvent.click(screen.getByRole("button", { name: "Switch to light mode" }));
     expect(screen.getByRole("button", { name: "Switch to dark mode" })).toHaveAttribute("aria-pressed", "false");
-    expect(localStorage.getItem("theme")).toBe("light");
+    expect(localStorage.getItem("swiftsend-theme")).toBe("light");
     expect(document.documentElement).not.toHaveClass("dark");
   });
 });

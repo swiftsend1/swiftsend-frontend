@@ -54,18 +54,18 @@ const Dashboard = () => {
 
   return (
     <div className="ss-page space-y-7">
-      <section className="relative overflow-hidden rounded-[24px] p-6 text-white sm:p-8" style={{ background: 'linear-gradient(118deg,#101d36 0%,#172d49 58%,#087f75 125%)' }}>
+      <section className="relative overflow-hidden rounded-[24px] p-6 text-white sm:p-8" style={{ background: 'linear-gradient(125deg,#f1cf72 0%,#e4b638 55%,#c99316 100%)' }}>
         <div className="pointer-events-none absolute -right-12 -top-24 h-72 w-72 rounded-full border-[1px] border-white/10" />
         <div className="pointer-events-none absolute -right-2 -top-14 h-52 w-52 rounded-full border-[1px] border-white/10" />
-        <div className="relative flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
+        <div className="relative flex flex-col justify-between gap-7 lg:flex-row lg:items-end text-[#17140c]">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.15em] text-teal-100">
+            <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/25 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.15em] text-black">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> Your money, in motion
             </span>
             <h2 className="mt-5 text-3xl font-extrabold tracking-[-.045em] sm:text-4xl">Good to see you, {getDisplayName(user)}.</h2>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-slate-200 sm:text-base">Send across borders with more clarity. Keep an eye on every transfer from one simple workspace.</p>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-black/70 sm:text-base">Send across borders with more clarity. Keep an eye on every transfer from one simple workspace.</p>
           </div>
-          <Link to="/send" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-extrabold text-[#102039] shadow-lg transition hover:-translate-y-0.5" style={{ background: '#efc45b' }}>
+          <Link to="/send" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-extrabold text-white shadow-lg transition hover:-translate-y-0.5" style={{ background: '#171717' }}>
             <Plus size={17} /> New transfer <ArrowUpRight size={16} />
           </Link>
         </div>
@@ -75,8 +75,8 @@ const Dashboard = () => {
             { label: 'Successfully completed', value: loading ? '—' : stats.completed, icon: CheckCircle2 },
             { label: 'In progress', value: loading ? '—' : stats.pending, icon: Clock3 },
           ].map(({ label, value, icon: Icon }) => (
-            <div key={label} className="rounded-2xl border border-white/10 bg-white/[.08] p-4 backdrop-blur-sm">
-              <div className="flex items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-300">{label}</span><Icon size={16} className="text-teal-200" /></div>
+            <div key={label} className="rounded-2xl border border-black/10 bg-white/35 p-4 text-[#17140c] backdrop-blur-sm">
+              <div className="flex items-center justify-between gap-3"><span className="text-xs font-semibold text-black/60">{label}</span><Icon size={16} className="text-black" /></div>
               <p className="mt-2 text-2xl font-extrabold tabular-nums">{value}</p>
             </div>
           ))}

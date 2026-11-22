@@ -73,7 +73,7 @@ const Register = () => {
 
   return (
     <div className="flex min-h-[calc(100vh-76px)] items-center bg-[var(--page)] px-3 py-6 sm:px-6 sm:py-10">
-      <section className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_80px_-45px_rgba(22,22,22,.45)] lg:grid-cols-[1.05fr_.95fr]" aria-labelledby="register-heading">
+      <section className="mx-auto grid min-w-0 w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_80px_-45px_rgba(22,22,22,.45)] lg:grid-cols-[1.05fr_.95fr]" aria-labelledby="register-heading">
         <aside className="relative hidden overflow-hidden p-8 text-white lg:block lg:p-10">
           <img src={paymentImage} onError={handleImageFallback} alt="" className="absolute inset-0 h-full w-full object-cover opacity-80" />
           <div className="absolute inset-0 bg-gradient-to-br from-[#161616]/80 via-[#161616]/55 to-[#6c5116]/70" />
@@ -92,7 +92,7 @@ const Register = () => {
           </div>
         </aside>
 
-        <div className="p-5 sm:p-8 lg:p-10">
+        <div className="min-w-0 p-5 sm:p-8 lg:p-10">
           <div className="mx-auto max-w-md">
             <div className="relative mb-6 h-28 overflow-hidden rounded-3xl lg:hidden">
               <img src={paymentImage} onError={handleImageFallback} alt="" className="absolute inset-0 h-full w-full object-cover" />

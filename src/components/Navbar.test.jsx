@@ -23,10 +23,10 @@ describe("Navbar", () => {
     expect(screen.getByText("Send money")).toBeInTheDocument();
     expect(screen.getByText("Receive money")).toBeInTheDocument();
     expect(screen.getByText("Exchange rates")).toBeInTheDocument();
-    expect(screen.getByText("Get started")).toBeInTheDocument();
+    expect(screen.getByText("Sign up")).toBeInTheDocument();
   });
 
-  it("shows the signed in user and logout action for authenticated users", () => {
+  it("shows only home and logout controls for authenticated users", () => {
     sessionStorage.setItem(
       "swiftsend.session",
       JSON.stringify({
@@ -39,8 +39,10 @@ describe("Navbar", () => {
     );
 
     renderNavbar();
-    expect(screen.getByText("Ada Lovelace")).toBeInTheDocument();
-    expect(screen.getByText("Overview")).toBeInTheDocument();
-    expect(screen.getByText("Wallet")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Go to home" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument();
+    expect(screen.queryByText("Ada Lovelace")).not.toBeInTheDocument();
+    expect(screen.queryByText("Overview")).not.toBeInTheDocument();
+    expect(screen.queryByText("Wallet")).not.toBeInTheDocument();
   });
 });

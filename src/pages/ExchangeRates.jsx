@@ -1,6 +1,95 @@
-import { useMemo,useState } from 'react';
+import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
+import { ArrowDownUp, ArrowRight, Globe2, Info, ShieldCheck, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ArrowDownUp,ArrowRight,Info } from 'lucide-react';
-const currencies={USD:{flag:'🇺🇸',name:'US Dollar'},KES:{flag:'🇰🇪',name:'Kenyan Shilling'},NGN:{flag:'🇳🇬',name:'Nigerian Naira'},GHS:{flag:'🇬🇭',name:'Ghanaian Cedi'},PHP:{flag:'🇵🇭',name:'Philippine Peso'},GBP:{flag:'🇬🇧',name:'British Pound'}};
-const rates={'USD-KES':129.42,'USD-NGN':1547.8,'USD-GHS':15.32,'USD-PHP':58.21,'GBP-KES':167.45,'GBP-NGN':2000.13};const usd={USD:1,KES:129.42,NGN:1547.8,GHS:15.32,PHP:58.21,GBP:.7729};const getRate=(from,to)=>from===to?1:rates[`${from}-${to}`]|| (rates[`${to}-${from}`]?1/rates[`${to}-${from}`]:usd[to]/usd[from]);
-export default function ExchangeRates(){const[from,setFrom]=useState('USD');const[to,setTo]=useState('KES');const[amount,setAmount]=useState('100');const rate=getRate(from,to);const output=useMemo(()=>Number(amount||0)*rate,[amount,rate]);const swap=()=>{setFrom(to);setTo(from);};return <div className="mx-auto max-w-4xl space-y-6"><header><p className="text-[10px] font-extrabold uppercase tracking-[.18em]" style={{color:'var(--accent-strong)'}}>Currency converter</p><h2 className="ss-title mt-2 text-2xl font-black sm:text-3xl">Understand the exchange.</h2><p className="ss-copy mt-1 text-sm">Explore an indicative conversion. Your transfer quote is calculated separately by the SwiftSend service.</p></header><section className="ss-surface rounded-[24px] p-4 sm:p-7"><div className="mb-4 flex items-start gap-2 rounded-xl p-3" style={{background:'var(--accent-soft)'}}><Info size={16} className="mt-0.5 shrink-0" style={{color:'var(--accent-strong)'}}/><p className="text-xs leading-5">Illustrative rates only. These values are static examples, not live market rates or a guaranteed SwiftSend offer. Get an official quote in the Send Money flow.</p></div><div className="grid items-center gap-3 md:grid-cols-[1fr_auto_1fr]"><div className="rounded-2xl border p-4" style={{borderColor:'var(--border)'}}><label htmlFor="rate-amount" className="ss-copy text-xs font-bold">You send</label><div className="mt-2 flex items-center gap-2"><input id="rate-amount" type="number" min="0" inputMode="decimal" value={amount} onChange={e=>setAmount(e.target.value)} className="min-w-0 flex-1 bg-transparent text-2xl font-black outline-none" style={{color:'var(--text)'}}/><select aria-label="Sending currency" value={from} onChange={e=>setFrom(e.target.value)} className="max-w-[105px] rounded-xl p-2 text-xs font-extrabold" style={{background:'var(--surface-muted)',color:'var(--text)'}}>{Object.keys(currencies).map(c=><option key={c} value={c}>{currencies[c].flag} {c}</option>)}</select></div><p className="ss-copy mt-2 text-[10px]">{currencies[from].name}</p></div><button type="button" onClick={swap} aria-label="Swap currencies" className="mx-auto grid h-10 w-10 place-items-center rounded-full border" style={{borderColor:'var(--border)',color:'var(--accent-strong)'}}><ArrowDownUp size={17}/></button><div className="rounded-2xl border p-4" style={{borderColor:'var(--border)',background:'var(--accent-soft)'}}><label htmlFor="rate-output" className="ss-copy text-xs font-bold">Indicative receive amount</label><div className="mt-2 flex items-center gap-2"><input id="rate-output" readOnly value={output.toLocaleString('en',{maximumFractionDigits:2})} className="min-w-0 flex-1 bg-transparent text-2xl font-black outline-none" style={{color:'var(--text)'}}/><select aria-label="Receiving currency" value={to} onChange={e=>setTo(e.target.value)} className="max-w-[105px] rounded-xl p-2 text-xs font-extrabold" style={{background:'var(--surface)',color:'var(--text)'}}>{Object.keys(currencies).map(c=><option key={c} value={c}>{currencies[c].flag} {c}</option>)}</select></div><p className="ss-copy mt-2 text-[10px]">{currencies[to].name}</p></div></div><div className="mt-5 flex items-center justify-between rounded-xl p-4" style={{background:'var(--surface-muted)'}}><span className="ss-copy text-xs">Illustrative conversion rate</span><b className="text-sm">1 {from} = {rate.toLocaleString('en',{maximumFractionDigits:4})} {to}</b></div><Link to="/send" className="ss-primary mt-4 min-h-12 w-full">Get an official transfer quote <ArrowRight size={16}/></Link></section><section><h3 className="text-base font-extrabold">Example currency pairs</h3><div className="mt-3 grid gap-2 sm:grid-cols-2">{[['USD','KES'],['USD','NGN'],['USD','PHP'],['GBP','KES']].map(([a,b])=><div key={a+b} className="ss-surface flex items-center justify-between rounded-xl p-4"><div className="flex items-center gap-2 text-sm font-bold">{currencies[a].flag} {a} <ArrowRight size={13} style={{color:'var(--muted)'}}/> {currencies[b].flag} {b}</div><span className="text-xs font-extrabold" style={{color:'var(--accent-strong)'}}>{getRate(a,b).toLocaleString('en',{maximumFractionDigits:4})}</span></div>)}</div></section></div>}
+
+const currencies = {
+  USD: { flag: '🇺🇸', name: 'US Dollar', market: 'United States' },
+  KES: { flag: '🇰🇪', name: 'Kenyan Shilling', market: 'Kenya · East Africa' },
+  NGN: { flag: '🇳🇬', name: 'Nigerian Naira', market: 'Nigeria' },
+  GBP: { flag: '🇬🇧', name: 'British Pound', market: 'United Kingdom' },
+};
+
+const rates = {
+  'USD-KES': 129.42,
+  'USD-NGN': 1547.8,
+  'GBP-KES': 167.45,
+  'GBP-NGN': 2000.13,
+};
+
+const baseToUsd = { USD: 1, KES: 129.42, NGN: 1547.8, GBP: 0.7729 };
+const marketPairs = [['USD', 'KES'], ['GBP', 'KES'], ['USD', 'NGN'], ['GBP', 'NGN']];
+
+const getRate = (from, to) => from === to ? 1 : rates[`${from}-${to}`] || (rates[`${to}-${from}`] ? 1 / rates[`${to}-${from}`] : baseToUsd[to] / baseToUsd[from]);
+const formatRate = (value) => value.toLocaleString('en', { maximumFractionDigits: 4 });
+
+export default function ExchangeRates() {
+  const [from, setFrom] = useState('USD');
+  const [to, setTo] = useState('KES');
+  const [amount, setAmount] = useState('100');
+  const rate = getRate(from, to);
+  const output = useMemo(() => Number(amount || 0) * rate, [amount, rate]);
+  const swap = () => { setFrom(to); setTo(from); };
+
+  return (
+    <div className="mx-auto max-w-5xl space-y-6 sm:space-y-7">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.15em]" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}><Globe2 size={13} /> Launch markets</span>
+          <h2 className="ss-title mt-3 text-2xl font-black tracking-tight sm:text-4xl">Compare the route before you send.</h2>
+          <p className="ss-copy mt-2 max-w-2xl text-sm leading-6">Explore indicative rates across Kenya and East Africa, Nigeria, the US, and the UK. SwiftSend is designed for transfers in either direction between enabled markets.</p>
+        </div>
+        <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--muted)' }}><ShieldCheck size={16} style={{ color: 'var(--accent-strong)' }} /> Clear before you confirm</div>
+      </header>
+
+      <section className="ss-surface overflow-hidden rounded-[26px]">
+        <div className="flex flex-col justify-between gap-3 border-b px-5 py-4 sm:flex-row sm:items-center sm:px-7" style={{ borderColor: 'var(--border)' }}>
+          <div><p className="text-sm font-black">Indicative rate calculator</p><p className="ss-copy mt-1 text-xs">Choose a direction and see the estimated recipient amount.</p></div>
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-extrabold" style={{ background: 'var(--surface-muted)', color: 'var(--muted)' }}><TrendingUp size={13} /> Example rates</span>
+        </div>
+        <div className="p-4 sm:p-7">
+          <div className="mb-5 flex items-start gap-2 rounded-2xl p-3.5" style={{ background: 'var(--accent-soft)' }}>
+            <Info size={16} className="mt-0.5 shrink-0" style={{ color: 'var(--accent-strong)' }} />
+            <p className="text-xs leading-5">These are illustrative examples, not live market rates or a guaranteed SwiftSend offer. Your final rate and fees are shown in the transfer quote before confirmation.</p>
+          </div>
+
+          <div className="grid items-stretch gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
+            <RateInput id="rate-amount" label="You send" amount={amount} setAmount={setAmount} currency={from} setCurrency={setFrom} />
+            <button type="button" onClick={swap} aria-label="Swap sending and receiving currencies" className="mx-auto grid h-11 w-11 place-items-center rounded-full border bg-[var(--surface)] transition hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]" style={{ borderColor: 'var(--border)', color: 'var(--accent-strong)' }}><ArrowDownUp size={17} /></button>
+            <RateInput id="rate-output" label="Recipient gets" value={output.toLocaleString('en', { maximumFractionDigits: 2 })} currency={to} setCurrency={setTo} readOnly />
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl p-4" style={{ background: 'var(--surface-muted)' }}><p className="ss-copy text-[10px] font-bold uppercase tracking-wider">Indicative rate</p><p className="mt-1 text-lg font-black">1 {from} = {formatRate(rate)} {to}</p></div>
+            <div className="rounded-2xl p-4" style={{ background: 'var(--surface-muted)' }}><p className="ss-copy text-[10px] font-bold uppercase tracking-wider">Selected route</p><p className="mt-1 text-sm font-black">{currencies[from].market} <ArrowRight size={14} className="mx-1 inline" style={{ color: 'var(--accent-strong)' }} /> {currencies[to].market}</p></div>
+          </div>
+          <Link to="/send" className="ss-primary mt-4 min-h-12 w-full">Get an official transfer quote <ArrowRight size={16} /></Link>
+        </div>
+      </section>
+
+      <section>
+        <div className="flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.18em]" style={{ color: 'var(--accent-strong)' }}>Starting corridors</p><h3 className="ss-title mt-1 text-xl font-black">Move money either way.</h3></div><span className="text-xs font-semibold" style={{ color: 'var(--muted)' }}>Indicative only</span></div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {marketPairs.map(([a, b]) => <div key={`${a}-${b}`} className="ss-surface flex items-center justify-between gap-3 rounded-2xl p-4"><div className="min-w-0"><div className="flex items-center gap-2 text-sm font-black">{currencies[a].flag} {a} <ArrowRight size={14} style={{ color: 'var(--muted)' }} /> {currencies[b].flag} {b}</div><p className="ss-copy mt-1 text-[11px]">Swap the direction in the calculator</p></div><span className="shrink-0 text-sm font-black" style={{ color: 'var(--accent-strong)' }}>{formatRate(getRate(a, b))}</span></div>)}
+        </div>
+      </section>
+
+      <section className="rounded-2xl border p-4 sm:flex sm:items-center sm:gap-4" style={{ borderColor: 'var(--border)', background: 'var(--surface-muted)' }}><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: 'var(--surface)', color: 'var(--accent-strong)' }}><Info size={18} /></span><div><p className="text-sm font-extrabold">Launching with focused corridors</p><p className="ss-copy mt-1 text-xs leading-5">SwiftSend starts with Kenya and East Africa, Nigeria, the United States, and the United Kingdom. Availability depends on the sending and receiving rails enabled for each route.</p></div></section>
+    </div>
+  );
+}
+
+function RateInput({ id, label, amount, value, setAmount, currency, setCurrency, readOnly = false }) {
+  return <div className="rounded-2xl border p-4" style={{ borderColor: 'var(--border)', background: readOnly ? 'var(--accent-soft)' : 'var(--surface)' }}><label htmlFor={id} className="ss-copy text-xs font-bold">{label}</label><div className="mt-2 flex items-center gap-2"><input id={id} type={readOnly ? 'text' : 'number'} min="0" inputMode="decimal" readOnly={readOnly} value={readOnly ? value : amount} onChange={readOnly ? undefined : (event) => setAmount(event.target.value)} className="min-w-0 flex-1 bg-transparent text-2xl font-black outline-none" style={{ color: 'var(--text)' }} /><select aria-label={`${label} currency`} value={currency} onChange={(event) => setCurrency(event.target.value)} className="max-w-[105px] rounded-xl p-2 text-xs font-extrabold" style={{ background: readOnly ? 'var(--surface)' : 'var(--surface-muted)', color: 'var(--text)' }}>{Object.keys(currencies).map((code) => <option key={code} value={code}>{currencies[code].flag} {code}</option>)}</select></div><p className="ss-copy mt-2 text-[10px]">{currencies[currency].name}</p></div>;
+}
+
+RateInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  amount: PropTypes.string,
+  value: PropTypes.string,
+  setAmount: PropTypes.func,
+  currency: PropTypes.string.isRequired,
+  setCurrency: PropTypes.func.isRequired,
+  readOnly: PropTypes.bool,
+};

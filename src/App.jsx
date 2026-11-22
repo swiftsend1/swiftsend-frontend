@@ -20,6 +20,7 @@ import Track from './pages/Track';
 import Profile from './pages/Profile';
 import Withdraw from './pages/Withdraw';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
@@ -50,6 +51,7 @@ function App() {
 
         <Route element={<PublicOnlyRoute />}>
           <Route path="login" element={<Login />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="register" element={<Register />} />
         </Route>
       </Route>

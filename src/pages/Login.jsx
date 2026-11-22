@@ -55,7 +55,7 @@ const Login = () => {
 
   return (
     <div className="flex min-h-[calc(100vh-76px)] items-center bg-[var(--page)] px-3 py-6 sm:px-6 sm:py-10">
-      <section className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_80px_-45px_rgba(22,22,22,.45)] lg:grid-cols-[.9fr_1.1fr]" aria-labelledby="login-heading">
+      <section className="mx-auto grid min-w-0 w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_80px_-45px_rgba(22,22,22,.45)] lg:grid-cols-[.9fr_1.1fr]" aria-labelledby="login-heading">
         <aside className="relative hidden overflow-hidden p-8 text-white lg:block lg:p-10">
           <img src={paymentImage} onError={handleImageFallback} alt="" className="absolute inset-0 h-full w-full object-cover opacity-80" />
           <div className="absolute inset-0 bg-gradient-to-br from-[#161616]/80 via-[#161616]/55 to-[#6c5116]/70" />
@@ -70,7 +70,7 @@ const Login = () => {
           </div>
         </aside>
 
-        <div className="p-5 sm:p-8 lg:p-10">
+        <div className="min-w-0 p-5 sm:p-8 lg:p-10">
           <div className="mx-auto max-w-md">
             <div className="relative mb-6 h-28 overflow-hidden rounded-3xl lg:hidden">
               <img src={paymentImage} onError={handleImageFallback} alt="" className="absolute inset-0 h-full w-full object-cover" />
@@ -95,7 +95,7 @@ const Login = () => {
                 </div>
               </div>
               <div>
-                <div className="mb-2 flex items-center justify-between"><label htmlFor="login-password" className="block text-xs font-black text-[var(--text)]">Password</label><Link to="/help" className="text-[11px] font-bold text-[var(--accent-strong)] hover:underline">Need help?</Link></div>
+                <div className="mb-2 flex items-center justify-between"><label htmlFor="login-password" className="block text-xs font-black text-[var(--text)]">Password</label><span className="flex items-center gap-3"><Link to="/help" className="text-[11px] font-bold text-[var(--accent-strong)] hover:underline">Need help?</Link><Link to="/forgot-password" className="text-[11px] font-bold text-[var(--accent-strong)] hover:underline">Forgot password?</Link></span></div>
                 <div className="relative">
                   <LockKeyhole size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
                   <input id="login-password" name="password" type={showPassword ? 'text' : 'password'} required autoComplete="current-password" value={password} onChange={(event) => { setPassword(event.target.value); setError(''); }} className={fieldClass} placeholder="Enter your password" />

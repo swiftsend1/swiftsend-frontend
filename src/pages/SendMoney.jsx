@@ -4,10 +4,11 @@ import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Gl
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
 
-const sendCountries = [
-  { code: 'GB', label: 'United Kingdom', currency: 'GBP', flag: '🇬🇧', corridor: 'UK-KE' },
-  { code: 'US', label: 'United States', currency: 'USD', flag: '🇺🇸', corridor: 'US-KE' },
-  { code: 'AE', label: 'United Arab Emirates', currency: 'AED', flag: '🇦🇪', corridor: 'AE-KE' },
+const transferCountries = [
+  { code: 'KE', label: 'Kenya', currency: 'KES', flag: '🇰🇪' },
+  { code: 'NG', label: 'Nigeria', currency: 'NGN', flag: '🇳🇬' },
+  { code: 'US', label: 'United States', currency: 'USD', flag: '🇺🇸' },
+  { code: 'GB', label: 'United Kingdom', currency: 'GBP', flag: '🇬🇧' },
 ];
 const steps = ['Transfer', 'Recipient', 'Review'];
 const inputClass = 'ss-input min-h-[50px] text-sm';
@@ -16,6 +17,7 @@ const fieldLabel = 'mb-2 block text-xs font-bold tracking-wide';
 const SendMoney = () => {
   const { authFetch } = useAuth();
   const [senderCountry, setSenderCountry] = useState('US');
+  const [recipientCountry, setRecipientCountry] = useState('KE');
   const [quote, setQuote] = useState(null);
   const [quoteError, setQuoteError] = useState('');
   const [quoting, setQuoting] = useState(false);
@@ -29,13 +31,18 @@ const SendMoney = () => {
   const [error, setError] = useState('');
   const [created, setCreated] = useState(null);
 
-  const selected = useMemo(
-    () => sendCountries.find((country) => country.code === senderCountry) || sendCountries[1],
-    [senderCountry],
-  );
+  const selected = useMemo(() => transferCountries.find((country) => country.code === senderCountry) || transferCountries[2], [senderCountry]);
+  const recipient = useMemo(() => transferCountries.find((country) => country.code === recipientCountry) || transferCountries[0], [recipientCountry]);
+  const corridor = `${senderCountry}-${recipientCountry}`;
 
   useEffect(() => {
     const amount = form.send_amount;
+    if (senderCountry === recipientCountry) {
+      setQuote(null);
+      setQuoteError('Choose two different markets for a cross-border transfer.');
+      setQuoting(false);
+      return undefined;
+    }
     if (!amount || !Number.isFinite(Number(amount)) || Number(amount) <= 0) {
       setQuote(null);
       setQuoteError('');
@@ -50,7 +57,7 @@ const SendMoney = () => {
     fetch(apiUrl('/api/corridors/quote/'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ corridor: selected.corridor, send_amount: amount }),
+      body: JSON.stringify({ corridor, send_amount: amount }),
       signal: controller.signal,
     })
       .then(async (response) => {
@@ -66,14 +73,14 @@ const SendMoney = () => {
       })
       .finally(() => { if (!cancelled) setQuoting(false); });
     return () => { cancelled = true; controller.abort(); };
-  }, [form.send_amount, selected.corridor]);
+  }, [corridor, form.send_amount, recipientCountry, senderCountry]);
 
   const update = (key) => (event) => {
     setForm((current) => ({ ...current, [key]: event.target.value }));
     setError('');
   };
   const canContinue = step === 0
-    ? Boolean(quote && !quoting && Number(form.send_amount) > 0)
+    ? Boolean(quote && !quoting && Number(form.send_amount) > 0 && senderCountry !== recipientCountry)
     : step === 1
       ? Boolean(form.sender_name.trim() && form.recipient_name.trim() && form.recipient_contact.trim())
       : true;
@@ -86,10 +93,10 @@ const SendMoney = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          corridor: selected.corridor, channel: 'web',
+          corridor, channel: 'web',
           sender_name: form.sender_name, sender_contact: form.sender_contact, sender_country: senderCountry,
           recipient_name: form.recipient_name, recipient_contact: form.recipient_contact,
-          recipient_country: 'KE', recipient_payout_method: form.recipient_payout_method,
+          recipient_country: recipientCountry, recipient_payout_method: form.recipient_payout_method,
           send_amount: form.send_amount,
         }),
       });
@@ -139,7 +146,7 @@ const SendMoney = () => {
         <div>
           <span className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.15em]" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}><Globe2 size={13}/> Cross-border transfers</span>
           <h2 className="ss-title mt-3 text-2xl font-black tracking-tight sm:text-3xl">Send money, simply.</h2>
-          <p className="ss-copy mt-1 max-w-xl text-sm">A few simple steps. Review the exchange rate and fees before creating your transfer.</p>
+          <p className="ss-copy mt-1 max-w-xl text-sm">Choose a launch market in either direction, then review the exchange rate and fees before creating your transfer.</p>
         </div>
         <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--muted)' }}><ShieldCheck size={16} style={{ color: 'var(--accent-strong)' }}/> Secure transfer flow</div>
       </header>
@@ -166,20 +173,18 @@ const SendMoney = () => {
 
             {step === 0 && <>
               <div>
-                <h3 className="text-lg font-black">Where are you sending from?</h3>
-                <p className="ss-copy mt-1 text-xs">Choose one of the currently configured Kenya receiving corridors.</p>
+                <h3 className="text-lg font-black">Choose your transfer route</h3>
+                <p className="ss-copy mt-1 text-xs">SwiftSend is starting with Kenya and East Africa, Nigeria, the US, and UK. Transfers can move in either direction between enabled markets.</p>
               </div>
-              <div>
-                <label htmlFor="sender-country" className={fieldLabel}>Sending from</label>
-                <select id="sender-country" value={senderCountry} onChange={(event) => setSenderCountry(event.target.value)} className={inputClass}>
-                  {sendCountries.map((country) => <option key={country.code} value={country.code}>{country.flag} {country.label} ({country.currency})</option>)}
-                </select>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div><label htmlFor="sender-country" className={fieldLabel}>Sending from</label><select id="sender-country" value={senderCountry} onChange={(event) => setSenderCountry(event.target.value)} className={inputClass}>{transferCountries.map((country) => <option key={country.code} value={country.code}>{country.flag} {country.label} ({country.currency})</option>)}</select></div>
+                <div><label htmlFor="recipient-country" className={fieldLabel}>Sending to</label><select id="recipient-country" value={recipientCountry} onChange={(event) => setRecipientCountry(event.target.value)} className={inputClass}>{transferCountries.map((country) => <option key={country.code} value={country.code}>{country.flag} {country.label} ({country.currency})</option>)}</select></div>
               </div>
               <div className="rounded-2xl p-4" style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)' }}>
                 <div className="flex items-center justify-between gap-3">
-                  <div><p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Sending to</p><p className="mt-1 text-sm font-extrabold">🇰🇪 Kenya <span className="font-medium" style={{ color: 'var(--muted)' }}>· KES</span></p></div>
+                  <div><p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Route</p><p className="mt-1 text-sm font-extrabold">{selected.flag} {selected.label} <span className="font-medium" style={{ color: 'var(--muted)' }}>· {selected.currency}</span></p></div>
                   <ArrowUpDown size={18} style={{ color: 'var(--accent-strong)' }}/>
-                  <div className="text-right"><p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Corridor</p><p className="mt-1 text-sm font-extrabold">{selected.corridor}</p></div>
+                  <div className="text-right"><p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Receiving in</p><p className="mt-1 text-sm font-extrabold">{recipient.flag} {recipient.label} <span className="font-medium" style={{ color: 'var(--muted)' }}>· {recipient.currency}</span></p></div>
                 </div>
               </div>
               <div>
@@ -206,9 +211,9 @@ const SendMoney = () => {
                 <div><label htmlFor="sender-contact" className={fieldLabel}>Your email or phone <span className="font-normal" style={{ color: 'var(--muted)' }}>(optional)</span></label><input id="sender-contact" autoComplete="email" value={form.sender_contact} onChange={update('sender_contact')} className={inputClass} placeholder="Email address or phone number"/></div>
               </div>
               <div className="space-y-3 border-t pt-4" style={{ borderColor: 'var(--border)' }}>
-                <p className="text-[10px] font-extrabold uppercase tracking-[.16em]" style={{ color: 'var(--accent-strong)' }}>Recipient in Kenya</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-[.16em]" style={{ color: 'var(--accent-strong)' }}>Recipient in {recipient.label}</p>
                 <div><label htmlFor="recipient-name" className={fieldLabel}>Recipient full name</label><input id="recipient-name" autoComplete="name" value={form.recipient_name} onChange={update('recipient_name')} className={inputClass} placeholder="Name as registered with provider" required/></div>
-                <div><label htmlFor="recipient-contact" className={fieldLabel}>Recipient phone number</label><input id="recipient-contact" autoComplete="tel" inputMode="tel" value={form.recipient_contact} onChange={update('recipient_contact')} className={inputClass} placeholder="+254 7XX XXX XXX" required/></div>
+                <div><label htmlFor="recipient-contact" className={fieldLabel}>Recipient phone number</label><input id="recipient-contact" autoComplete="tel" inputMode="tel" value={form.recipient_contact} onChange={update('recipient_contact')} className={inputClass} placeholder="Country code and phone number" required/></div>
                 <div><label htmlFor="payout-method" className={fieldLabel}>How should they receive the money?</label><select id="payout-method" value={form.recipient_payout_method} onChange={update('recipient_payout_method')} className={inputClass}><option value="mobile_money">Mobile Money (M-Pesa)</option><option value="bank">Bank transfer</option></select></div>
               </div>
             </>}
@@ -217,7 +222,7 @@ const SendMoney = () => {
               <div><h3 className="text-lg font-black">Review your transfer</h3><p className="ss-copy mt-1 text-xs">Check the details carefully before creating your transfer.</p></div>
               <div className="rounded-2xl p-4" style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)' }}>
                 <p className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Transfer route</p>
-                <div className="mt-3 flex items-center justify-between gap-3"><div><p className="text-sm font-black">{selected.flag} {selected.label}</p><p className="text-xs" style={{ color: 'var(--muted)' }}>{quote?.send_currency || selected.currency}</p></div><ArrowRight size={18} style={{ color: 'var(--accent-strong)' }}/><div className="text-right"><p className="text-sm font-black">🇰🇪 Kenya</p><p className="text-xs" style={{ color: 'var(--muted)' }}>{quote?.receive_currency || 'KES'}</p></div></div>
+                <div className="mt-3 flex items-center justify-between gap-3"><div><p className="text-sm font-black">{selected.flag} {selected.label}</p><p className="text-xs" style={{ color: 'var(--muted)' }}>{quote?.send_currency || selected.currency}</p></div><ArrowRight size={18} style={{ color: 'var(--accent-strong)' }}/><div className="text-right"><p className="text-sm font-black">{recipient.flag} {recipient.label}</p><p className="text-xs" style={{ color: 'var(--muted)' }}>{quote?.receive_currency || recipient.currency}</p></div></div>
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between gap-3 text-sm"><span style={{ color: 'var(--muted)' }}>You send</span><b>{quote?.send_amount} {quote?.send_currency}</b></div>

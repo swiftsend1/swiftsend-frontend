@@ -12,7 +12,7 @@ const Layout = () => {
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      <Navbar />
+      {!inAppShell && <Navbar />}
       <main className={`min-h-0 flex-1 ${isLanding || inAppShell || isAuthPage ? '' : 'p-4 sm:p-6'}`}>
         <Outlet />
       </main>

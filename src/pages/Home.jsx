@@ -15,17 +15,14 @@ import {
 } from 'lucide-react';
 
 const corridors = [
-  { from: 'USD', to: 'KES', flag: '🇰🇪', country: 'Kenya', rate: 129.42, fee: 3.99 },
-  { from: 'USD', to: 'UGX', flag: '🇺🇬', country: 'Uganda', rate: 3785.1, fee: 4.25 },
-  { from: 'GBP', to: 'KES', flag: '🇰🇪', country: 'Kenya', rate: 165.08, fee: 2.99 },
-  { from: 'EUR', to: 'NGN', flag: '🇳🇬', country: 'Nigeria', rate: 1624.5, fee: 3.49 },
+  { from: 'USD', to: 'KES', flag: '🇰🇪', country: 'Kenya · East Africa', rate: 129.42, fee: 3.99 },
 ];
 
 const rates = [
   { pair: 'USD / KES', value: '129.42', change: '+0.18%', up: true },
-  { pair: 'USD / UGX', value: '3,785.10', change: '+0.06%', up: true },
   { pair: 'GBP / KES', value: '165.08', change: '-0.12%', up: false },
-  { pair: 'EUR / NGN', value: '1,624.50', change: '+0.21%', up: true },
+  { pair: 'USD / NGN', value: '1,547.80', change: '+0.21%', up: true },
+  { pair: 'GBP / NGN', value: '2,000.13', change: '+0.09%', up: true },
 ];
 
 const formatMoney = (value, max = 2) =>
@@ -33,11 +30,12 @@ const formatMoney = (value, max = 2) =>
 
 const Home = () => {
   return (
-    <div className="bg-[#f5f5f2] text-[#161616]">
+    <div className="overflow-x-hidden bg-[#eeede8] text-[#161616]">
       <section className="relative overflow-hidden px-3 pb-10 pt-6 sm:px-6 sm:pb-20 sm:pt-12 lg:px-8">
         <div className="pointer-events-none absolute inset-0 block w-full overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center opacity-[.2] sm:opacity-[.3] lg:opacity-[.64]" style={{ backgroundImage: "url('https://images.pexels.com/photos/6969933/pexels-photo-6969933.jpeg?auto=compress&cs=tinysrgb&w=1600'), url('/swiftsend-hero.svg')" }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f5f2]/90 via-[#f5f5f2]/45 to-[#f5f5f2]/15 lg:bg-gradient-to-r lg:from-[#f5f5f2]/55 lg:via-[#f5f5f2]/20 lg:to-transparent" />
+          <div className="absolute inset-0 bg-cover bg-center opacity-[.38] sm:opacity-[.48] lg:opacity-[.62]" style={{ backgroundImage: "url('https://images.pexels.com/photos/6969933/pexels-photo-6969933.jpeg?auto=compress&cs=tinysrgb&w=1600'), url('/swiftsend-hero.svg')" }} />
+          <div className="absolute inset-0 bg-[#161616]/10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#eeede8]/82 via-[#eeede8]/36 to-[#161616]/22 lg:bg-gradient-to-r lg:from-[#eeede8]/80 lg:via-[#eeede8]/32 lg:to-[#161616]/25" />
         </div>
         <div className="relative z-10 mx-auto max-w-[1320px]">
           <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
@@ -46,10 +44,10 @@ const Home = () => {
                 <span className="h-1.5 w-1.5 rounded-full bg-[#c59620]" /> SwiftSend
               </span>
               <h1 className="mt-6 text-[clamp(2.8rem,11vw,5rem)] font-black leading-[.92] tracking-[-.07em] text-[#161616]">Send and receive money <span className="text-[#b28214]">seamlessly.</span></h1>
-              <p className="mt-5 max-w-sm text-base leading-7 text-[#6f6f68] sm:text-lg">Simple transfers across Africa and the world. Know the cost. Track the journey.</p>
+              <p className="mt-5 max-w-sm text-base leading-7 text-[#6f6f68] sm:text-lg">Cross-border transfers connecting Kenya and East Africa, Nigeria, the US, and UK — in either direction.</p>
               <div className="mt-7 grid w-full gap-3 sm:flex sm:w-auto">
-                <Link to="/send" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-black text-white shadow-xl shadow-black/10 transition hover:-translate-y-0.5 hover:bg-[#302f2b] sm:w-auto">Send money <ArrowUpRight size={16} className="text-[#e3bb49]" /></Link>
-                <Link to="/track" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#d8d8d2] bg-white/90 px-5 py-3.5 text-sm font-black text-[#161616] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white sm:w-auto">Track transfer <ArrowRight size={16} /></Link>
+                <Link to="/send" className="relative inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#161616] px-5 py-3.5 text-sm font-black text-white shadow-xl shadow-black/10 transition hover:-translate-y-0.5 hover:bg-[#302f2b] sm:w-auto"><span>Send money</span><ArrowUpRight size={16} className="absolute right-5 text-[#e3bb49]" /></Link>
+                <Link to="/register" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#d8d8d2] bg-white/90 px-5 py-3.5 text-sm font-black text-[#161616] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white sm:w-auto">Get started <ArrowRight size={16} /></Link>
               </div>
               <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold text-[#888881]"><span className="inline-flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-full bg-[#e7f1e6] text-[#498b50]"><Check size={12} /></span>Transparent fees</span><span className="inline-flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-full bg-[#e7f1e6] text-[#498b50]"><Check size={12} /></span>Trackable transfers</span></div>
             </div>
@@ -69,7 +67,7 @@ const Home = () => {
           <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <SolutionCard icon={<Send />} label="Send money" detail="To wallets and banks" to="/send" />
             <SolutionCard icon={<ArrowDownLeft />} label="Receive money" detail="Share your details" to="/receive" />
-            <SolutionCard icon={<Globe2 />} label="Exchange rates" detail="See the real numbers" to="/rates" />
+            <SolutionCard icon={<Globe2 />} label="Exchange rates" detail="Compare launch corridors" to="/rates" />
             <SolutionCard icon={<LockKeyhole />} label="Stay protected" detail="Secure every step" to="/help" dark />
           </div>
         </div>
@@ -114,8 +112,7 @@ const HeroPhoneMockup = () => {
   const [typedAmount, setTypedAmount] = useState('');
   const [pulse, setPulse] = useState(false);
   const [flash, setFlash] = useState(false);
-  const [corridorIdx, setCorridorIdx] = useState(0);
-  const corridor = corridors[corridorIdx];
+  const corridor = corridors[0];
   const amountNumber = Number(typedAmount.replace(/[^0-9.]/g, '')) || 0;
   const received = formatMoney(amountNumber * corridor.rate);
   const total = formatMoney(amountNumber + (amountNumber ? corridor.fee : 0));
@@ -129,7 +126,7 @@ const HeroPhoneMockup = () => {
     const typing = ['1', '10', '100', '1,000'];
     typing.forEach((value, i) => timers.push(setTimeout(() => setTypedAmount(value), 400 + i * 900)));
     const tapAt = 400 + typing.length * 900 + 700;
-    timers.push(setTimeout(() => { setPulse(true); setCorridorIdx((i) => (i + 1) % corridors.length); }, tapAt + 200));
+    timers.push(setTimeout(() => setPulse(true), tapAt + 200));
     timers.push(setTimeout(() => setFlash(true), tapAt + 300));
     timers.push(setTimeout(() => setPulse(false), tapAt + 1300));
     timers.push(setTimeout(() => setFlash(false), tapAt + 1800));
@@ -137,10 +134,10 @@ const HeroPhoneMockup = () => {
   }, []);
 
   return (
-    <div className="mx-auto mt-2 w-full max-w-[300px] sm:mt-8 lg:mt-10 lg:max-w-[360px]" aria-label="Interactive SwiftSend product preview">
-      <div className="rounded-[1.5rem] border-[5px] border-[#e3bb49] bg-[#161616] p-0.5 shadow-2xl shadow-black/20">
-        <div className="rounded-[1.6rem] bg-[#11100e] p-0.5">
-          <div className="rounded-[1.4rem] bg-black p-3 pb-4">
+    <div className="mx-auto mt-2 w-full min-w-0 max-w-[calc(100vw-1.5rem)] sm:mt-8 sm:max-w-[360px] lg:mt-10" aria-label="Interactive SwiftSend product preview">
+      <div className="w-full min-w-0 overflow-hidden rounded-[1.5rem] border-[5px] border-[#e3bb49] bg-[#161616] p-0.5 shadow-2xl shadow-black/20">
+        <div className="min-w-0 rounded-[1.6rem] bg-[#11100e] p-0.5">
+          <div className="min-w-0 rounded-[1.4rem] bg-black p-3 pb-4">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black tracking-[0.16em] text-[#e3bb49]">SwiftSend</span>
               <span className="h-1.5 w-1.5 rounded-full bg-[#e3bb49]/30" />
@@ -149,12 +146,12 @@ const HeroPhoneMockup = () => {
             <p className="mt-1.5 text-[10px] leading-4 text-[#8a857d]"><span className="lg:hidden">Send and receive money seamlessly.</span><span className="hidden lg:inline">Quote it. Confirm it. Track it.</span></p>
             <div className="mt-3.5 grid grid-cols-2 gap-1.5">
               <Link to="/send" className="rounded-xl bg-[#e3bb49] px-3.5 py-2.5 text-center text-sm font-black text-[#161616] shadow-lg shadow-black/20">Send money</Link>
-              <Link to="/track" className="rounded-xl border border-[#2a261c] bg-black px-3.5 py-2.5 text-center text-sm font-bold text-[#e6e3d8]">Track a transfer</Link>
+              <Link to="/register" className="rounded-xl border border-[#2a261c] bg-black px-3.5 py-2.5 text-center text-sm font-bold text-[#e6e3d8]">Get started</Link>
             </div>
             <p className="mt-2 text-[10px] font-bold text-[#8a857d]">Secure by design · Clear by default</p>
             <div className="mt-3 rounded-2xl bg-[#161616] p-2.5 ring-1 ring-[#e3bb49]/30">
               <div className="flex items-center justify-between">
-                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#9a9688]">Quick quote</p>
+                <div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#9a9688]">Quick quote</p><p className="mt-1 text-[9px] font-bold text-[#e3bb49]">USD → KSh · example</p></div>
                 <CircleDollarSign size={15} className="text-[#e3bb49]" />
               </div>
               <div className="mt-2.5 grid gap-2 sm:grid-cols-[1fr_1fr]">
@@ -168,16 +165,17 @@ const HeroPhoneMockup = () => {
                 </div>
                 <div className="rounded-xl bg-[#11100e] p-2 ring-1 ring-[#302c22]">
                   <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#7a766c]">Recipient gets</p>
-                  <span className={`mt-1.5 block text-base font-black tabular-nums text-[#e3bb49] ${flash ? 'phone-flash' : ''}`}>{received} <span className="text-[11px] text-[#7a766c]">{corridor.to}</span></span>
+                  <span className={`mt-1.5 block text-base font-black tabular-nums text-[#e3bb49] ${flash ? 'phone-flash' : ''}`}>{received} <span className="text-[11px] text-[#7a766c]">KSh</span></span>
                 </div>
               </div>
               <div className="mt-2.5 flex items-center gap-2 rounded-2xl bg-[#11100e] p-2 ring-1 ring-[#302c22]">
                 <span className={`h-1.5 w-1.5 rounded-full bg-[#e3bb49] ${pulse ? 'phone-dot-pulse' : ''}`} />
                 <span className="text-xs font-black text-[#f6f3eb]">{corridor.flag}</span>
-                <span className="text-xs font-bold text-[#9a9688]">{corridor.from} → {corridor.to}</span>
+                <span className="text-xs font-bold text-[#9a9688]">USD → KSh</span>
               </div>
-              <Link to="/send" className="mt-2.5 block w-full rounded-2xl bg-[#e3bb49] px-4 py-2.5 text-center text-sm font-black text-[#161616] shadow-lg shadow-black/20">Continue</Link>
-              <p className="mt-2 text-[10px] text-[#7a766c]">Total: {formatMoney(total)} {corridor.from}</p>
+              <div className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-[#11100e] px-2.5 py-2 text-[10px] font-bold text-[#8a857d]"><span>Rate</span><span className="text-[#e3bb49]">1 USD = 129.42 KSh</span></div>
+              <Link to="/send" className="mt-2.5 block w-full rounded-2xl bg-[#e3bb49] px-4 py-2.5 text-center text-sm font-black text-[#161616] shadow-lg shadow-black/20">Get this quote</Link>
+              <p className="mt-2 text-[10px] text-[#7a766c]">Estimated total: {formatMoney(total)} USD · includes example fee</p>
             </div>
             <div className="mt-3 grid grid-cols-4 gap-1.5">
               {[
@@ -237,8 +235,8 @@ const StatusRow = ({ title, time, done = false, active = false }) => <div classN
 const HeroRatesTicker = () => (
   <div className="mx-auto mt-8 hidden max-w-[1320px] overflow-hidden rounded-2xl border border-[#d8d8d2] bg-white/80 shadow-sm backdrop-blur lg:block">
     <div className="flex items-center gap-3 border-b border-[#ededeb] px-5 py-3 text-[10px] font-black uppercase tracking-[0.16em] text-[#999991]">
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#4e9b59]" /> Indicative exchange rates
-      <span className="font-semibold normal-case tracking-normal text-[#b3b3ab]">moving with the market</span>
+      <span className="h-1.5 w-1.5 rounded-full bg-[#4e9b59]" /> Indicative exchange rates
+      <span className="font-semibold normal-case tracking-normal text-[#b3b3ab]">illustrative launch-market examples</span>
     </div>
     <div className="ss-rate-viewport">
       <div className="ss-rate-track flex w-max">

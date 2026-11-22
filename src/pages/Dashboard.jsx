@@ -2,11 +2,9 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Activity,
   ArrowDownLeft,
   ArrowRight,
   ArrowUpRight,
-  CheckCircle2,
   Clock3,
   Globe2,
   Plus,
@@ -68,44 +66,39 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="ss-page space-y-5 sm:space-y-7">
-      <section className="relative overflow-hidden rounded-[28px] bg-[#161616] p-5 text-white shadow-[0_24px_70px_-35px_rgba(22,22,22,.5)] sm:p-7 lg:p-8">
-        <div className="pointer-events-none absolute -right-20 -top-28 h-96 w-96 rounded-full border border-[#e3bb49]/20 bg-[#e3bb49]/10 blur-2xl" />
-        <div className="pointer-events-none absolute bottom-0 right-1/3 h-32 w-32 rounded-full bg-[#e3bb49]/10 blur-3xl" />
-        <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-xl">
-            <div className="flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-[.18em] text-[#e3bb49]"><span className="h-1.5 w-1.5 rounded-full bg-[#4e9b59] ss-blink" /> Overview <span className="text-white/30">·</span> Personal account</div>
-            <h2 className="mt-4 text-3xl font-black tracking-[-.055em] sm:text-5xl">Good to see you, {getDisplayName(user)}.</h2>
-            <p className="mt-4 max-w-lg text-sm leading-6 text-white/55 sm:text-base">Your transfers, status updates, and next steps in one clear view.</p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link to="/send" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#e3bb49] px-5 py-3.5 text-sm font-black text-[#161616] transition hover:-translate-y-0.5 hover:bg-[#f6d87a]"><Plus size={17} /> New transfer</Link>
-              <Link to="/receive" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"><ArrowDownLeft size={17} /> Receive money</Link>
-            </div>
+    <div className="ss-page mx-auto max-w-5xl space-y-5 sm:space-y-6">
+      <section className="ss-surface rounded-[26px] p-5 sm:p-7">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[.18em] text-[var(--accent-strong)]"><span className="h-1.5 w-1.5 rounded-full bg-[#4e9b59] ss-blink" /> Personal account</div>
+            <h2 className="ss-title mt-3 text-3xl font-black tracking-[-.055em] sm:text-4xl">Good to see you, {getDisplayName(user)}.</h2>
+            <p className="ss-copy mt-2 max-w-xl text-sm leading-6">Send money, receive funds, or check the status of a transfer.</p>
           </div>
-          <div className="relative rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur sm:min-w-[230px]">
-            <div className="flex items-center justify-between gap-4"><span className="text-xs font-bold text-white/50">Account status</span><ShieldCheck size={16} className="text-[#e3bb49]" /></div>
-            <p className="mt-3 text-lg font-black">Ready to transfer</p>
-            <p className="mt-1 text-xs text-white/45">Quotes shown before confirmation</p>
-          </div>
+          <div className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-xs font-bold" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}><ShieldCheck size={15} /> Ready to transfer</div>
         </div>
-        <div className="relative mt-8 grid gap-2 sm:grid-cols-3">
-          <Metric label="Transfers" value={loading ? '—' : stats.total} icon={Activity} />
-          <Metric label="Completed" value={loading ? '—' : stats.completed} icon={CheckCircle2} />
-          <Metric label="In progress" value={loading ? '—' : stats.pending} icon={Clock3} />
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+          <Link to="/send" className="ss-primary min-h-11"><Plus size={17} /> New transfer</Link>
+          <Link to="/receive" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] border px-4 py-3 text-sm font-bold text-[var(--text)] transition hover:bg-[var(--surface-muted)]" style={{ borderColor: 'var(--border)' }}><ArrowDownLeft size={17} /> Receive money</Link>
+        </div>
+        <div className="mt-6 grid grid-cols-3 border-t pt-4" style={{ borderColor: 'var(--border)' }}>
+          <SummaryStat label="Transfers" value={loading ? '—' : stats.total} />
+          <SummaryStat label="Completed" value={loading ? '—' : stats.completed} />
+          <SummaryStat label="In progress" value={loading ? '—' : stats.pending} />
         </div>
       </section>
 
       <section>
-        <div className="mb-4 flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-[var(--accent-strong)]">Actions</p><h3 className="ss-title mt-1 text-xl font-black sm:text-2xl">Make a move</h3></div><Link to="/help" className="text-xs font-bold text-[var(--accent-strong)] hover:underline">Need help?</Link></div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {quickActions.map(({ to, title, detail, icon: Icon, primary }) => (
-            <Link key={to} to={to} className="group flex min-h-[88px] items-center gap-3 rounded-2xl border p-4 transition hover:-translate-y-0.5 hover:shadow-md" style={{ background: primary ? 'var(--accent-soft)' : 'var(--surface)', borderColor: primary ? 'color-mix(in srgb, var(--accent) 35%, var(--border))' : 'var(--border)' }}>
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: primary ? 'var(--accent)' : 'var(--surface-muted)', color: primary ? '#fff' : 'var(--accent-strong)' }}><Icon size={18} /></span>
+        <div className="mb-3 flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-[var(--accent-strong)]">Quick actions</p><h3 className="ss-title mt-1 text-xl font-black">What do you need?</h3></div><Link to="/help" className="text-xs font-bold text-[var(--accent-strong)] hover:underline">Need help?</Link></div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {quickActions.slice(0, 2).map(({ to, title, detail, icon: Icon, primary }) => (
+            <Link key={to} to={to} className="group flex min-h-[78px] items-center gap-3 rounded-2xl border p-4 transition hover:-translate-y-0.5 hover:shadow-md" style={{ background: primary ? 'var(--accent-soft)' : 'var(--surface)', borderColor: primary ? 'color-mix(in srgb, var(--accent) 35%, var(--border))' : 'var(--border)' }}>
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: primary ? 'var(--accent)' : 'var(--surface-muted)', color: primary ? '#17140c' : 'var(--accent-strong)' }}><Icon size={18} /></span>
               <span className="min-w-0 flex-1"><span className="block truncate text-sm font-black text-[var(--text)]">{title}</span><span className="mt-1 block truncate text-xs text-[var(--muted)]">{detail}</span></span>
               <ArrowRight size={15} className="shrink-0 text-[var(--muted)] transition group-hover:translate-x-0.5" />
             </Link>
           ))}
         </div>
+        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 px-1 text-xs font-bold text-[var(--muted)]"><Link to="/wallet" className="inline-flex items-center gap-1.5 hover:text-[var(--text)]"><WalletCards size={14} /> Wallet</Link><Link to="/track" className="inline-flex items-center gap-1.5 hover:text-[var(--text)]"><Globe2 size={14} /> Track a transfer</Link><Link to="/history" className="inline-flex items-center gap-1.5 hover:text-[var(--text)]"><Clock3 size={14} /> View activity</Link></div>
       </section>
 
       <section className="overflow-hidden rounded-[22px] border bg-[var(--surface)] shadow-[var(--shadow)]" style={{ borderColor: 'var(--border)' }}>
@@ -125,16 +118,12 @@ const Dashboard = () => {
         )}
       </section>
 
-      <div className="flex items-center gap-3 rounded-2xl border bg-[var(--surface-muted)] p-4" style={{ borderColor: 'var(--border)' }}>
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent-strong)]"><ShieldCheck size={17} /></span>
-        <p className="min-w-0 flex-1 text-xs leading-5 text-[var(--muted)]">Every transfer has a reference and a recorded status.</p>
-        <Link to="/track" className="shrink-0 text-xs font-black text-[var(--accent-strong)]">Track <ArrowRight size={13} className="ml-1 inline" /></Link>
-      </div>
+      <div className="flex items-center gap-3 rounded-2xl border bg-[var(--surface-muted)] p-4" style={{ borderColor: 'var(--border)' }}><span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent-strong)]"><ShieldCheck size={17} /></span><p className="min-w-0 flex-1 text-xs leading-5 text-[var(--muted)]">Every transfer has a reference and a recorded status.</p><Link to="/track" className="shrink-0 text-xs font-black text-[var(--accent-strong)]">Track <ArrowRight size={13} className="ml-1 inline" /></Link></div>
     </div>
   );
 };
 
-const Metric = ({ label, value, icon: Icon }) => <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3.5"><span className="grid h-8 w-8 place-items-center rounded-xl bg-white/10 text-[#e3bb49]"><Icon size={15} /></span><span><span className="block text-[11px] font-semibold text-white/45">{label}</span><span className="mt-0.5 block text-xl font-black tabular-nums">{value}</span></span></div>;
+const SummaryStat = ({ label, value }) => <div className="border-r px-2 first:pl-0 last:border-r-0 sm:px-4" style={{ borderColor: 'var(--border)' }}><span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--muted)]">{label}</span><span className="mt-1 block text-xl font-black tabular-nums text-[var(--text)]">{value}</span></div>;
 
 const TransferRow = ({ item }) => {
   const tone = statusTone(item.status);
@@ -149,7 +138,7 @@ const TransferRow = ({ item }) => {
 
 const EmptyActivity = () => <div className="px-6 py-12 text-center"><span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-[var(--accent-soft)] text-[var(--accent-strong)]"><Send size={21} /></span><p className="ss-title mt-4 font-black">No transfers yet</p><p className="ss-copy mt-1 text-sm">Create your first transfer to get started.</p><Link to="/send" className="ss-primary mt-5">Start a transfer <ArrowRight size={16} /></Link></div>;
 
-Metric.propTypes = { label: PropTypes.string.isRequired, value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, icon: PropTypes.elementType.isRequired };
+SummaryStat.propTypes = { label: PropTypes.string.isRequired, value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired };
 TransferRow.propTypes = { item: PropTypes.shape({ status: PropTypes.string, reference: PropTypes.string, recipient_name: PropTypes.string, sender_country: PropTypes.string, recipient_country: PropTypes.string, receive_currency: PropTypes.string, send_amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), send_currency: PropTypes.string, created_at: PropTypes.string }).isRequired };
 
 export default Dashboard;

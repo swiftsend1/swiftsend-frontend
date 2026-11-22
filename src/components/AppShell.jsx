@@ -1,8 +1,84 @@
-import { useEffect } from 'react';
-import { NavLink,Outlet,useLocation } from 'react-router-dom';
-import { ArrowLeftRight,Clock3,Home,WalletCards } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Home, LogOut, Menu, X } from 'lucide-react';
+import { useAuth } from '../auth/AuthContext';
 import AppSidebar from './AppSidebar';
-import DarkModeToggle from './DarkModeToggle';
-const titles={'/dashboard':['Home','Your money, made simpler.'],'/send':['Send money','Send across borders with confidence.'],'/receive':['Receive money','Manage incoming transfers.'],'/wallet':['Wallet','Your funds and wallet activity.'],'/history':['Activity','Your recent money movement.'],'/track':['Track transfer','Follow your transfer to delivery.'],'/withdraw':['Withdraw','Move funds to your preferred destination.'],'/profile':['Profile','Manage your account and preferences.'],'/anchor-demo':['Technology showcase','Explore the technology behind SwiftSend.'],'/rates':['Exchange rates','Explore indicative currency conversions.'],'/help':['Help & support','Find answers about SwiftSend transfers.']};
-const items=[{to:'/dashboard',label:'Home',icon:Home,end:true},{to:'/send',label:'Send',icon:ArrowLeftRight},{to:'/wallet',label:'Wallet',icon:WalletCards},{to:'/history',label:'Activity',icon:Clock3}];
-export default function AppShell(){const location=useLocation();const [title,subtitle]=titles[location.pathname]||['Your account','Welcome back to SwiftSend.'];useEffect(()=>{window.scrollTo({top:0,behavior:'instant'})},[location.pathname]);return <div className="ss-page min-h-[calc(100vh-76px)] pb-20 lg:pb-0" style={{background:'var(--page)'}}><a href="#main-content" className="ss-skip-link">Skip to main content</a><div className="mx-auto flex max-w-[1600px]"><AppSidebar/><div className="min-w-0 flex-1"><div className="glass-nav sticky top-[76px] z-30 flex items-center justify-between px-4 py-2.5 shadow-sm sm:px-6 lg:hidden"><div className="flex items-center gap-2.5"><span className="grid h-9 w-9 place-items-center rounded-xl text-sm font-black transition active:scale-[.92]" style={{background:'var(--accent)',color:'#17140c'}}>S</span><div><p className="text-sm font-extrabold leading-tight">SwiftSend</p><p className="text-[10px] font-semibold" style={{color:'var(--muted)'}}>Money without borders</p></div></div><DarkModeToggle compact/></div><div className="flex items-center justify-between gap-4 border-b px-4 py-5 sm:px-7 lg:px-10" style={{borderColor:'var(--border)'}}><div className="min-w-0"><p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.18em]" style={{color:'var(--accent-strong)'}}>SWIFTSEND</p><h1 className="ss-title text-2xl font-extrabold sm:text-[28px]">{title}</h1><p className="ss-copy mt-1 hidden text-sm sm:block">{subtitle}</p></div><div className="hidden lg:block"><DarkModeToggle/></div></div><main id="main-content" className="p-3.5 sm:p-6 lg:p-8 xl:px-10"><Outlet/></main></div></div><nav className="fixed inset-x-0 bottom-0 z-[75] border-t px-2 pt-2 backdrop-blur-xl lg:hidden" style={{background:'color-mix(in srgb,var(--surface) 94%,transparent)',borderColor:'var(--border)',paddingBottom:'max(.5rem,env(safe-area-inset-bottom))'}} aria-label="Bottom navigation"><div className="mx-auto grid max-w-lg grid-cols-4 gap-1">{items.map(({to,label,icon:Icon,end})=><NavLink key={to} to={to} end={end} className="ss-pill flex min-h-[54px] flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold" style={({isActive})=>({color:isActive?'#17140c':'var(--muted)',background:isActive?'var(--accent)':'transparent'})}><Icon size={19} strokeWidth={2.3}/><span>{label}</span></NavLink>)}</div></nav></div>}
+
+const titles = {
+  '/dashboard': ['Home', 'Your money, made simpler.'],
+  '/send': ['Send money', 'Send across borders with confidence.'],
+  '/receive': ['Receive money', 'Manage incoming transfers.'],
+  '/wallet': ['Wallet', 'Your funds and wallet activity.'],
+  '/history': ['Activity', 'Your recent money movement.'],
+  '/track': ['Track transfer', 'Follow your transfer to delivery.'],
+  '/withdraw': ['Withdraw', 'Move funds to your preferred destination.'],
+  '/profile': ['Profile', 'Manage your account and preferences.'],
+  '/anchor-demo': ['Technology showcase', 'Explore the technology behind SwiftSend.'],
+  '/rates': ['Exchange rates', 'Explore indicative currency conversions.'],
+  '/help': ['Help & support', 'Find answers about SwiftSend transfers.'],
+};
+
+export default function AppShell() {
+  const { signOut } = useAuth();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [title, subtitle] = titles[location.pathname] || ['Your account', 'Welcome back to SwiftSend.'];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKeyDown = (event) => { if (event.key === 'Escape') setMenuOpen(false); };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [menuOpen]);
+
+  return (
+    <div className="ss-page min-h-screen" style={{ background: 'var(--page)' }}>
+      <a href="#main-content" className="ss-skip-link">Skip to main content</a>
+
+      <header className="glass-nav sticky top-0 z-40 flex h-16 items-center justify-between gap-3 px-4 shadow-sm sm:px-6 lg:px-8" aria-label="Dashboard navigation">
+        <Link to="/dashboard" className="inline-flex h-10 items-center gap-2 rounded-xl border border-[var(--border)] px-3 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--surface-muted)]" aria-label="Go to dashboard home">
+          <Home size={17} /> <span>Home</span>
+        </Link>
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={() => setMenuOpen(true)} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition hover:border-[var(--accent)] lg:hidden" aria-label="Open dashboard menu" aria-expanded={menuOpen} aria-controls="dashboard-mobile-menu">
+            <Menu size={18} />
+          </button>
+          <button type="button" onClick={signOut} className="inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-[var(--muted)] transition hover:bg-[var(--surface-muted)] hover:text-[var(--text)]" aria-label="Log out">
+            <LogOut size={16} /> <span>Log out</span>
+          </button>
+        </div>
+      </header>
+
+      <div className="mx-auto flex max-w-[1600px]">
+        <AppSidebar />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-4 border-b px-4 py-5 sm:px-7 lg:px-10" style={{ borderColor: 'var(--border)' }}>
+            <div className="min-w-0">
+              <p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.18em]" style={{ color: 'var(--accent-strong)' }}>SWIFTSEND</p>
+              <h1 className="ss-title text-2xl font-extrabold sm:text-[28px]">{title}</h1>
+              <p className="ss-copy mt-1 hidden text-sm sm:block">{subtitle}</p>
+            </div>
+          </div>
+          <main id="main-content" className="p-3.5 sm:p-6 lg:p-8 xl:px-10"><Outlet /></main>
+        </div>
+      </div>
+
+      {menuOpen && <div className="fixed inset-0 z-[100] lg:hidden" role="dialog" aria-modal="true" aria-label="Dashboard menu">
+        <button type="button" className="absolute inset-0 h-full w-full cursor-default bg-black/45" aria-label="Close dashboard menu" onClick={() => setMenuOpen(false)} />
+        <div id="dashboard-mobile-menu" className="relative h-full max-w-[340px] shadow-2xl">
+          <button type="button" onClick={() => setMenuOpen(false)} className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text)]" aria-label="Close dashboard menu"><X size={18} /></button>
+          <AppSidebar mobile onClose={() => setMenuOpen(false)} />
+        </div>
+      </div>}
+    </div>
+  );
+}

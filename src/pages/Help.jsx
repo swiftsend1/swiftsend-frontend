@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronDown,MessageCircle,Search,Send,ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 const questions=[
- ['How do I create a transfer?','Open Send Money, choose one of the configured sending corridors, enter the amount and recipient details, then review the quote before creating the transfer.'],
+ ['How do I create a transfer?','Open Send Money, choose your sending and receiving markets, enter the amount and recipient details, then review the quote before creating the transfer. SwiftSend is starting with Kenya and East Africa, Nigeria, the US, and UK.'],
  ['How do I know how much the recipient will get?','The Send Money page requests a quote from the SwiftSend service. Review the returned amount, fee and exchange rate before you create the transfer.'],
  ['How can I track my transfer?','Use the reference returned when your transfer is created on the Track Transfer page. The page shows the latest status recorded by the service.'],
  ['Does creating a transfer mean the money has been delivered?','No. Creating a transfer request is not the same as confirming a payment, blockchain settlement or recipient payout. Check the tracking page for recorded progress.'],

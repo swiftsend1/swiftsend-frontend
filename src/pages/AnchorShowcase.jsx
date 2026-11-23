@@ -1,9 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
+  Activity,
   ArrowRight,
+  ArrowDownRight,
+  BadgeCheck,
   CheckCircle2,
+  Clipboard,
   Circle,
+  Copy,
+  Database,
   ExternalLink,
   Globe2,
   Info,
@@ -15,6 +22,7 @@ import {
   ShieldCheck,
   Sparkles,
   XCircle,
+  Zap,
 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
@@ -58,6 +66,7 @@ const AnchorShowcase = () => {
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
   const [track, setTrack] = useState(null);
+  const [copiedHash, setCopiedHash] = useState(false);
 
   useEffect(() => {
     fetch(apiUrl('/api/corridors/?receive_country=KE'))
@@ -155,6 +164,14 @@ const AnchorShowcase = () => {
     setTrack(null);
     setQuote(null);
     setStageIndex(-1);
+    setCopiedHash(false);
+  };
+
+  const copyHash = async () => {
+    if (!stellarHash || !navigator.clipboard) return;
+    await navigator.clipboard.writeText(stellarHash);
+    setCopiedHash(true);
+    window.setTimeout(() => setCopiedHash(false), 1800);
   };
 
   const rem = result || track;
@@ -167,52 +184,72 @@ const AnchorShowcase = () => {
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      <section className="rounded-3xl border border-slate-200 bg-gradient-to-br from-stellar-black via-slate-900 to-swift-900 p-5 text-white shadow-sm sm:p-7">
+      <section className="relative isolate overflow-hidden rounded-[28px] border border-[#2e2b24] bg-[#11110f] p-5 text-white shadow-[0_24px_60px_-34px_rgba(23,23,23,.7)] sm:p-8 lg:p-10">
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-70" aria-hidden="true">
+          <div className="absolute -right-24 -top-32 h-80 w-80 rounded-full bg-[#e4b638]/20 blur-3xl" />
+          <div className="absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-[#b88712]/20 blur-3xl" />
+          <div className="absolute inset-0 opacity-[.08] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:32px_32px]" />
+        </div>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#e4b638] ring-1 ring-white/15">
-              <Sparkles size={14} /> Stellar Anchor Showcase
+          <div className="max-w-3xl lg:pt-1">
+            <p className="inline-flex items-center gap-2 rounded-full bg-[#e4b638]/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[.18em] text-[#f1cf72] ring-1 ring-[#e4b638]/30">
+              <Sparkles size={14} /> Stellar network · Testnet
             </p>
-            <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">See a real transfer flow, step by step</h1>
-            <p className="mt-2 text-sm leading-6 text-slate-200 sm:text-base">
-              Run a demo remittance and inspect the quote, simulated collection and payout, and any available Stellar Testnet evidence. No real money is moved.
+            <h1 className="mt-4 max-w-2xl text-3xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">Move money. <span className="text-[#e4b638]">Prove every step.</span></h1>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#c9c6bd] sm:text-base">
+              A transparent remittance flow from quote to payout, with settlement evidence ready to inspect. This showcase uses simulated partners and never moves real funds.
             </p>
-            <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-200">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1"><ShieldCheck size={13} className="text-stellar-yellow" /> Simulated on-ramp & payout</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1"><Globe2 size={13} className="text-stellar-yellow" /> Stellar Testnet settlement evidence</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1"><Link2 size={13} className="text-stellar-yellow" /> Anchor-pluggable design</span>
+            <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
+              <HeroStat value="04" label="flow stages" />
+              <HeroStat value="01" label="evidence trail" />
+              <HeroStat value="0" label="real funds moved" />
             </div>
           </div>
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-4 text-sm text-slate-200 lg:max-w-xs">
-            <p className="font-semibold text-white">How to read this demo</p>
-            <ul className="mt-2 space-y-1.5 text-xs leading-5">
-              <li>• <b>On-ramp / payout</b>: simulated partners (demo).</li>
-              <li>• <b>Stellar transaction hash</b>: treat it as on-chain evidence only when it is a real, verified Stellar Testnet transaction. A mock-mode reference is not a blockchain transaction.</li>
-              <li>• Same flow can plug into real anchors later.</li>
-            </ul>
+          <div className="w-full rounded-2xl border border-white/15 bg-white/[.07] p-4 backdrop-blur-sm lg:max-w-xs lg:p-5">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs font-black uppercase tracking-[.16em] text-[#f1cf72]">Demo environment</p>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-[11px] font-bold text-emerald-300"><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> Ready</span>
+            </div>
+            <p className="mt-4 text-lg font-black tracking-tight text-white">Anchor-ready by design</p>
+            <p className="mt-2 text-xs leading-5 text-[#c9c6bd]">The settlement adapter can point to a real licensed partner later without changing the customer journey.</p>
+            <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4 text-xs font-semibold text-[#e7e2d5]"><ShieldCheck size={15} className="text-[#e4b638]" /> Simulated on-ramp & payout</div>
           </div>
         </div>
       </section>
 
+      <section aria-labelledby="flow-overview" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-[var(--shadow)] sm:p-5">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[.18em]" style={{ color: 'var(--accent-strong)' }}>The transfer path</p>
+            <h2 id="flow-overview" className="mt-1 text-lg font-black tracking-[-.035em]" style={{ color: 'var(--text)' }}>One flow, four checkpoints.</h2>
+          </div>
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold" style={{ color: 'var(--muted)' }}><Activity size={14} /> {running ? 'Demo in progress' : stageIndex === 4 ? 'Demo complete' : 'Awaiting a run'}</span>
+        </div>
+        <div className="mt-5 grid gap-2 sm:grid-cols-4 sm:gap-0">
+          {STAGES.map((stage, index) => <FlowStep key={stage.key} stage={stage} index={index} stageIndex={stageIndex} running={running} />)}
+        </div>
+      </section>
+
       <div className="grid gap-6 lg:grid-cols-[1.05fr_.95fr]">
-        <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-extrabold text-stellar-black">Run a demo transfer</h2>
-              <p className="mt-1 text-sm text-slate-600">We prefilled sample details. Just choose a corridor/amount and run it.</p>
+              <p className="text-[10px] font-black uppercase tracking-[.18em]" style={{ color: 'var(--accent-strong)' }}>Configure the journey</p>
+              <h2 className="mt-1 text-xl font-black tracking-[-.035em]" style={{ color: 'var(--text)' }}>Run a demo transfer</h2>
+              <p className="mt-1 text-sm" style={{ color: 'var(--muted)' }}>Sample details are ready. Choose a corridor, then start the flow.</p>
             </div>
-            <button type="button" onClick={reset} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+            <button type="button" onClick={reset} className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-bold transition hover:bg-[var(--surface-muted)]" style={{ color: 'var(--muted)' }}>
               <RefreshCw size={14} /> Reset
             </button>
           </div>
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <label className="block sm:col-span-2">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Corridor</span>
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Corridor</span>
               <select
                 value={form.corridor}
                 onChange={(e) => update('corridor', e.target.value)}
-                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm font-medium text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm font-medium text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
               >
                 {(corridors.length ? corridors : [{ code: 'US-KE', send_country: 'US', receive_country: 'KE' }]).map((c) => (
                   <option key={c.code} value={c.code}>{c.code} — {c.send_country} to {c.receive_country}</option>
@@ -220,20 +257,20 @@ const AnchorShowcase = () => {
               </select>
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Amount to send</span>
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Amount to send</span>
               <input
                 type="number" min="1" step="0.01" value={form.send_amount}
                 onChange={(e) => update('send_amount', e.target.value)}
-                className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm font-medium text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm font-medium text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
               />
-              <p className="mt-1 text-xs text-slate-500">Currency: {selectedCorridor?.send_currency || 'USD'} → {selectedCorridor?.receive_currency || 'KES'}</p>
+              <p className="mt-1 text-xs" style={{ color: 'var(--muted)' }}>Currency: {selectedCorridor?.send_currency || 'USD'} → {selectedCorridor?.receive_currency || 'KES'}</p>
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Payout method</span>
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Payout method</span>
               <select
                 value={form.recipient_payout_method}
                 onChange={(e) => update('recipient_payout_method', e.target.value)}
-                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm font-medium text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm font-medium text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
               >
                 <option value="mobile_money">Mobile money</option>
                 <option value="bank_transfer">Bank transfer</option>
@@ -242,31 +279,31 @@ const AnchorShowcase = () => {
             </label>
 
             <label className="block">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Sender name</span>
-              <input value={form.sender_name} onChange={(e) => update('sender_name', e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100" />
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Sender name</span>
+              <input value={form.sender_name} onChange={(e) => update('sender_name', e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20" />
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Sender contact</span>
-              <input value={form.sender_contact} onChange={(e) => update('sender_contact', e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100" />
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Sender contact</span>
+              <input value={form.sender_contact} onChange={(e) => update('sender_contact', e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20" />
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Recipient name</span>
-              <input value={form.recipient_name} onChange={(e) => update('recipient_name', e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100" />
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Recipient name</span>
+              <input value={form.recipient_name} onChange={(e) => update('recipient_name', e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20" />
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500">Recipient contact</span>
-              <input value={form.recipient_contact} onChange={(e) => update('recipient_contact', e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:border-swift-500 focus:outline-none focus:ring-2 focus:ring-swift-100" />
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Recipient contact</span>
+              <input value={form.recipient_contact} onChange={(e) => update('recipient_contact', e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20" />
             </label>
           </div>
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
             <button
               type="button" onClick={runDemo} disabled={running}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-stellar-yellow px-5 py-3 text-sm font-bold text-stellar-black shadow-lg shadow-yellow-900/10 hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[#17140c] shadow-lg shadow-yellow-900/10 transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {running ? <><LoaderCircle size={16} className="animate-spin" /> Running demo…</> : <><Play size={16} /> Run live anchor demo</>}
             </button>
-            <p className="text-xs text-slate-500">Creates and completes a demo transfer using the configured settlement mode.</p>
+            <p className="text-xs" style={{ color: 'var(--muted)' }}>Creates and completes a demo transfer using the configured settlement mode.</p>
           </div>
 
           {error && (
@@ -276,8 +313,8 @@ const AnchorShowcase = () => {
             </div>
           )}
 
-          <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Progress</p>
+          <div className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+            <p className="text-xs font-black uppercase tracking-[.16em]" style={{ color: 'var(--muted)' }}>Run progress</p>
             <ol className="mt-3 space-y-2">
               {STAGES.map((s, i) => {
                 const done = stageIndex > i || stageIndex === 4;
@@ -287,7 +324,7 @@ const AnchorShowcase = () => {
                     <span className={`grid h-7 w-7 place-items-center rounded-full border ${done ? 'border-emerald-300 bg-emerald-100 text-emerald-700' : active ? 'border-swift-300 bg-swift-100 text-swift-700' : 'border-slate-200 bg-white text-slate-400'}`}>
                       {done ? <CheckCircle2 size={15} /> : active ? <LoaderCircle size={15} className="animate-spin" /> : <Circle size={15} />}
                     </span>
-                    <span className={done ? 'font-semibold text-slate-800' : active ? 'font-semibold text-swift-700' : 'text-slate-500'}>{s.label}</span>
+                    <span className={done ? 'font-semibold' : active ? 'font-semibold text-[var(--accent-strong)]' : ''} style={!done && !active ? { color: 'var(--muted)' } : { color: done ? 'var(--text)' : undefined }}>{s.label}</span>
                   </li>
                 );
               })}
@@ -296,65 +333,78 @@ const AnchorShowcase = () => {
         </section>
 
         <section className="space-y-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <h2 className="text-lg font-extrabold text-stellar-black">Result & evidence</h2>
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] sm:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[.18em]" style={{ color: 'var(--accent-strong)' }}>Proof layer</p>
+                <h2 className="mt-1 text-xl font-black tracking-[-.035em]" style={{ color: 'var(--text)' }}>Result & evidence</h2>
+              </div>
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--accent-soft)]" style={{ color: 'var(--accent-strong)' }}><BadgeCheck size={18} /></span>
+            </div>
             {!rem ? (
-              <div className="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-600">
-                <p className="font-semibold text-slate-800">No demo run yet</p>
-                <p className="mt-1">Run the demo to see the transfer status, Stellar transaction hash, and settlement evidence here.</p>
+              <div className="mt-5 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface-muted)] p-5 text-sm" style={{ color: 'var(--muted)' }}>
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--surface)]" style={{ color: 'var(--accent-strong)' }}><Database size={18} /></div>
+                <p className="mt-4 font-bold" style={{ color: 'var(--text)' }}>Your evidence trail will appear here</p>
+                <p className="mt-1">Run the demo to inspect the transfer status, settlement hash, partner references, and final timeline.</p>
               </div>
             ) : (
               <div className="mt-4 space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold capitalize ${statusTone(rem.status)}`}>{pretty(rem.status)}</span>
-                  {rem.reference && <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">Ref: {rem.reference}</span>}
+                  {rem.reference && <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Ref: {rem.reference}</span>}
                 </div>
 
                 {(quote || rem.receive_amount) && (
-                  <div className="grid grid-cols-2 gap-3 rounded-xl bg-slate-50 p-3 text-sm">
-                    <div><p className="text-xs text-slate-500">You send</p><p className="font-bold text-slate-900">{rem.send_amount || quote?.send_amount} {rem.send_currency || quote?.send_currency}</p></div>
-                    <div><p className="text-xs text-slate-500">Recipient gets</p><p className="font-bold text-slate-900">{rem.receive_amount || quote?.receive_amount} {rem.receive_currency || quote?.receive_currency}</p></div>
-                    <div><p className="text-xs text-slate-500">Rate</p><p className="font-semibold text-slate-800">{rem.exchange_rate || quote?.rate || '—'}</p></div>
-                    <div><p className="text-xs text-slate-500">Fee</p><p className="font-semibold text-slate-800">{rem.fee_amount ?? quote?.fee ?? '—'} {rem.send_currency || quote?.send_currency || ''}</p></div>
+                  <div className="grid grid-cols-2 gap-3 rounded-xl bg-[var(--surface-muted)] p-3 text-sm">
+                    <EvidenceMetric label="You send" value={`${rem.send_amount || quote?.send_amount} ${rem.send_currency || quote?.send_currency || ''}`} strong />
+                    <EvidenceMetric label="Recipient gets" value={`${rem.receive_amount || quote?.receive_amount} ${rem.receive_currency || quote?.receive_currency || ''}`} strong />
+                    <EvidenceMetric label="Rate" value={rem.exchange_rate || quote?.rate || '—'} />
+                    <EvidenceMetric label="Fee" value={`${rem.fee_amount ?? quote?.fee ?? '—'} ${rem.send_currency || quote?.send_currency || ''}`} />
                   </div>
                 )}
 
-                <div className={`rounded-xl border p-4 ${stellarHash ? 'border-swift-200 bg-swift-50/60' : 'border-slate-200 bg-slate-50'}`}>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Stellar settlement</p>
+                <div className={`rounded-xl border p-4 ${stellarHash ? 'border-[#e4b638]/45 bg-[var(--accent-soft)]' : 'border-[var(--border)] bg-[var(--surface-muted)]'}`}>
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs font-black uppercase tracking-[.16em]" style={{ color: 'var(--muted)' }}>Stellar settlement</p>
+                    {stellarHash && <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${isRealishHash ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}><span className="h-1.5 w-1.5 rounded-full bg-current" />{isRealishHash ? 'Testnet hash' : 'Reference only'}</span>}
+                  </div>
                   {stellarHash ? (
                     <>
-                      <p className="mt-1 break-all font-mono text-xs font-semibold text-slate-900 sm:text-sm">{stellarHash}</p>
+                      <p className="mt-3 break-all rounded-lg border border-black/5 bg-[var(--surface)] p-3 font-mono text-xs font-semibold" style={{ color: 'var(--text)' }}>{stellarHash}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        <a href={explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-stellar-black px-3 py-2 text-xs font-bold text-white hover:bg-slate-800">
+                        <a href={explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-[#171717] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#34322d]">
                           <ExternalLink size={14} /> View on Stellar Explorer (Testnet)
                         </a>
+                        <button type="button" onClick={copyHash} className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold transition hover:bg-[var(--surface-muted)]" style={{ color: 'var(--text)' }}>
+                          {copiedHash ? <CheckCircle2 size={14} className="text-emerald-600" /> : <Copy size={14} />} {copiedHash ? 'Copied' : 'Copy hash'}
+                        </button>
                       </div>
-                      <p className="mt-2 text-xs text-slate-600">
+                      <p className="mt-2 text-xs leading-5" style={{ color: 'var(--muted)' }}>
                         {isRealishHash
                           ? 'This hash identifies the settlement transaction recorded for the demo. Open it in the explorer to verify on-chain details when the backend is running in testnet mode with a funded account.'
                           : 'Settlement reference recorded for this demo run.'}
                       </p>
                     </>
                   ) : (
-                    <p className="mt-1 text-sm text-slate-600">No Stellar transaction hash returned yet.</p>
+                    <p className="mt-2 text-sm" style={{ color: 'var(--muted)' }}>No Stellar transaction hash returned yet.</p>
                   )}
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-xl border border-slate-200 p-3"><p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">On-ramp</p><p className="mt-1 break-all text-xs font-semibold text-slate-800">{verification.on_ramp_reference || rem.on_ramp_reference || '—'}</p><p className="mt-1 text-[11px] text-slate-500">Simulated</p></div>
-                  <div className="rounded-xl border border-slate-200 p-3"><p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Anchor ref</p><p className="mt-1 break-all text-xs font-semibold text-slate-800">{verification.anchor_reference || rem.anchor_reference || '—'}</p><p className="mt-1 text-[11px] text-slate-500">Settlement partner</p></div>
-                  <div className="rounded-xl border border-slate-200 p-3"><p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Payout</p><p className="mt-1 break-all text-xs font-semibold text-slate-800">{verification.payout_reference || rem.payout_reference || '—'}</p><p className="mt-1 text-[11px] text-slate-500">Simulated</p></div>
+                  <EvidenceCard icon={<ArrowDownRight size={14} />} label="On-ramp" value={verification.on_ramp_reference || rem.on_ramp_reference || '—'} detail="Simulated" />
+                  <EvidenceCard icon={<Link2 size={14} />} label="Anchor ref" value={verification.anchor_reference || rem.anchor_reference || '—'} detail="Settlement partner" />
+                  <EvidenceCard icon={<Zap size={14} />} label="Payout" value={verification.payout_reference || rem.payout_reference || '—'} detail="Simulated" />
                 </div>
 
                 {progress.length > 0 && (
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Flow stages</p>
+                    <p className="text-xs font-black uppercase tracking-[.16em]" style={{ color: 'var(--muted)' }}>Flow stages</p>
                     <ul className="mt-2 space-y-2">
                       {progress.map((p) => (
                         <li key={p.key} className="flex items-center gap-2 text-sm">
                           {p.completed ? <CheckCircle2 size={15} className="text-emerald-600" /> : p.current ? <LoaderCircle size={15} className="animate-spin text-swift-600" /> : <Circle size={15} className="text-slate-300" />}
-                          <span className={p.completed || p.current ? 'font-medium text-slate-800' : 'text-slate-500'}>{p.label}</span>
-                          {p.at && <span className="text-xs text-slate-400">· {new Date(p.at).toLocaleTimeString()}</span>}
+                          <span className={p.completed || p.current ? 'font-medium' : ''} style={{ color: p.completed || p.current ? 'var(--text)' : 'var(--muted)' }}>{p.label}</span>
+                          {p.at && <span className="text-xs" style={{ color: 'var(--muted)' }}>· {new Date(p.at).toLocaleTimeString()}</span>}
                         </li>
                       ))}
                     </ul>
@@ -363,7 +413,7 @@ const AnchorShowcase = () => {
 
                 <div className="flex flex-wrap gap-2">
                   {rem.reference && (
-                    <Link to={`/track?ref=${encodeURIComponent(rem.reference)}`} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                    <Link to={`/track?ref=${encodeURIComponent(rem.reference)}`} className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-bold transition hover:bg-[var(--surface-muted)]" style={{ color: 'var(--text)' }}>
                       <Rocket size={14} /> Open full tracking view <ArrowRight size={14} />
                     </Link>
                   )}
@@ -372,20 +422,20 @@ const AnchorShowcase = () => {
             )}
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-stellar-offwhite p-5 shadow-sm">
-            <p className="inline-flex items-center gap-1.5 text-sm font-bold text-stellar-black"><Info size={16} className="text-stellar-teal" /> What this proves</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-slate-700">
-              <li>• SwiftSend can run an <b>end-to-end remittance flow</b> with clear stages and evidence.</li>
-              <li>• The <b>settlement step is pluggable</b>: today a simulated anchor with optional real Stellar Testnet tx, tomorrow a real licensed anchor/partner (e.g. via Stellar SEPs) without changing the user flow.</li>
-              <li>• Each transfer records references and a verifiable transaction hash when on-chain settlement is enabled.</li>
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow)]">
+            <p className="inline-flex items-center gap-1.5 text-sm font-black" style={{ color: 'var(--text)' }}><Info size={16} style={{ color: 'var(--accent-strong)' }} /> What this proves</p>
+            <ul className="mt-3 space-y-2 text-sm leading-6" style={{ color: 'var(--muted)' }}>
+              <li className="flex gap-2"><Globe2 size={16} className="mt-1 shrink-0" style={{ color: 'var(--accent-strong)' }} /> <span>SwiftSend can run an <b style={{ color: 'var(--text)' }}>end-to-end remittance flow</b> with clear stages and evidence.</span></li>
+              <li className="flex gap-2"><Link2 size={16} className="mt-1 shrink-0" style={{ color: 'var(--accent-strong)' }} /> <span>The <b style={{ color: 'var(--text)' }}>settlement step is pluggable</b>: today a simulated anchor with optional real Stellar Testnet tx, tomorrow a real licensed anchor/partner without changing the user flow.</span></li>
+              <li className="flex gap-2"><Clipboard size={16} className="mt-1 shrink-0" style={{ color: 'var(--accent-strong)' }} /> <span>Each transfer records references and a verifiable transaction hash when on-chain settlement is enabled.</span></li>
             </ul>
             {events.length > 0 && (
-              <details className="mt-3 rounded-xl border border-slate-200 bg-white p-3">
-                <summary className="cursor-pointer text-xs font-bold uppercase tracking-wider text-slate-500">Technical events ({events.length})</summary>
-                <ul className="mt-2 space-y-1.5 text-xs text-slate-600">
+              <details className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                <summary className="cursor-pointer text-xs font-black uppercase tracking-[.14em]" style={{ color: 'var(--muted)' }}>Technical events ({events.length})</summary>
+                <ul className="mt-2 space-y-1.5 text-xs" style={{ color: 'var(--muted)' }}>
                   {events.slice(0, 12).map((ev, idx) => (
-                    <li key={`${ev.type}-${idx}`} className="rounded-lg bg-slate-50 px-2 py-1.5">
-                      <span className="font-semibold text-slate-800">{pretty(ev.stage || ev.type)}</span>: {ev.message || pretty(ev.type)}
+                    <li key={`${ev.type}-${idx}`} className="rounded-lg bg-[var(--surface-muted)] px-2 py-1.5">
+                      <span className="font-semibold" style={{ color: 'var(--text)' }}>{pretty(ev.stage || ev.type)}</span>: {ev.message || pretty(ev.type)}
                     </li>
                   ))}
                 </ul>
@@ -397,5 +447,49 @@ const AnchorShowcase = () => {
     </div>
   );
 };
+
+const HeroStat = ({ value, label }) => (
+  <div className="rounded-xl border border-white/10 bg-white/[.06] px-3 py-3">
+    <p className="text-xl font-black tracking-[-.04em] text-[#f1cf72] sm:text-2xl">{value}</p>
+    <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[.12em] text-[#aaa69b]">{label}</p>
+  </div>
+);
+
+const FlowStep = ({ stage, index, stageIndex, running }) => {
+  const done = stageIndex === 4 || stageIndex > index;
+  const active = running && stageIndex === index;
+  return (
+    <div className="relative flex items-center gap-3 rounded-xl p-2 sm:rounded-none sm:px-2 sm:first:pl-0 sm:last:pr-0">
+      {index > 0 && <span className={`absolute -left-1 top-1/2 hidden h-px w-2 -translate-y-1/2 sm:block ${done || active ? 'bg-[var(--accent)]' : 'bg-[var(--border)]'}`} aria-hidden="true" />}
+      <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border ${done ? 'border-emerald-200 bg-emerald-50 text-emerald-600' : active ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent-strong)]' : 'border-[var(--border)] bg-[var(--surface-muted)]'}`} style={!done && !active ? { color: 'var(--muted)' } : undefined}>
+        {done ? <CheckCircle2 size={17} /> : active ? <LoaderCircle size={17} className="animate-spin" /> : <span className="text-xs font-black">0{index + 1}</span>}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[10px] font-black uppercase tracking-[.13em]" style={{ color: 'var(--muted)' }}>Step 0{index + 1}</p>
+        <p className={`truncate text-xs font-bold ${done || active ? '' : ''}`} style={{ color: done || active ? 'var(--text)' : 'var(--muted)' }}>{stage.label}</p>
+      </div>
+    </div>
+  );
+};
+
+const EvidenceMetric = ({ label, value, strong = false }) => (
+  <div>
+    <p className="text-xs" style={{ color: 'var(--muted)' }}>{label}</p>
+    <p className={strong ? 'font-black' : 'font-semibold'} style={{ color: 'var(--text)' }}>{value}</p>
+  </div>
+);
+
+const EvidenceCard = ({ icon, label, value, detail }) => (
+  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
+    <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[.12em]" style={{ color: 'var(--muted)' }}>{icon} {label}</p>
+    <p className="mt-2 break-all text-xs font-bold" style={{ color: 'var(--text)' }}>{value}</p>
+    <p className="mt-1 text-[11px]" style={{ color: 'var(--muted)' }}>{detail}</p>
+  </div>
+);
+
+HeroStat.propTypes = { value: PropTypes.string.isRequired, label: PropTypes.string.isRequired };
+FlowStep.propTypes = { stage: PropTypes.shape({ key: PropTypes.string.isRequired, label: PropTypes.string.isRequired }).isRequired, index: PropTypes.number.isRequired, stageIndex: PropTypes.number.isRequired, running: PropTypes.bool.isRequired };
+EvidenceMetric.propTypes = { label: PropTypes.string.isRequired, value: PropTypes.string.isRequired, strong: PropTypes.bool };
+EvidenceCard.propTypes = { icon: PropTypes.node.isRequired, label: PropTypes.string.isRequired, value: PropTypes.string.isRequired, detail: PropTypes.string.isRequired };
 
 export default AnchorShowcase;

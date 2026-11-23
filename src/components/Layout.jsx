@@ -6,7 +6,7 @@ const Layout = () => {
   const location = useLocation();
   const path = location.pathname;
   const isLanding = path === '/';
-  const appPaths = ['/dashboard', '/send', '/receive', '/wallet', '/history', '/track', '/withdraw', '/profile', '/admin'];
+  const appPaths = ['/dashboard', '/send', '/receive', '/wallet', '/history', '/track', '/withdraw', '/profile', '/anchor-demo', '/admin'];
   const inAppShell = appPaths.some((p) => path === p || path.startsWith(`${p}/`));
   const isAuthPage = path === '/login' || path === '/register';
 

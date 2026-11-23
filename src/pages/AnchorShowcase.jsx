@@ -188,16 +188,16 @@ const AnchorShowcase = () => {
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-70" aria-hidden="true">
           <div className="absolute -right-24 -top-32 h-80 w-80 rounded-full bg-[#e4b638]/20 blur-3xl" />
           <div className="absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-[#b88712]/20 blur-3xl" />
-          <div className="absolute inset-0 opacity-[.08] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:32px_32px]" />
+          <div className="absolute inset-0 bg-cover bg-center opacity-80 mix-blend-screen" style={{ backgroundImage: "url('https://images.pexels.com/photos/6969933/pexels-photo-6969933.jpeg?auto=compress&cs=tinysrgb&w=1600'), url('/swiftsend-hero.svg')" }} />
         </div>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-3xl lg:pt-1">
             <p className="inline-flex items-center gap-2 rounded-full bg-[#e4b638]/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[.18em] text-[#f1cf72] ring-1 ring-[#e4b638]/30">
-              <Sparkles size={14} /> Stellar network · Testnet
+              <Sparkles size={14} /> Stellar Anchor · Testnet
             </p>
-            <h1 className="mt-4 max-w-2xl text-3xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">Move money. <span className="text-[#e4b638]">Prove every step.</span></h1>
+            <h1 className="mt-4 max-w-2xl text-3xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">Move money via a Stellar anchor. <span className="text-[#e4b638]">Prove every step.</span></h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-[#c9c6bd] sm:text-base">
-              A transparent remittance flow from quote to payout, with settlement evidence ready to inspect. This showcase uses simulated partners and never moves real funds.
+              A transparent remittance flow from quote to payout, with settlement evidence ready to inspect. This stellar anchor showcase uses simulated partners and never moves real funds.
             </p>
             <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
               <HeroStat value="04" label="flow stages" />

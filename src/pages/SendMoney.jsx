@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, Play, ShieldCheck, Smartphone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, Play, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
 import { getCurrentUserEmail, getDemoUsers, formatWalletAmount, isVerified, runDemoTransfer } from '../lib/wallet';
@@ -16,8 +16,10 @@ const inputClass = 'ss-input min-h-[50px] text-sm';
 const fieldLabel = 'mb-2 block text-xs font-bold tracking-wide';
 
 const SendMoney = () => {
-  const { authFetch } = useAuth();
+  const { user, authFetch } = useAuth();
   const verified = isVerified();
+  const senderName = user?.name || user?.full_name || user?.email || '';
+  const senderEmail = user?.email || '';
   const [testStatus, setTestStatus] = useState('');
   const [testRecipient, setTestRecipient] = useState(() => getDemoUsers().find((email) => email !== getCurrentUserEmail()) || getDemoUsers()[0] || '');
   const [senderCountry, setSenderCountry] = useState('US');
@@ -27,8 +29,7 @@ const SendMoney = () => {
   const [quoting, setQuoting] = useState(false);
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
-    sender_name: '', sender_contact: '',
-    recipient_name: '', recipient_contact: '', recipient_payout_method: 'mobile_money',
+    recipient_email: '', recipient_account_number: '', recipient_payout_method: 'mobile_money',
     send_amount: '100.00',
   });
   const [submitting, setSubmitting] = useState(false);
@@ -98,7 +99,7 @@ const SendMoney = () => {
   const canContinue = step === 0
     ? Boolean(quote && !quoting && Number(form.send_amount) > 0 && senderCountry !== recipientCountry)
     : step === 1
-      ? Boolean(form.sender_name.trim() && form.recipient_name.trim() && form.recipient_contact.trim())
+      ? Boolean(form.recipient_email.trim() && form.recipient_account_number.trim())
       : true;
 
   const submit = async () => {
@@ -110,8 +111,8 @@ const SendMoney = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           corridor, channel: 'web',
-          sender_name: form.sender_name, sender_contact: form.sender_contact, sender_country: senderCountry,
-          recipient_name: form.recipient_name, recipient_contact: form.recipient_contact,
+          sender_name: senderName, sender_contact: senderEmail, sender_country: senderCountry,
+          recipient_email: form.recipient_email, recipient_account_number: form.recipient_account_number,
           recipient_country: recipientCountry, recipient_payout_method: form.recipient_payout_method,
           send_amount: form.send_amount,
         }),
@@ -149,7 +150,7 @@ const SendMoney = () => {
               <div className="flex justify-between gap-3 border-t pt-3 text-base" style={{ borderColor: 'var(--border)' }}><b>Recipient gets</b><b style={{ color: 'var(--accent-strong)' }}>{created.receive_amount} {created.receive_currency}</b></div>
             </div>
             <Link to={created.reference ? `/track?ref=${encodeURIComponent(created.reference)}` : '/history'} className="ss-press ss-primary min-h-12 w-full">Track transfer <ArrowRight size={17}/></Link>
-            <button type="button" onClick={() => { setCreated(null); setQuote(null); setStep(0); setForm((current) => ({ ...current, recipient_name: '', recipient_contact: '' })); }} className="ss-press w-full rounded-xl border px-4 py-3 text-sm font-bold transition active:scale-[.98]" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}>Start another transfer</button>
+            <button type="button" onClick={() => { setCreated(null); setQuote(null); setStep(0); setForm((current) => ({ ...current, recipient_email: '', recipient_account_number: '' })); }} className="ss-press w-full rounded-xl border px-4 py-3 text-sm font-bold transition active:scale-[.98]" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}>Start another transfer</button>
           </div>
         </section>
       </div>
@@ -248,16 +249,18 @@ const SendMoney = () => {
             </>}
 
             {step === 1 && <>
-              <div><h3 className="text-lg font-black">Who is sending and receiving?</h3><p className="ss-copy mt-1 text-xs">Enter the details needed to create this transfer.</p></div>
+              <div><h3 className="text-lg font-black">Recipient details</h3><p className="ss-copy mt-1 text-xs">We already have your details — just add the recipient details to create this transfer.</p></div>
               <div className="space-y-3">
-                <p className="text-[10px] font-extrabold uppercase tracking-[.16em]" style={{ color: 'var(--accent-strong)' }}>Your details</p>
-                <div><label htmlFor="sender-name" className={fieldLabel}>Your full name</label><input id="sender-name" autoComplete="name" value={form.sender_name} onChange={update('sender_name')} className={inputClass} placeholder="Enter your full name" required/></div>
-                <div><label htmlFor="sender-contact" className={fieldLabel}>Your email or phone <span className="font-normal" style={{ color: 'var(--muted)' }}>(optional)</span></label><input id="sender-contact" autoComplete="email" value={form.sender_contact} onChange={update('sender_contact')} className={inputClass} placeholder="Email address or phone number"/></div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[.16em]" style={{ color: 'var(--accent-strong)' }}>Sending as</p>
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                  <p className="text-sm font-bold">{senderName}</p>
+                  <p className="mt-0.5 text-xs" style={{ color: 'var(--muted)' }}>{senderEmail}</p>
+                </div>
               </div>
               <div className="space-y-3 border-t pt-4" style={{ borderColor: 'var(--border)' }}>
                 <p className="text-[10px] font-extrabold uppercase tracking-[.16em]" style={{ color: 'var(--accent-strong)' }}>Recipient in {recipient.label}</p>
-                <div><label htmlFor="recipient-name" className={fieldLabel}>Recipient full name</label><input id="recipient-name" autoComplete="name" value={form.recipient_name} onChange={update('recipient_name')} className={inputClass} placeholder="Name as registered with provider" required/></div>
-                <div><label htmlFor="recipient-contact" className={fieldLabel}>Recipient phone number</label><input id="recipient-contact" autoComplete="tel" inputMode="tel" value={form.recipient_contact} onChange={update('recipient_contact')} className={inputClass} placeholder="Country code and phone number" required/></div>
+                <div><label htmlFor="recipient-email" className={fieldLabel}>Recipient email</label><input id="recipient-email" autoComplete="email" value={form.recipient_email} onChange={update('recipient_email')} className={inputClass} placeholder="name@example.com" required/></div>
+                <div><label htmlFor="recipient-account" className={fieldLabel}>Recipient account number</label><input id="recipient-account" autoComplete="off" value={form.recipient_account_number} onChange={update('recipient_account_number')} className={inputClass} placeholder="Account number" required/></div>
                 <div><label htmlFor="payout-method" className={fieldLabel}>How should they receive the money?</label><select id="payout-method" value={form.recipient_payout_method} onChange={update('recipient_payout_method')} className={inputClass}><option value="mobile_money">Mobile Money (M-Pesa)</option><option value="bank">Bank transfer</option></select></div>
               </div>
             </>}
@@ -275,9 +278,10 @@ const SendMoney = () => {
                 <div className="flex justify-between gap-3 border-t pt-3 text-base" style={{ borderColor: 'var(--border)' }}><b>Recipient gets</b><b style={{ color: 'var(--accent-strong)' }}>{quote?.receive_amount} {quote?.receive_currency}</b></div>
               </div>
               <div className="rounded-2xl p-4" style={{ background: 'var(--surface-muted)' }}>
-                <div className="flex items-center gap-2"><Smartphone size={16} style={{ color: 'var(--accent-strong)' }}/><p className="text-sm font-extrabold">{form.recipient_name}</p></div>
-                <p className="mt-1 text-xs" style={{ color: 'var(--muted)' }}>{form.recipient_contact} · {form.recipient_payout_method === 'mobile_money' ? 'Mobile Money' : 'Bank transfer'}</p>
-                <p className="mt-2 text-xs" style={{ color: 'var(--muted)' }}>Sender: {form.sender_name}</p>
+                <p className="text-xs" style={{ color: 'var(--muted)' }}>Recipient</p>
+                <p className="mt-1 text-sm font-bold">{form.recipient_email}</p>
+                <p className="mt-0.5 text-xs" style={{ color: 'var(--muted)' }}>Account: {form.recipient_account_number} · {form.recipient_payout_method === 'mobile_money' ? 'Mobile Money' : 'Bank transfer'}</p>
+                <p className="mt-2 text-xs" style={{ color: 'var(--muted)' }}>Sending as: {senderName} ({senderEmail})</p>
               </div>
               <p className="flex items-start gap-2 text-[11px] leading-5" style={{ color: 'var(--muted)' }}><LockKeyhole size={14} className="mt-0.5 shrink-0"/> Creating this request does not by itself confirm a payment or recipient payout. You can follow the recorded status from the tracking page.</p>
             </>}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, Play, ShieldCheck, Smartphone } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
-import { addDemoBalance, addDemoTransaction, formatWalletAmount, isVerified } from '../lib/wallet';
+import { getCurrentUserEmail, formatWalletAmount, isVerified, runDemoTransfer } from '../lib/wallet';
 
 const transferCountries = [
   { code: 'KE', label: 'Kenya', currency: 'KES', flag: '🇰🇪' },
@@ -19,6 +19,7 @@ const SendMoney = () => {
   const { authFetch } = useAuth();
   const verified = isVerified();
   const [testStatus, setTestStatus] = useState('');
+  const [testRecipient, setTestRecipient] = useState('');
   const [senderCountry, setSenderCountry] = useState('US');
   const [recipientCountry, setRecipientCountry] = useState('KE');
   const [quote, setQuote] = useState(null);
@@ -85,17 +86,14 @@ const SendMoney = () => {
 
   const runTestTransaction = () => {
     const amount = Number(form.send_amount) || 0;
-    const transactions = addDemoTransaction({
-      senderName: form.sender_name,
-      recipientName: form.recipient_name,
-      sendAmount: form.send_amount,
-      sendCurrency: selected.currency,
-      receiveCurrency: recipient.currency,
-      corridor,
-    });
-    const balance = addDemoBalance(amount);
-    const reference = transactions[transactions.length - 1]?.reference;
-    setTestStatus(`Test transaction completed successfully — your wallet balance is now ${formatWalletAmount(balance)}. Reference: ${reference || 'demo'}`);
+    const recipientEmail = testRecipient.trim().toLowerCase();
+    const senderEmail = getCurrentUserEmail();
+    if (!senderEmail) { setTestStatus('Sign in to run a test transaction.'); return; }
+    if (!recipientEmail) { setTestStatus('Enter the recipient email to send test funds to.'); return; }
+    if (!/\S+@\S+\.\S+/.test(recipientEmail)) { setTestStatus('Enter a valid recipient email.'); return; }
+    if (!(amount > 0)) { setTestStatus('Enter a positive test amount.'); return; }
+    const { senderBalance, recipientBalance, reference } = runDemoTransfer({ from: senderEmail, to: recipientEmail, amount });
+    setTestStatus(`Test transaction completed — ${formatWalletAmount(amount)} transferred from ${senderEmail} to ${recipientEmail}. Your balance: ${formatWalletAmount(senderBalance)}, ${recipientEmail} balance: ${formatWalletAmount(recipientBalance)}. Reference: ${reference || 'demo'}`);
   };
   const canContinue = step === 0
     ? Boolean(quote && !quoting && Number(form.send_amount) > 0 && senderCountry !== recipientCountry)
@@ -173,10 +171,14 @@ const SendMoney = () => {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>Test transactions</p>
-            <p className="mt-1 text-sm font-bold">Preview a successful transaction flow</p>
+            <p className="mt-1 text-sm font-bold">Send test funds from one account to another</p>
           </div>
-          <button type="button" onClick={runTestTransaction} className="ss-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-extrabold transition active:scale-[.98]" style={{ borderColor: 'var(--accent)', background: 'var(--accent)', color: '#17140c' }}><Play size={13}/> Run test transaction</button>
         </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <input id="test-recipient-email" type="email" aria-label="Recipient email" value={testRecipient} onChange={(event) => setTestRecipient(event.target.value)} placeholder="recipient@example.com" className="w-full rounded-xl border px-3 py-2.5 text-sm font-bold" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }} />
+          <input id="test-amount" type="number" min="1" inputMode="decimal" value={form.send_amount} aria-label="Test amount" onChange={update('send_amount')} className="w-full rounded-xl border px-3 py-2.5 text-sm font-bold" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }} />
+        </div>
+        <button type="button" onClick={runTestTransaction} className="ss-press mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-extrabold transition active:scale-[.98]" style={{ borderColor: 'var(--accent)', background: 'var(--accent)', color: '#17140c' }}><Play size={13}/> Run test transaction</button>
         {testStatus && <p role="status" className="mt-3 inline-flex items-center gap-2 text-xs font-extrabold" style={{ color: 'var(--accent-strong)' }}><Check size={14}/> {testStatus}</p>}
       </section>
 

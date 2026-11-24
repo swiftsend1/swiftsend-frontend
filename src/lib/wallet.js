@@ -1,5 +1,6 @@
 const DEMO_WALLETS_KEY = 'swiftsend.demoWallets';
 const DEMO_TRANSACTIONS_KEY = 'swiftsend.demoTransactions';
+const DEMO_USERS_KEY = 'swiftsend.demoUsers';
 const VERIFIED_KEY = 'swiftsend.verified';
 const SESSION_STORAGE_KEY = 'swiftsend.session';
 
@@ -18,6 +19,28 @@ export const getCurrentUserEmail = () => {
   } catch {
     return null;
   }
+};
+
+const readDemoUsers = () => {
+  try {
+    const parsed = JSON.parse(storage()?.getItem(DEMO_USERS_KEY) || 'null');
+    return Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+};
+
+export const getDemoUsers = () => {
+  const stored = readDemoUsers();
+  if (stored) return stored;
+  const users = [];
+  const current = getCurrentUserEmail();
+  if (current) users.push(current);
+  ['demo.alice@swiftsend.app', 'demo.bob@swiftsend.app', 'demo.carol@swiftsend.app'].forEach((email) => {
+    if (!users.includes(email)) users.push(email);
+  });
+  storage()?.setItem(DEMO_USERS_KEY, JSON.stringify(users));
+  return users;
 };
 
 const readDemoWallets = () => {

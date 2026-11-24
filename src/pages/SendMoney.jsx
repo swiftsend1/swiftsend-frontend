@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, Play, ShieldCheck, Smartphone } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
-import { getCurrentUserEmail, formatWalletAmount, isVerified, runDemoTransfer } from '../lib/wallet';
+import { getCurrentUserEmail, getDemoUsers, formatWalletAmount, isVerified, runDemoTransfer } from '../lib/wallet';
 
 const transferCountries = [
   { code: 'KE', label: 'Kenya', currency: 'KES', flag: '🇰🇪' },
@@ -19,7 +19,7 @@ const SendMoney = () => {
   const { authFetch } = useAuth();
   const verified = isVerified();
   const [testStatus, setTestStatus] = useState('');
-  const [testRecipient, setTestRecipient] = useState('');
+  const [testRecipient, setTestRecipient] = useState(() => getDemoUsers().find((email) => email !== getCurrentUserEmail()) || getDemoUsers()[0] || '');
   const [senderCountry, setSenderCountry] = useState('US');
   const [recipientCountry, setRecipientCountry] = useState('KE');
   const [quote, setQuote] = useState(null);
@@ -89,8 +89,8 @@ const SendMoney = () => {
     const recipientEmail = testRecipient.trim().toLowerCase();
     const senderEmail = getCurrentUserEmail();
     if (!senderEmail) { setTestStatus('Sign in to run a test transaction.'); return; }
-    if (!recipientEmail) { setTestStatus('Enter the recipient email to send test funds to.'); return; }
-    if (!/\S+@\S+\.\S+/.test(recipientEmail)) { setTestStatus('Enter a valid recipient email.'); return; }
+    if (!recipientEmail) { setTestStatus('Select a recipient user to send test funds to.'); return; }
+    if (recipientEmail === senderEmail) { setTestStatus('Choose a different user as the recipient.'); return; }
     if (!(amount > 0)) { setTestStatus('Enter a positive test amount.'); return; }
     const { senderBalance, recipientBalance, reference } = runDemoTransfer({ from: senderEmail, to: recipientEmail, amount });
     setTestStatus(`Test transaction completed — ${formatWalletAmount(amount)} transferred from ${senderEmail} to ${recipientEmail}. Your balance: ${formatWalletAmount(senderBalance)}, ${recipientEmail} balance: ${formatWalletAmount(recipientBalance)}. Reference: ${reference || 'demo'}`);
@@ -171,11 +171,13 @@ const SendMoney = () => {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>Test transactions</p>
-            <p className="mt-1 text-sm font-bold">Send test funds from one account to another</p>
+            <p className="mt-1 text-sm font-bold">Send test funds from one user who uses SwiftSend to another</p>
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <input id="test-recipient-email" type="email" aria-label="Recipient email" value={testRecipient} onChange={(event) => setTestRecipient(event.target.value)} placeholder="recipient@example.com" className="w-full rounded-xl border px-3 py-2.5 text-sm font-bold" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }} />
+          <select id="test-recipient" aria-label="Recipient user" value={testRecipient} onChange={(event) => setTestRecipient(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm font-bold" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}>
+            {getDemoUsers().map((email) => <option key={email} value={email}>{email}</option>)}
+          </select>
           <input id="test-amount" type="number" min="1" inputMode="decimal" value={form.send_amount} aria-label="Test amount" onChange={update('send_amount')} className="w-full rounded-xl border px-3 py-2.5 text-sm font-bold" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }} />
         </div>
         <button type="button" onClick={runTestTransaction} className="ss-press mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-extrabold transition active:scale-[.98]" style={{ borderColor: 'var(--accent)', background: 'var(--accent)', color: '#17140c' }}><Play size={13}/> Run test transaction</button>

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, ShieldCheck, Smartphone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, Play, ShieldCheck, Smartphone } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
-import { isVerified } from '../lib/wallet';
+import { addDemoBalance, addDemoTransaction, formatWalletAmount, isVerified } from '../lib/wallet';
 
 const transferCountries = [
   { code: 'KE', label: 'Kenya', currency: 'KES', flag: '🇰🇪' },
@@ -18,6 +18,7 @@ const fieldLabel = 'mb-2 block text-xs font-bold tracking-wide';
 const SendMoney = () => {
   const { authFetch } = useAuth();
   const verified = isVerified();
+  const [testStatus, setTestStatus] = useState('');
   const [senderCountry, setSenderCountry] = useState('US');
   const [recipientCountry, setRecipientCountry] = useState('KE');
   const [quote, setQuote] = useState(null);
@@ -80,6 +81,21 @@ const SendMoney = () => {
   const update = (key) => (event) => {
     setForm((current) => ({ ...current, [key]: event.target.value }));
     setError('');
+  };
+
+  const runTestTransaction = () => {
+    const amount = Number(form.send_amount) || 0;
+    const transactions = addDemoTransaction({
+      senderName: form.sender_name,
+      recipientName: form.recipient_name,
+      sendAmount: form.send_amount,
+      sendCurrency: selected.currency,
+      receiveCurrency: recipient.currency,
+      corridor,
+    });
+    const balance = addDemoBalance(amount);
+    const reference = transactions[transactions.length - 1]?.reference;
+    setTestStatus(`Test transaction completed successfully — your wallet balance is now ${formatWalletAmount(balance)}. Reference: ${reference || 'demo'}`);
   };
   const canContinue = step === 0
     ? Boolean(quote && !quoting && Number(form.send_amount) > 0 && senderCountry !== recipientCountry)
@@ -152,6 +168,17 @@ const SendMoney = () => {
         </div>
         <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--muted)' }}><ShieldCheck size={16} style={{ color: 'var(--accent-strong)' }}/> Secure transfer flow</div>
       </header>
+
+      <section className="ss-surface rounded-[24px] p-4 sm:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>Test transactions</p>
+            <p className="mt-1 text-sm font-bold">Preview a successful transaction flow</p>
+          </div>
+          <button type="button" onClick={runTestTransaction} className="ss-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-extrabold transition active:scale-[.98]" style={{ borderColor: 'var(--accent)', background: 'var(--accent)', color: '#17140c' }}><Play size={13}/> Run test transaction</button>
+        </div>
+        {testStatus && <p role="status" className="mt-3 inline-flex items-center gap-2 text-xs font-extrabold" style={{ color: 'var(--accent-strong)' }}><Check size={14}/> {testStatus}</p>}
+      </section>
 
       {!verified && (
         <section className="ss-surface rounded-[24px] p-4 sm:p-6" aria-labelledby="send-verification-heading">

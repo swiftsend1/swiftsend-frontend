@@ -1,5 +1,6 @@
 const DEMO_BALANCE_KEY = 'swiftsend.demoBalance';
 const VERIFIED_KEY = 'swiftsend.verified';
+const DEMO_TRANSACTIONS_KEY = 'swiftsend.demoTransactions';
 
 const storage = () => {
   try {
@@ -39,3 +40,27 @@ export const isVerified = () => {
 
 export const formatWalletAmount = (value) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(Number(value) || 0);
+
+export const readDemoTransactions = () => {
+  try {
+    const parsed = JSON.parse(storage()?.getItem(DEMO_TRANSACTIONS_KEY) || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+export const addDemoTransaction = (entry) => {
+  const transactions = readDemoTransactions();
+  const next = [
+    ...transactions,
+    {
+      id: `SS-${Date.now().toString(36).toUpperCase()}`,
+      status: 'completed',
+      at: new Date().toISOString(),
+      ...entry,
+    },
+  ];
+  storage()?.setItem(DEMO_TRANSACTIONS_KEY, JSON.stringify(next));
+  return next;
+};

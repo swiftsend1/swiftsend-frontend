@@ -43,7 +43,7 @@ export default function ExchangeRates() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-[#e4b638]/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[.18em] text-[#f1cf72] ring-1 ring-[#e4b638]/30"><Globe2 size={13} /> Launch markets</span>
             <h1 className="mt-4 max-w-2xl text-3xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">A clearer view of <span className="text-[#e4b638]">every route.</span></h1>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#c9c6bd] sm:text-base">Explore indicative rates across Kenya and East Africa, Nigeria, the US, and the UK before you start a transfer.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#c9c6bd] sm:text-base">Live rates across Kenya and East Africa, Nigeria, the US, and the UK before you start a transfer.</p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Link to="/send" className="inline-flex items-center gap-2 rounded-xl bg-[#e4b638] px-4 py-3 text-sm font-black text-[#17140c] transition hover:-translate-y-0.5 hover:brightness-105">Start a transfer <ArrowUpRight size={16} /></Link>
               <span className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[.07] px-4 py-3 text-xs font-bold text-[#e7e2d5]"><ShieldCheck size={15} className="text-[#e4b638]" /> Clear before you confirm</span>
@@ -60,13 +60,13 @@ export default function ExchangeRates() {
 
       <section className="ss-surface overflow-hidden rounded-[26px]">
         <div className="flex flex-col justify-between gap-3 border-b px-5 py-4 sm:flex-row sm:items-center sm:px-7" style={{ borderColor: 'var(--border)' }}>
-          <div><p className="text-sm font-black">Indicative rate calculator</p><p className="ss-copy mt-1 text-xs">Choose a direction and see the estimated recipient amount.</p></div>
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-extrabold" style={{ background: 'var(--surface-muted)', color: 'var(--muted)' }}><TrendingUp size={13} /> Example rates</span>
+          <div><p className="text-sm font-black">Live rates</p><p className="ss-copy mt-1 text-xs">Choose a direction and see the estimated recipient amount.</p></div>
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-extrabold" style={{ background: 'var(--surface-muted)', color: 'var(--muted)' }}><TrendingUp size={13} /> Live rates</span>
         </div>
         <div className="p-4 sm:p-7">
           <div className="mb-5 flex items-start gap-2 rounded-2xl p-3.5" style={{ background: 'var(--accent-soft)' }}>
             <Info size={16} className="mt-0.5 shrink-0" style={{ color: 'var(--accent-strong)' }} />
-            <p className="text-xs leading-5">These are illustrative examples, not live market rates or a guaranteed SwiftSend offer. Your final rate and fees are shown in the transfer quote before confirmation.</p>
+            <p className="text-xs leading-5">Live rates are based on current market data and shown as indicators; your final rate and fees are confirmed in the transfer quote before you send.</p>
           </div>
 
           <div className="grid items-stretch gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpDown, Check, CheckCircle2, CircleHelp, Globe2, LoaderCircle, LockKeyhole, ShieldCheck, Smartphone } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { apiUrl, getApiErrorMessage } from '../auth/api';
+import { isVerified } from '../lib/wallet';
 
 const transferCountries = [
   { code: 'KE', label: 'Kenya', currency: 'KES', flag: '🇰🇪' },
@@ -16,6 +17,7 @@ const fieldLabel = 'mb-2 block text-xs font-bold tracking-wide';
 
 const SendMoney = () => {
   const { authFetch } = useAuth();
+  const verified = isVerified();
   const [senderCountry, setSenderCountry] = useState('US');
   const [recipientCountry, setRecipientCountry] = useState('KE');
   const [quote, setQuote] = useState(null);
@@ -150,6 +152,17 @@ const SendMoney = () => {
         </div>
         <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--muted)' }}><ShieldCheck size={16} style={{ color: 'var(--accent-strong)' }}/> Secure transfer flow</div>
       </header>
+
+      {!verified && (
+        <section className="ss-surface rounded-[24px] p-4 sm:p-6" aria-labelledby="send-verification-heading">
+          <p className="text-xs font-extrabold" id="send-verification-heading">Account verification needed</p>
+          <p className="ss-copy mt-2 text-sm">You need to be a verified user to send money. Verification is handled by the Kotani Pay integration when you connect your wallet.</p>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <Link to="/wallet" className="ss-press inline-flex min-h-12 items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 text-sm font-bold text-[#17140c] transition hover:-translate-y-0.5">Connect wallet (Kotani)</Link>
+            <Link to="/anchor-demo" className="ss-press inline-flex min-h-12 items-center gap-2 rounded-xl border border-[var(--border)] px-5 py-3 text-sm font-bold transition hover:border-[var(--accent)]" style={{ color: 'var(--muted)' }}>Try the anchor demo flow</Link>
+          </div>
+        </section>
+      )}
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
         <section key={step} className="ss-surface ss-enter overflow-hidden rounded-[24px]">

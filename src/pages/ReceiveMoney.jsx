@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { ArrowDownLeft,ArrowRight,Banknote,CheckCircle2,Info,Smartphone,WalletCards } from 'lucide-react';
 import { addDemoBalance, formatWalletAmount, setVerified } from '../lib/wallet';
 const options=[
- {id:'mobile',icon:Smartphone,title:'Mobile money',detail:'Payout to a supported mobile wallet',availability:'Provider activation required'},
- {id:'bank',icon:Banknote,title:'Bank account',detail:'Payout to a supported bank account',availability:'Provider activation required'},
- {id:'wallet',icon:WalletCards,title:'SwiftSend wallet',detail:'Receive into a SwiftSend wallet balance',availability:'Wallet funding not enabled'}
+ {id:'mobile',icon:Smartphone,title:'Mobile money',detail:'Recipient registered name, provider, and phone number',availability:'Provider activation required'},
+ {id:'bank',icon:Banknote,title:'Bank account',detail:'Account holder name, bank name, and account number or IBAN',availability:'Provider activation required'},
+ {id:'wallet',icon:WalletCards,title:'Digital wallet',detail:'Recipient wallet address, network, asset, and memo when required',availability:'Wallet funding not enabled'}
 ];
 export default function ReceiveMoney(){
  const [selected,setSelected]=useState('mobile');

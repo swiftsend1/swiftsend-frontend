@@ -14,6 +14,17 @@ const transferCountries = [
 const steps = ['Transfer', 'Recipient', 'Review'];
 const inputClass = 'ss-input min-h-[50px] text-sm';
 const fieldLabel = 'mb-2 block text-xs font-bold tracking-wide';
+const recipientMethods = [
+  { value: 'mobile_money', label: 'Mobile money', summary: 'Recipient registered name, provider, and phone number' },
+  { value: 'bank_account', label: 'Bank account', summary: 'Account holder name, bank name, and account number or IBAN' },
+  { value: 'digital_wallet', label: 'Digital wallet', summary: 'Wallet address, network, asset, and memo when required' },
+];
+const providerOptions = ['MTN Mobile Money', 'Airtel Money', 'Orange Money', 'Safaricom'];
+const requiredRecipientFields = {
+  mobile_money: ['recipient_name', 'recipient_phone'],
+  bank_account: ['recipient_name', 'recipient_account_number'],
+  digital_wallet: ['recipient_wallet_address'],
+};
 
 const SendMoney = () => {
   const { user, authFetch } = useAuth();
@@ -29,7 +40,11 @@ const SendMoney = () => {
   const [quoting, setQuoting] = useState(false);
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
-    recipient_email: '', recipient_account_number: '', recipient_payout_method: 'mobile_money',
+    recipient_method: 'mobile_money',
+    recipient_name: '', recipient_provider: 'MTN Mobile Money', recipient_phone: '',
+    recipient_bank_name: '', recipient_account_number: '', recipient_branch_swift: '',
+    recipient_wallet_address: '', recipient_network: '', recipient_asset: '', recipient_memo: '',
+    recipient_payout_method: 'mobile_money',
     send_amount: '100.00',
   });
   const [submitting, setSubmitting] = useState(false);
@@ -99,7 +114,7 @@ const SendMoney = () => {
   const canContinue = step === 0
     ? Boolean(quote && !quoting && Number(form.send_amount) > 0 && senderCountry !== recipientCountry)
     : step === 1
-      ? Boolean(form.recipient_email.trim() && form.recipient_account_number.trim())
+      ? (requiredRecipientFields[form.recipient_method] || []).every((key) => (form[key] || '').trim())
       : true;
 
   const submit = async () => {
@@ -112,7 +127,10 @@ const SendMoney = () => {
         body: JSON.stringify({
           corridor, channel: 'web',
           sender_name: senderName, sender_contact: senderEmail, sender_country: senderCountry,
-          recipient_email: form.recipient_email, recipient_account_number: form.recipient_account_number,
+          recipient_method: form.recipient_method,
+          recipient_name: form.recipient_name, recipient_provider: form.recipient_provider, recipient_phone: form.recipient_phone,
+          recipient_bank_name: form.recipient_bank_name, recipient_account_number: form.recipient_account_number, recipient_branch_swift: form.recipient_branch_swift,
+          recipient_wallet_address: form.recipient_wallet_address, recipient_network: form.recipient_network, recipient_asset: form.recipient_asset, recipient_memo: form.recipient_memo,
           recipient_country: recipientCountry, recipient_payout_method: form.recipient_payout_method,
           send_amount: form.send_amount,
         }),
@@ -150,7 +168,7 @@ const SendMoney = () => {
               <div className="flex justify-between gap-3 border-t pt-3 text-base" style={{ borderColor: 'var(--border)' }}><b>Recipient gets</b><b style={{ color: 'var(--accent-strong)' }}>{created.receive_amount} {created.receive_currency}</b></div>
             </div>
             <Link to={created.reference ? `/track?ref=${encodeURIComponent(created.reference)}` : '/history'} className="ss-press ss-primary min-h-12 w-full">Track transfer <ArrowRight size={17}/></Link>
-            <button type="button" onClick={() => { setCreated(null); setQuote(null); setStep(0); setForm((current) => ({ ...current, recipient_email: '', recipient_account_number: '' })); }} className="ss-press w-full rounded-xl border px-4 py-3 text-sm font-bold transition active:scale-[.98]" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}>Start another transfer</button>
+            <button type="button" onClick={() => { setCreated(null); setQuote(null); setStep(0); setForm((current) => ({ ...current, recipient_name: '', recipient_phone: '', recipient_bank_name: '', recipient_account_number: '', recipient_branch_swift: '', recipient_wallet_address: '', recipient_network: '', recipient_asset: '', recipient_memo: '' })); }} className="ss-press w-full rounded-xl border px-4 py-3 text-sm font-bold transition active:scale-[.98]" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}>Start another transfer</button>
           </div>
         </section>
       </div>
@@ -259,8 +277,28 @@ const SendMoney = () => {
               </div>
               <div className="space-y-3 border-t pt-4" style={{ borderColor: 'var(--border)' }}>
                 <p className="text-[10px] font-extrabold uppercase tracking-[.16em]" style={{ color: 'var(--accent-strong)' }}>Recipient in {recipient.label}</p>
-                <div><label htmlFor="recipient-email" className={fieldLabel}>Recipient email</label><input id="recipient-email" autoComplete="email" value={form.recipient_email} onChange={update('recipient_email')} className={inputClass} placeholder="name@example.com" required/></div>
-                <div><label htmlFor="recipient-account" className={fieldLabel}>Recipient account number</label><input id="recipient-account" autoComplete="off" value={form.recipient_account_number} onChange={update('recipient_account_number')} className={inputClass} placeholder="Account number" required/></div>
+                <div><label htmlFor="recipient-method" className={fieldLabel}>Receiving method</label><select id="recipient-method" value={form.recipient_method} onChange={update('recipient_method')} className={inputClass}>{recipientMethods.map((method) => <option key={method.value} value={method.value}>{method.label} — {method.summary}</option>)}</select></div>
+
+                {form.recipient_method === 'mobile_money' && <>
+                  <div><label htmlFor="recipient-name" className={fieldLabel}>Recipient registered name</label><input id="recipient-name" autoComplete="name" value={form.recipient_name} onChange={update('recipient_name')} className={inputClass} placeholder="Full name" required/></div>
+                  <div><label htmlFor="recipient-provider" className={fieldLabel}>Mobile money provider</label><select id="recipient-provider" value={form.recipient_provider} onChange={update('recipient_provider')} className={inputClass}>{providerOptions.map((provider) => <option key={provider} value={provider}>{provider}</option>)}</select></div>
+                  <div><label htmlFor="recipient-phone" className={fieldLabel}>Phone number (with country code)</label><input id="recipient-phone" autoComplete="tel" inputMode="tel" value={form.recipient_phone} onChange={update('recipient_phone')} className={inputClass} placeholder="Enter phone number with country code" required/></div>
+                </>}
+
+                {form.recipient_method === 'bank_account' && <>
+                  <div><label htmlFor="recipient-name" className={fieldLabel}>Account holder&apos;s name</label><input id="recipient-name" autoComplete="name" value={form.recipient_name} onChange={update('recipient_name')} className={inputClass} placeholder="Full name" required/></div>
+                  <div><label htmlFor="recipient-bank" className={fieldLabel}>Bank name</label><input id="recipient-bank" autoComplete="off" value={form.recipient_bank_name} onChange={update('recipient_bank_name')} className={inputClass} placeholder="Bank or institution name" required/></div>
+                  <div><label htmlFor="recipient-account" className={fieldLabel}>Account number or IBAN</label><input id="recipient-account" autoComplete="off" value={form.recipient_account_number} onChange={update('recipient_account_number')} className={inputClass} placeholder="Account number or IBAN" required/></div>
+                  <div><label htmlFor="recipient-branch" className={fieldLabel}>Bank branch or SWIFT/BIC (where required)</label><input id="recipient-branch" autoComplete="off" value={form.recipient_branch_swift} onChange={update('recipient_branch_swift')} className={inputClass} placeholder="Branch or SWIFT/BIC"/></div>
+                </>}
+
+                {form.recipient_method === 'digital_wallet' && <>
+                  <div><label htmlFor="recipient-address" className={fieldLabel}>Recipient wallet address</label><input id="recipient-address" autoComplete="off" value={form.recipient_wallet_address} onChange={update('recipient_wallet_address')} className={inputClass} placeholder="Wallet address" required/></div>
+                  <div><label htmlFor="recipient-network" className={fieldLabel}>Blockchain / network</label><input id="recipient-network" autoComplete="off" value={form.recipient_network} onChange={update('recipient_network')} className={inputClass} placeholder="e.g. Stellar, Ethereum"/></div>
+                  <div><label htmlFor="recipient-asset" className={fieldLabel}>Asset (e.g. USDC)</label><input id="recipient-asset" autoComplete="off" value={form.recipient_asset} onChange={update('recipient_asset')} className={inputClass} placeholder="e.g. USDC"/></div>
+                  <div><label htmlFor="recipient-memo" className={fieldLabel}>Memo or destination tag (if required)</label><input id="recipient-memo" autoComplete="off" value={form.recipient_memo} onChange={update('recipient_memo')} className={inputClass} placeholder="Optional memo or destination tag"/></div>
+                </>}
+
                 <div><label htmlFor="payout-method" className={fieldLabel}>How should they receive the money?</label><select id="payout-method" value={form.recipient_payout_method} onChange={update('recipient_payout_method')} className={inputClass}><option value="mobile_money">Mobile Money (M-Pesa)</option><option value="bank">Bank transfer</option></select></div>
               </div>
             </>}
@@ -279,8 +317,10 @@ const SendMoney = () => {
               </div>
               <div className="rounded-2xl p-4" style={{ background: 'var(--surface-muted)' }}>
                 <p className="text-xs" style={{ color: 'var(--muted)' }}>Recipient</p>
-                <p className="mt-1 text-sm font-bold">{form.recipient_email}</p>
-                <p className="mt-0.5 text-xs" style={{ color: 'var(--muted)' }}>Account: {form.recipient_account_number} · {form.recipient_payout_method === 'mobile_money' ? 'Mobile Money' : 'Bank transfer'}</p>
+                <p className="mt-1 text-sm font-bold">{form.recipient_name || form.recipient_wallet_address || form.recipient_account_number || 'Recipient'}</p>
+                {form.recipient_method === 'mobile_money' && <p className="mt-0.5 text-xs" style={{ color: 'var(--muted)' }}>{form.recipient_provider} · {form.recipient_phone}</p>}
+                {form.recipient_method === 'bank_account' && <p className="mt-0.5 text-xs" style={{ color: 'var(--muted)' }}>{form.recipient_bank_name} · {form.recipient_account_number}{form.recipient_branch_swift ? ` · ${form.recipient_branch_swift}` : ''}</p>}
+                {form.recipient_method === 'digital_wallet' && <p className="mt-0.5 text-xs" style={{ color: 'var(--muted)' }}>{form.recipient_network} · {form.recipient_asset}{form.recipient_memo ? ` · ${form.recipient_memo}` : ''}</p>}
                 <p className="mt-2 text-xs" style={{ color: 'var(--muted)' }}>Sending as: {senderName} ({senderEmail})</p>
               </div>
               <p className="flex items-start gap-2 text-[11px] leading-5" style={{ color: 'var(--muted)' }}><LockKeyhole size={14} className="mt-0.5 shrink-0"/> Creating this request does not by itself confirm a payment or recipient payout. You can follow the recorded status from the tracking page.</p>

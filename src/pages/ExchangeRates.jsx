@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const currencies = {
   USD: { flag: '🇺🇸', name: 'US Dollar', market: 'United States' },
+  UG: { flag: '🇺🇬', name: 'Ugandan Shilling', market: 'East Africa' },
   KES: { flag: '🇰🇪', name: 'Kenyan Shilling', market: 'Kenya · East Africa' },
   NGN: { flag: '🇳🇬', name: 'Nigerian Naira', market: 'Nigeria' },
   GBP: { flag: '🇬🇧', name: 'British Pound', market: 'United Kingdom' },
@@ -17,8 +18,8 @@ const rates = {
   'GBP-NGN': 2000.13,
 };
 
-const baseToUsd = { USD: 1, KES: 129.42, NGN: 1547.8, GBP: 0.7729 };
-const marketPairs = [['USD', 'KES'], ['GBP', 'KES'], ['USD', 'NGN'], ['GBP', 'NGN']];
+const baseToUsd = { USD: 1, KES: 129.42, NGN: 1547.8, UG: 836, GBP: 0.7729 };
+const marketPairs = [['USD', 'KES'], ['GBP', 'KES'], ['USD', 'NGN'], ['GBP', 'NGN'], ['USD', 'UG']];
 
 const getRate = (from, to) => from === to ? 1 : rates[`${from}-${to}`] || (rates[`${to}-${from}`] ? 1 / rates[`${to}-${from}`] : baseToUsd[to] / baseToUsd[from]);
 const formatRate = (value) => value.toLocaleString('en', { maximumFractionDigits: 4 });

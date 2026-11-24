@@ -9,6 +9,7 @@ const transferCountries = [
   { code: 'KE', label: 'Kenya', currency: 'KES', flag: '🇰🇪' },
   { code: 'NG', label: 'Nigeria', currency: 'NGN', flag: '🇳🇬' },
   { code: 'US', label: 'United States', currency: 'USD', flag: '🇺🇸' },
+  { code: 'UG', label: 'Uganda', currency: 'UGX', flag: '🇺🇬' },
   { code: 'GB', label: 'United Kingdom', currency: 'GBP', flag: '🇬🇧' },
 ];
 const steps = ['Transfer', 'Recipient', 'Review'];
